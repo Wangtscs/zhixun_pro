@@ -54,7 +54,7 @@ async function openHardwareConsole():Promise<void> {try{await router.push('/simu
 </template>
 
 <style scoped>
-.hardware-console-host:not([hidden]){margin:0 24px 100px 232px;width:calc(100% - 256px);scroll-margin-top:90px}
+.hardware-console-host:not([hidden]){margin:0 24px 100px 216px;width:calc(100% - 240px);scroll-margin-top:90px}
 .design-app.nav-collapsed~.hardware-console-host:not([hidden]){margin-left:96px;width:calc(100% - 120px)}
 @media(max-width:900px){.hardware-console-host:not([hidden]){margin-left:96px;width:calc(100% - 120px)}}
 @media(max-width:600px){.hardware-console-host:not([hidden]),.design-app.nav-collapsed~.hardware-console-host:not([hidden]){margin-left:84px;margin-right:12px;width:calc(100% - 96px)}}

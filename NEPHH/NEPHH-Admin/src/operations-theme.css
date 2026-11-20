@@ -526,8 +526,8 @@
 .design-app .d-timeline p { margin-top: 4px; }
 .design-app .d-person-card { background: var(--ops-surface); border-radius: var(--ops-radius); padding: 12px; gap: 12px; }
 .design-app .d-person-card.chosen { background: var(--ops-accent-bg); border-color: var(--ops-accent); }
-.design-app .d-person-card > span:nth-child(2) { min-width: 0; }
-.design-app .d-person-card > span:nth-child(2) > small { display: block; white-space: normal; }
+.design-app .d-person-card > .d-person-identity { min-width: 0; }
+.design-app .d-person-card > .d-person-identity > small { display: block; white-space: normal; }
 .design-app .d-worker-tags em { color: var(--ops-muted); background: var(--ops-raised); }
 .design-app .chosen .d-person-check { background: var(--ops-accent); color: var(--ops-on-accent); border-color: var(--ops-accent); }
 .design-app .d-person-chips > button { color: var(--ops-accent); background: var(--ops-accent-bg); border-color: var(--ops-line); }
@@ -536,16 +536,20 @@
 .design-app .d-dispatch-options button { height: auto; min-height: 36px; color: var(--ops-text); background: var(--ops-surface); border-color: var(--ops-line); }
 .design-app .d-dispatch-options textarea { width: 100%; }
 
+.design-app .d-person-identity { flex: 1; min-width: 0; }
+.design-app .d-person-identity > b { display: block; font-size: 14px; font-weight: 600; }
+.design-app .d-person-identity > small, .design-app .d-person-tasks > small { font-size: 12px; color: var(--ops-muted); }
+.design-app .d-person-card > .d-person-tasks { margin-left: auto; }
+.design-app .order-case h2 { font-size: 16px; line-height: 1.5; font-weight: 600; margin: 0 0 16px; }
+.design-app .order-case__metadata > button { display: block; margin: 12px 0 0; font-size: 12px; }
+.design-app .order-case__upload { display: block; font-size: 12px; margin: 12px 0; }
+.design-app .order-list__subject { min-width: 220px; }
+.design-app .order-list__subject > button { display: block; text-align: left; font-size: 14px; white-space: normal; }
+.design-app .order-list__subject > small { display: block; color: var(--ops-muted); font-size: 12px; margin-top: 4px; }
 /* Scoped component surfaces follow the same foundation as legacy panels. */
-.design-app .workbench__header h2 { font-size: 22px; font-weight: 600; }
-.design-app .workbench__cards { gap: 12px; }
-.design-app .workbench__cards button { min-height: 108px; padding: 12px 16px; border-radius: var(--ops-radius); box-shadow: none; }
-.design-app .workbench__cards button.selected { background: var(--ops-accent-bg); box-shadow: inset 3px 0 var(--ops-accent); }
-.design-app .workbench__cards strong { font-size: 26px; margin: 2px 0; }
+.design-app .workbench__header h2 { font-size: 16px; font-weight: 600; }
 .design-app :is(.workbench__queue, .workbench__demo, .workbench__error, .workbench__actions button, .workbench__pagination button, .workbench__status) { border-radius: var(--ops-radius); }
 .design-app .workbench__queue h3 { font-size: 16px; }
-.design-app .workbench__items button { padding: 12px 16px; }
-.design-app .workbench__status { border-color: transparent; background: var(--ops-raised); }
 .design-app .hardware-collection-summary { box-shadow: none; border-color: var(--ops-line); border-radius: var(--ops-radius); }
 
 @media (max-width: 900px) {
