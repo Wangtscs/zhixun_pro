@@ -19,7 +19,7 @@ class WorkbenchError extends Error {
 const props = defineProps<{ areaId: string; role: string; readonly: boolean; refreshKey?: number }>()
 const headingId = useId()
 const emit = defineEmits<{
-  openOrder: [id: number]; openPatrol: [id: number]; openNode: [id: number]; space: []
+  openOrder: [id: number]; openAlarm: [id: number]; openPatrol: [id: number]; openNode: [id: number]; space: []
 }>()
 const managementQueues: QueueKey[] = ['urgentAlarms', 'unassigned', 'review', 'overdue', 'patrol']
 const personalQueues: QueueKey[] = ['assigned', 'processing', 'overdue', 'patrol']
@@ -72,11 +72,11 @@ function itemTitle(item: Item): string {
   return selected.value === 'urgentAlarms' ? text(item.reason, '紧急告警')
     : selected.value === 'patrol' ? text(item.name, '巡检任务') : text(item.title, '工单')
 }
-function itemId(item: Item): number | null { return positiveId(selected.value === 'urgentAlarms' ? item.node_id : item.id) }
+function itemId(item: Item): number | null { return positiveId(item.id) }
 function openItem(item: Item): void {
   const id = itemId(item)
   if (id === null) return
-  if (selected.value === 'urgentAlarms') emit('openNode', id)
+  if (selected.value === 'urgentAlarms') emit('openAlarm', id)
   else if (selected.value === 'patrol') emit('openPatrol', id)
   else emit('openOrder', id)
 }
@@ -195,7 +195,7 @@ onBeforeUnmount(() => {
       <p v-else-if="!response && error" class="workbench__empty">当前没有可用快照。可点击“刷新待办”重试，不将错误显示为零任务。</p>
       <p v-else-if="response && !response.scope.areaIds.length" class="workbench__empty">当前账号尚无授权业务区域，请联系管理员分配区域。</p>
       <p v-else-if="queuePage && !queuePage.items.length" class="workbench__empty">{{ queuePage.total === 0 ? '当前范围暂无此类待办。' : '此页已无记录，业务状态可能变化；请返回上一页或刷新。' }}</p>
-      <ul v-else-if="queuePage" class="workbench__items"><li v-for="item in queuePage.items" :key="String(item.id)"><button type="button" :disabled="itemId(item) === null" @click="openItem(item)"><div><p class="workbench__item-meta"><span>#{{ item.id }}</span><span>{{ selected === 'patrol' ? text(item.assignee_name, '执行人未提供') : text(item.node_code || item.code, '节点未提供') }}</span><span>区域 #{{ item.area_id }}</span></p><h4>{{ itemTitle(item) }}</h4><p class="workbench__item-meta"><span>{{ selected === 'urgentAlarms' ? '触发于 '+formatTime(item.triggered_at) : selected === 'patrol' ? '创建于 '+formatTime(item.created_at) : '截止 '+formatTime(item.due_at) }}</span><span v-if="selected !== 'urgentAlarms' && selected !== 'patrol'">{{ text(item.assignee_name, '未派发') }}</span></p></div><span class="workbench__status">{{ selected === 'urgentAlarms' ? '未恢复 · 查看节点' : String(statusName[String(item.status)] || item.status || '查看详情') }}</span></button></li></ul>
+      <ul v-else-if="queuePage" class="workbench__items"><li v-for="item in queuePage.items" :key="String(item.id)"><button type="button" :disabled="itemId(item) === null" @click="openItem(item)"><div><p class="workbench__item-meta"><span>#{{ item.id }}</span><span>{{ selected === 'patrol' ? text(item.assignee_name, '执行人未提供') : text(item.node_code || item.code, '节点未提供') }}</span><span>区域 #{{ item.area_id }}</span></p><h4>{{ itemTitle(item) }}</h4><p class="workbench__item-meta"><span>{{ selected === 'urgentAlarms' ? '触发于 '+formatTime(item.triggered_at) : selected === 'patrol' ? '创建于 '+formatTime(item.created_at) : '截止 '+formatTime(item.due_at) }}</span><span v-if="selected !== 'urgentAlarms' && selected !== 'patrol'">{{ text(item.assignee_name, '未派发') }}</span></p></div><span class="workbench__status">{{ selected === 'urgentAlarms' ? '未恢复 · 查看告警' : String(statusName[String(item.status)] || item.status || '查看详情') }}</span></button></li></ul>
       <footer class="workbench__pagination"><span v-if="queuePage">第 {{ Math.floor(queuePage.offset / limit) + 1 }} 页 · 本页 {{ queuePage.items.length }} 项 / 共 {{ queuePage.total }} 项</span><span v-else>每页20项 · 计数以服务器为准</span><div><button type="button" :disabled="loading || offset === 0 || errorKind === 'unauthorized'" @click="previousPage">上一页</button><button type="button" :disabled="loading || !queuePage?.hasMore || errorKind === 'unauthorized'" @click="nextPage">下一页</button></div></footer>
     </div>
   </section>
