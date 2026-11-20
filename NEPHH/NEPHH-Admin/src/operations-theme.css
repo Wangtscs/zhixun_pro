@@ -1,0 +1,441 @@
+/* T07: Scoped operations UI tokens. Import after the existing workspace and theme styles. */
+.design-app {
+  --ops-space-1: 8px;
+  --ops-space-2: 12px;
+  --ops-space-3: 16px;
+  --ops-space-4: 24px;
+  --ops-bg: #0e151c;
+  --ops-surface: #16212a;
+  --ops-raised: #1d2c37;
+  --ops-text: #e0eaf0;
+  --ops-muted: #a7b9c6;
+  --ops-line: #3a4d5a;
+  --ops-accent: #58e1d3;
+  --ops-accent-bg: #163e40;
+  --ops-on-accent: #092a2d;
+  --ops-danger: #ff9da4;
+  --ops-danger-bg: #43272f;
+  --ops-warning: #f2c77e;
+  --ops-warning-bg: #403423;
+  --ops-info: #b0ccff;
+  --ops-info-bg: #24354e;
+  --ops-offline: #b2bcc6;
+  --ops-offline-bg: #29333e;
+  --ops-radius: 10px;
+  --teal: var(--ops-accent);
+  --muted: var(--ops-muted);
+  --line: var(--ops-line);
+  --panel: var(--ops-surface);
+  --text: var(--ops-text);
+  color: var(--ops-text);
+  background: var(--ops-bg);
+  font-family: "Nephh Sans UI", "Microsoft YaHei UI", "PingFang SC", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+[data-theme="light"] .design-app {
+  --ops-bg: #eff3f5;
+  --ops-surface: #ffffff;
+  --ops-raised: #f0f5f7;
+  --ops-text: #203742;
+  --ops-muted: #526b79;
+  --ops-line: #bdcdd6;
+  --ops-accent: #006e65;
+  --ops-accent-bg: #dfefec;
+  --ops-on-accent: #ffffff;
+  --ops-danger: #ab2d3b;
+  --ops-danger-bg: #fbe9ec;
+  --ops-warning: #835200;
+  --ops-warning-bg: #faf0dc;
+  --ops-info: #2a568c;
+  --ops-info-bg: #e6eefb;
+  --ops-offline: #586d7b;
+  --ops-offline-bg: #e7edf1;
+}
+
+.work-app.design-app {
+  background: var(--ops-bg);
+  color: var(--ops-text);
+  font-size: 14px;
+}
+
+.design-app :is(.work-panel, .d-metric, .d-settings-card, .d-report-metrics > article, .work-dialog, .d-drawer) {
+  background: var(--ops-surface);
+  color: var(--ops-text);
+  border-color: var(--ops-line);
+  border-radius: var(--ops-radius);
+}
+
+.design-app :is(.d-topbar, .work-sidebar, .d-drawer > footer) {
+  background: var(--ops-surface);
+  border-color: var(--ops-line);
+}
+
+.design-app .d-page-heading {
+  height: auto;
+  min-height: 54px;
+  gap: var(--ops-space-3);
+  margin-bottom: var(--ops-space-4);
+}
+
+.design-app .d-page-heading h1 {
+  font-size: 26px;
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--ops-text);
+}
+
+.design-app :is(.work-panel h2, .d-settings-card > header h2, .work-dialog .work-title h2) {
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--ops-text);
+}
+
+.design-app :is(.d-page-heading p, .d-heading-actions small, .d-breadcrumb, .d-connection, .d-take-mode, .d-user small) {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ops-muted);
+}
+
+.design-app :is(.d-metric > span, .d-metric > small, .d-report-metrics article > small, .d-report-metrics article > span) {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ops-muted);
+}
+
+.design-app .d-metric {
+  height: auto;
+  min-height: 140px;
+  padding: var(--ops-space-3);
+}
+
+.design-app :is(.d-metric-value, .d-report-metrics b, .d-node-metrics b) {
+  font-family: "Cascadia Code", Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--ops-text);
+  letter-spacing: 0;
+}
+
+.design-app .d-metric-value {
+  font-size: 30px;
+  line-height: 1.4;
+  margin: var(--ops-space-1) 0;
+}
+
+.design-app :is(.d-metric-value small, .d-report-metrics em, .d-node-metrics em) {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  font-style: normal;
+  font-weight: 400;
+  color: var(--ops-muted);
+}
+
+.design-app :is(.mono, .d-timeline time, .d-board-countdown, .d-audit-meta dd) {
+  font-variant-numeric: tabular-nums;
+}
+
+.design-app :is(.work-toolbar, .work-actions, .d-table-toolbar) {
+  gap: var(--ops-space-2);
+  flex-wrap: wrap;
+}
+
+.design-app .d-table-toolbar {
+  min-height: 72px;
+  padding: var(--ops-space-3);
+  border-color: var(--ops-line);
+}
+
+.design-app :is(.work-toolbar, .work-dialog, .d-dispatch-options, .d-table-toolbar, .d-settings-card, .d-node-rules)
+  :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea) {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ops-text);
+  background: var(--ops-raised);
+  border-color: var(--ops-line);
+  border-radius: 7px;
+  min-height: 40px;
+  padding: var(--ops-space-1) var(--ops-space-2);
+}
+
+.design-app :is(input, textarea)::placeholder {
+  color: var(--ops-muted);
+  opacity: 1;
+}
+
+.design-app :is(.work-toolbar, .work-actions, .d-table-toolbar, .work-dialog, .d-drawer > footer, .d-profile-form > footer) > button,
+.design-app :is(.d-dispatch, .d-alert-card button, .d-settings-card button, .d-order-tabs button) {
+  min-height: 36px;
+  padding: var(--ops-space-1) var(--ops-space-2);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.design-app :is(button.primary, .d-pagination button.current) {
+  background: var(--ops-accent);
+  border-color: var(--ops-accent);
+  color: var(--ops-on-accent);
+}
+
+.design-app :is(button.primary, .d-pagination button.current):hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.design-app :is(button, input, select, textarea):disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.design-app :is(input, select, textarea):disabled {
+  background: var(--ops-offline-bg);
+  color: var(--ops-offline);
+}
+
+.design-app :is(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--ops-accent);
+  outline-offset: 3px;
+}
+
+.design-app [aria-busy="true"] {
+  cursor: progress;
+}
+
+.design-app .d-table-search {
+  min-height: 40px;
+  height: auto;
+  background: var(--ops-raised);
+  border-color: var(--ops-line);
+  padding: 0 var(--ops-space-2);
+}
+
+.design-app .d-table-search input {
+  background: transparent;
+  border: 0;
+  min-height: 38px;
+  padding: var(--ops-space-1) 0;
+  font-size: 14px;
+  color: var(--ops-text);
+}
+
+.design-app :is(.d-nodes-table, .d-orders-table, .d-audit-table) {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.design-app :is(.d-nodes-table, .d-orders-table, .d-audit-table) th {
+  height: auto;
+  padding-top: var(--ops-space-2);
+  padding-bottom: var(--ops-space-2);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ops-muted);
+  background: var(--ops-raised);
+  border-color: var(--ops-line);
+}
+
+.design-app :is(.d-nodes-table, .d-orders-table, .d-audit-table) td {
+  height: auto;
+  padding-top: var(--ops-space-3);
+  padding-bottom: var(--ops-space-3);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ops-text);
+  border-color: var(--ops-line);
+  vertical-align: middle;
+}
+
+/* Nested legacy text sizes do not inherit the table's 14px body size. */
+.design-app :is(.d-node-id > div > b, .d-reading-cell b, .d-detail-list dd) {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ops-text);
+}
+
+.design-app :is(.d-node-id .d-health b, .d-node-id small, .d-reading-cell small, .d-order-summary p, .d-detail-list dt) {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ops-muted);
+}
+
+.design-app .d-health::before { background: var(--ops-surface); }
+.design-app .d-health b { color: var(--ops-text); }
+
+.design-app .d-reading-cell {
+  display: grid;
+  grid-template-columns: 48px minmax(48px, auto) auto;
+  column-gap: var(--ops-space-1);
+  row-gap: 4px;
+  align-items: center;
+}
+
+.design-app .d-reading-cell > small { margin-left: 0; }
+.design-app .d-reading-cell > .methane-origin { grid-column: 1 / -1; white-space: normal; }
+
+.design-app .d-note-label input {
+  width: 100%;
+  min-height: 40px;
+  padding: var(--ops-space-1) var(--ops-space-2);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ops-text);
+  background: var(--ops-raised);
+  border-color: var(--ops-line);
+}
+
+.design-app :is(.d-orders-table .d-link, .d-orders-table .mono > .d-link, .d-nodes-table .d-link, .d-audit-table code) {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.design-app .d-pagination {
+  min-height: 64px;
+  padding: var(--ops-space-3);
+  gap: var(--ops-space-1);
+  font-size: 12px;
+  border-color: var(--ops-line);
+  flex-wrap: wrap;
+}
+
+.design-app :is(.d-pagination small, .d-pagination button, .d-pagination select, .d-order-tabs button small) {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.design-app :is(.d-pagination button, .d-pagination select) {
+  min-width: 34px;
+  min-height: 34px;
+  height: auto;
+}
+
+.design-app .d-pill {
+  min-height: 24px;
+  padding: 3px 7px;
+  font-size: 12px;
+  line-height: 1.5;
+  background: var(--ops-accent-bg);
+  border-color: var(--ops-accent);
+  color: var(--ops-accent);
+}
+
+.design-app :is(.d-pill.red, .work-error) {
+  background: var(--ops-danger-bg);
+  border-color: var(--ops-danger);
+  color: var(--ops-danger);
+}
+
+.design-app .d-pill.amber {
+  background: var(--ops-warning-bg);
+  border-color: var(--ops-warning);
+  color: var(--ops-warning);
+}
+
+.design-app .d-pill.blue {
+  background: var(--ops-info-bg);
+  border-color: var(--ops-info);
+  color: var(--ops-info);
+}
+
+.design-app .d-pill.gray {
+  background: var(--ops-offline-bg);
+  border-color: var(--ops-offline);
+  color: var(--ops-offline);
+}
+
+.design-app :is(.red, .d-link.red) { color: var(--ops-danger); }
+.design-app :is(.amber, .d-link.amber) { color: var(--ops-warning); }
+.design-app :is(.teal, .d-link.teal) { color: var(--ops-accent); }
+
+.design-app :is(.d-alert-card, .d-order-card, .d-order-note, .d-node-metrics, .d-audit-meta, .d-person-card) {
+  background: var(--ops-raised);
+  border-color: var(--ops-line);
+  color: var(--ops-text);
+}
+
+.design-app .d-alert-card { border-left-color: var(--ops-warning); }
+.design-app .d-alert-card.high { border-left-color: var(--ops-danger); }
+.design-app .d-order-card.overdue { border-color: var(--ops-danger); background: var(--ops-danger-bg); }
+
+.design-app :is(.d-alert-card b, .d-order-card h3, .d-timeline b, .d-person-card > span:nth-child(2) > b) {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.design-app :is(.d-alert-card small, .d-alert-card p, .d-order-card h3 small, .d-order-card footer, .d-order-note, .d-order-note b, .d-board-countdown, .d-kanban > section > header, .d-kanban > section > header small, .d-timeline p, .d-timeline time) {
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.design-app :is(.d-alert-card p, .d-order-card footer > span:first-child, .d-order-note, .d-timeline p, .d-timeline time) {
+  color: var(--ops-muted);
+}
+
+.design-app .d-drawer {
+  border-radius: 0;
+  width: min(560px, 100%);
+}
+
+.design-app .d-drawer > header,
+.design-app .d-drawer-body {
+  padding: var(--ops-space-4);
+}
+
+.design-app .d-assign-drawer .d-drawer-body { padding: 0; }
+
+.design-app .d-drawer > header h2 {
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--ops-text);
+}
+
+.design-app :is(.d-drawer > header > div > small, .d-drawer > footer > span, .d-node-metrics small, .d-node-rules label, .d-node-rules small, .d-audit-meta > div, .d-audit-meta dt) {
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.design-app .d-drawer-body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ops-line) transparent;
+}
+
+.design-app .d-drawer-body::-webkit-scrollbar { width: 7px; }
+.design-app .d-drawer-body::-webkit-scrollbar-thumb { background: var(--ops-line); border-radius: 4px; }
+
+.design-app :is(.d-selected-people h3, .d-recommended h3) { font-size: 14px; line-height: 1.5; }
+.design-app :is(.d-selected-people .work-title > div > small, .d-recommended .work-title > div > small, .d-selected-people .work-title > b, .d-person-card > span:nth-child(2) > small, .d-person-tasks > b, .d-person-tasks > small, .d-person-chips > button, .d-dispatch-options > label, .d-dispatch-options button) { font-size: 12px; line-height: 1.6; }
+.design-app .d-person-chips { flex-wrap: wrap; }
+.design-app .d-person-card { min-height: 76px; }
+.design-app .d-worker-tags em { font-size: 12px; line-height: 1.5; padding: 2px 6px; }
+.design-app .d-person-card.chosen { border-color: var(--ops-accent); background: var(--ops-accent-bg); }
+.design-app :is(.d-person-card > span:nth-child(2) > small, .d-person-tasks > b, .d-person-tasks > small) { color: var(--ops-muted); }
+
+.design-app :is(.d-settings-nav button, .d-profile-avatar > div > b, .d-security-row b, .d-settings-row b, .d-device-row b) { font-size: 14px; line-height: 1.5; }
+.design-app :is(.d-settings-nav > small, .d-settings-card > header p, .d-profile-avatar p, .d-profile-form > footer > small, .d-security-row small, .d-settings-row small, .d-device-row small, .d-device-row .push > span, .d-theme-options small, .work-dialog label) { font-size: 12px; line-height: 1.6; color: var(--ops-muted); }
+.design-app :is(.d-security-row b, .d-settings-row b, .d-device-row b) { color: var(--ops-text); }
+
+@media (max-width: 900px) {
+  .design-app .d-page-heading { flex-wrap: wrap; }
+  .design-app .d-heading-actions { flex-wrap: wrap; }
+  .design-app :is(.d-orders-table, .d-nodes-table, .d-audit-table) { min-width: 900px; }
+  .design-app .d-table-scroll { overflow: auto; }
+}
+
+@media (max-width: 600px) {
+  .design-app .d-page-heading h1 { font-size: 22px; }
+  .design-app .d-drawer > header,
+  .design-app .d-drawer-body { padding: var(--ops-space-3); }
+  .design-app .d-drawer > footer { flex-wrap: wrap; }
+  .design-app .d-drawer > footer > span { max-width: none; flex-basis: 100%; }
+  .design-app .d-table-search { width: 100%; }
+  .design-app .d-table-toolbar select { width: auto; flex: 1 1 130px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .design-app :is(.d-live-wave, .spinner, .d-cell-skeleton, .d-skeleton, .d-chart-skeleton) {
+    animation: none;
+    transition: none;
+  }
+  .design-app { scroll-behavior: auto; }
+}
