@@ -7,6 +7,33 @@ export interface DispatchWorker {
   areas?: readonly unknown[]
 }
 
+export interface DispatchOrder {
+  id?: number
+  node_id?: number
+  area_id?: number
+  status?: string
+}
+
+interface DispatchNode {
+  id?: number
+  area_id?: number
+}
+
+/** Resolve every selected order; missing records, areas or non-dispatchable states fail closed. */
+export function dispatchAreaIds(orderIds: readonly unknown[], orders: readonly DispatchOrder[], nodes: readonly DispatchNode[]): number[] | null {
+  const ids = orderIds.map(Number)
+  if (!ids.length || ids.length > 100 || new Set(ids).size !== ids.length || ids.some(id => !Number.isSafeInteger(id) || id <= 0)) return null
+  const areas = new Set<number>()
+  for (const id of ids) {
+    const order = orders.find(row => row.id === id)
+    if (!order || !['DRAFT', 'ASSIGNED', 'ACCEPTED', 'PROCESSING'].includes(order.status || '')) return null
+    const area = Number(order.area_id ?? nodes.find(node => node.id === order.node_id)?.area_id)
+    if (!Number.isSafeInteger(area) || area <= 0) return null
+    areas.add(area)
+  }
+  return [...areas]
+}
+
 /** Return enabled inspectors authorized for every requested area; unknown areas fail closed. */
 export function eligibleDispatchWorkers<T extends DispatchWorker>(workers: readonly T[], areaIds: readonly unknown[], search = ''): T[] {
   const areas = areaIds.map(Number)

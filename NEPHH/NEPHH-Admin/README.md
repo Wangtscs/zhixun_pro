@@ -66,3 +66,5 @@ node scripts/verify-workflow-ui.mjs
 `node scripts/verify-live-ui.mjs`使用完全隔离的接口样本验证列表/详情自动刷新、编辑保留、断线恢复和采集面板拖拽。仅需UI_BASE；它不代表真实设备接入或真实业务API验收。
 
 `node scripts/verify-dispatch-ui.mjs`复用同样的隔离写入开关与管理员环境变量。它创建11名合法候选及外区/禁用对照账号，通过真实派单界面搜索第11名并派发，再回读确认执行人；finally停用所有测试账号并取消测试工单。
+
+`node scripts/verify-batch-dispatch-ui.mjs`在两个区域验证共同执行人、真实授权变化后的整批事务回滚、409错误反馈保留输入、无共同人选拆批提示；finally停用临时账号并取消测试工单。401按现有行为转登录，草稿恢复留待统一鉴权改造。
