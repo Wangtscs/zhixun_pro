@@ -24,6 +24,15 @@ const notices:Row[]=alarms.slice(0,2).map(a=>({id:a.id,title:a.code+' 节点动�
 const rules:Row[]=areas.flatMap(a=>[{area_id:a.id,metric:'methane',threshold_value:35,duration_seconds:0,severity:'HIGH',enabled:true},{area_id:a.id,metric:'temperature',threshold_value:32,duration_seconds:0,severity:'HIGH',enabled:true},{area_id:a.id,metric:'humidity',threshold_value:80,duration_seconds:0,severity:'MEDIUM',enabled:true}])
 let profile:Row={displayName:'陈默',username:'ZX0001',role:'MANAGER',areaId:3,phone:'13800006721',email:'chenmo@zhixun.cn',preferences:{sound:true,desktop:true,criticalOnly:false,quietStart:'22:00',quietEnd:'07:00'},idleMinutes:30}
 const clones=<T>(value:T):T=>JSON.parse(JSON.stringify(value))
+// Explicit fictional rates, kept separate from the production report renderer.
+const demoWeekly=[
+ {label:'演示W1',planned:42,completed:20},{label:'演示W2',planned:55,completed:44},
+ {label:'演示W3',planned:48,completed:30},{label:'演示W4',planned:72,completed:63},
+ {label:'演示W5',planned:64,completed:51},{label:'演示W6',planned:82,completed:68},
+ {label:'演示W7',planned:77,completed:60},{label:'演示W8',planned:89,completed:74},
+ {label:'演示W9',planned:69,completed:59},{label:'演示W10',planned:74,completed:62},
+ {label:'演示W11',planned:92,completed:80},{label:'演示W12',planned:85,completed:73}
+]
 export async function demoRequest(path:string,method='GET',body?:any):Promise<any>{
  const url=new URL(path,'http://demo'),p=url.pathname
  if(method==='GET'){
@@ -45,7 +54,7 @@ export async function demoRequest(path:string,method='GET',body?:any):Promise<an
  if(p==='/audit')return clones(audits)
  if(p==='/handbooks')return []
  if(p==='/patrol/runs'||p==='/patrol/plans')return []
- if(p==='/statistics')return {orders:['DRAFT','ASSIGNED','PROCESSING','REVIEW'].map(status=>({status,total:orders.filter(o=>o.status===status).length})),alarms:[{severity:'HIGH',total:1},{severity:'MEDIUM',total:2}],overdue:1,alarmRecovery:{total:39,recovered:36},monthlyAlarms:38,averageResponseSeconds:384,overviewAverageResponseSeconds:480,coverage:{checked:121,total:125},repeatNodes:[{code:'TN-A03',total:12},{code:'TN-A02',total:8},{code:'TN-B01',total:5},{code:'TN-C02',total:3}],weekly:[42,55,48,72,64,82,77,89,69,74,92,85]}
+ if(p==='/statistics')return {demo:true,orders:['DRAFT','ASSIGNED','PROCESSING','REVIEW'].map(status=>({status,total:orders.filter(o=>o.status===status).length})),alarms:[{severity:'HIGH',total:1},{severity:'MEDIUM',total:2}],overdue:1,alarmRecovery:{total:39,recovered:36},monthlyAlarms:38,averageResponseSeconds:384,overviewAverageResponseSeconds:480,coverage:{checked:121,total:125},repeatNodes:[{code:'TN-A03',total:12},{code:'TN-A02',total:8},{code:'TN-B01',total:5},{code:'TN-C02',total:3}],weekly:clones(demoWeekly)}
  if(p==='/reports')return clones(url.searchParams.get('type')==='alarms'?alarms:orders)
  }
  if(p==='/orders/batch-assign'){for(const id of body.orderIds)await demoRequest('/orders/'+id+'/assign','POST',body);return null}
