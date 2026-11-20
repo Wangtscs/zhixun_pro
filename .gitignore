@@ -9,6 +9,9 @@ build/
 .idea/
 .nephh-runtime/
 .nephh-integration/
+.local-git-backups/
+.gitnexus/
+build-profile.local.json5
 .data/
 coverage/
 *.log
@@ -32,9 +35,8 @@ local.properties
 *.key
 *.pem
 
-# Existing files need sanitizing before they may enter version control.
-/NEPHH/NEPHH-backend/src/main/resources/application-mysql.yml
-/zhixun-guanlang-harmony/build-profile.json5
+# Design archives are not runtime dependencies.
+/zhixun-guanlang-harmony/design/
 
 # Packaged delivery, duplicate extraction and scratch snapshots
 *.zip

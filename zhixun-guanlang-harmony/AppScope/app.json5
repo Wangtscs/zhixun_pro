@@ -1,0 +1,10 @@
+{
+  "app": {
+    "bundleName": "com.zhixun.guanlang.worker",
+    "vendor": "zhixun",
+    "versionCode": 2060000,
+    "versionName": "2.6.0",
+    "icon": "$media:app_icon",
+    "label": "$string:app_name"
+  }
+}

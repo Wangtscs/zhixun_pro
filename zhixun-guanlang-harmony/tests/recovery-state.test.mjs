@@ -1,0 +1,43 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { stripTypeScriptTypes } from 'node:module';
+import { runInNewContext } from 'node:vm';
+const source = await readFile(new URL('../entry/src/main/ets/services/RecoveryState.ets', import.meta.url), 'utf8');
+const Model = runInNewContext(stripTypeScriptTypes(source.replace(/^export /gm, '')) + '\n;RecoveryState');
+test('recovery rejects unknown ID, enforces countdown, and resets exhausted attempts on resend', () => {
+  const state = new Model();
+  assert.equal(typeof state.send, 'function');
+  assert.equal(state.send('000000', 1000), false);
+  assert.equal(state.error, '工号不存在，请确认后重试');
+  assert.equal(state.send('ZX2026001', 1000), true);
+  assert.equal(state.remaining, 59);
+  assert.equal(state.send('ZX2026001', 2000), false);
+  for (let i = 0; i < 3; i++) assert.equal(state.verify('999999'), false);
+  assert.equal(state.attempts, 0);
+  assert.equal(state.verify('123456'), false);
+  state.tick(60000);
+  assert.equal(state.remaining, 0);
+  assert.equal(state.send('ZX2026001', 60000), true);
+  assert.equal(state.attempts, 3);
+  assert.equal(state.verify('123456'), true);
+});
+test('password completion needs all rules and matching confirmation', () => {
+  const state = new Model();
+  assert.equal(typeof state.complete, 'function');
+  assert.equal(state.complete('Newpass2026', 'Newpass2026'), false);
+  state.send('ZX2026001', 1000); state.verify('123456');
+  assert.equal(state.complete('Tunnel2026', 'Tunnel2026'), false);
+  assert.equal(state.complete('12345678', '12345678'), false);
+  assert.equal(state.complete('Newpass2026', 'Different2026'), false);
+  assert.equal(state.complete('Newpass2026', 'Newpass2026'), true);
+  assert.equal(state.done, true);
+});
+test('OTP native editor accepts repeated digits and full-code paste, filters nondigits and caps six', () => {
+  assert.equal(typeof Model.normalizeCode, 'function');
+  assert.equal(Model.normalizeCode('999999'), '999999');
+  assert.equal(Model.normalizeCode('123456'), '123456');
+  assert.equal(Model.normalizeCode('12 34-56\n7'), '123456');
+  assert.equal(Model.normalizeCode('12345'), '12345');
+  assert.equal(Model.normalizeCode(''), '');
+});

@@ -1,0 +1,868 @@
+{
+  "fileKey": "OoFTKpYDkOjLVy9dZ8qPPi",
+  "objective": "页面与设计图完全一样",
+  "completionProven": false,
+  "states": [
+    {
+      "nodeId": "5:2",
+      "name": "登录设备",
+      "reference": "tmp/figma-references/5-2.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/devices-three-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:3",
+      "name": "其他设备下线",
+      "reference": "tmp/figma-references/5-3.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/devices-revoked-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:4",
+      "name": "用户菜单",
+      "reference": "tmp/figma-references/5-4.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/role-menu-final-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:5",
+      "name": "角色切换",
+      "reference": "tmp/figma-references/5-5.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/role-menu-final-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:6",
+      "name": "只读总览",
+      "reference": "tmp/figma-references/5-6.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/scene-5-6-readonly-overview.jpg",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 335,
+        "height": 752
+      },
+      "evidenceScope": "narrow-viewport-interaction-only"
+    },
+    {
+      "nodeId": "5:7",
+      "name": "只读工单",
+      "reference": "tmp/figma-references/5-7.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/readonly-orders-final-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 918
+      }
+    },
+    {
+      "nodeId": "5:8",
+      "name": "主管报表",
+      "reference": "tmp/figma-references/5-8.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/report-aligned.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 1102
+      }
+    },
+    {
+      "nodeId": "5:9",
+      "name": "主管审计",
+      "reference": "tmp/figma-references/5-9.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/supervisor-audit-aligned.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:10",
+      "name": "登录默认",
+      "reference": "tmp/figma-references/5-10.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/login-design-refined.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:11",
+      "name": "登录错误",
+      "reference": "tmp/figma-references/5-11.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/login-error-final-checked.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:12",
+      "name": "密码显示",
+      "reference": "tmp/figma-references/5-12.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/login-error-final-checked.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:13",
+      "name": "登录加载",
+      "reference": "tmp/figma-references/5-13.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/login-loading-final-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:14",
+      "name": "A区总览",
+      "reference": "tmp/figma-references/5-14.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/kanban-states-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 1166
+      }
+    },
+    {
+      "nodeId": "5:15",
+      "name": "B区告警总览",
+      "reference": "tmp/figma-references/5-15.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/figma-current-preview.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:16",
+      "name": "节点悬浮联动",
+      "reference": "tmp/figma-references/5-16.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/hover-linked-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 1122
+      }
+    },
+    {
+      "nodeId": "5:17",
+      "name": "C区离线总览",
+      "reference": "tmp/figma-references/5-17.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/scene-5-17-c-overview.jpg",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 335,
+        "height": 752
+      },
+      "evidenceScope": "narrow-viewport-interaction-only",
+      "layoutEvidence": "tmp/c-overview-desktop-current.jpg",
+      "layoutEvidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "layoutEvidenceScope": "full-desktop-layout-only; visibly blurred; pixel acceptance pending"
+    },
+    {
+      "nodeId": "5:18",
+      "name": "四态看板及超时",
+      "reference": "tmp/figma-references/5-18.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/overdue-state-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 1166
+      }
+    },
+    {
+      "nodeId": "5:19",
+      "name": "A区节点",
+      "reference": "tmp/figma-references/5-19.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/nodes-precision.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 976
+      }
+    },
+    {
+      "nodeId": "5:20",
+      "name": "B区节点告警",
+      "reference": "tmp/figma-references/5-20.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/node-located-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 918
+      }
+    },
+    {
+      "nodeId": "5:21",
+      "name": "告警节点详情与趋势",
+      "reference": "tmp/figma-references/5-21.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/node-drawer-final.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 976
+      },
+      "layoutEvidence": "tmp/node-detail-spacing-current.jpg",
+      "layoutEvidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "layoutEvidenceScope": "measured desktop geometry only; blurred screenshot; pixel acceptance pending"
+    },
+    {
+      "nodeId": "5:22",
+      "name": "阈值及最近告警",
+      "reference": "tmp/figma-references/5-22.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/scene-5-22-thresholds-recent.jpg",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 335,
+        "height": 752
+      },
+      "evidenceScope": "narrow-viewport-interaction-only"
+    },
+    {
+      "nodeId": "5:23",
+      "name": "C区节点离线",
+      "reference": "tmp/figma-references/5-23.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/c-nodes-audit.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:24",
+      "name": "离线节点详情",
+      "reference": "tmp/figma-references/5-24.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/c-drawer-chart-aligned.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:25",
+      "name": "节点实时搜索",
+      "reference": "tmp/figma-references/5-25.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/node-search-match-audit.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:26",
+      "name": "搜索空状态",
+      "reference": "tmp/figma-references/5-26.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/scene-5-26-empty.jpg",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 335,
+        "height": 752
+      },
+      "evidenceScope": "narrow-viewport-interaction-only"
+    },
+    {
+      "nodeId": "5:27",
+      "name": "加载骨架",
+      "reference": "tmp/figma-references/5-27.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/skeleton-visible-audit.jpg",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 938,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:28",
+      "name": "定位节点高亮",
+      "reference": "tmp/figma-references/5-28.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/node-located-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 918
+      }
+    },
+    {
+      "nodeId": "5:29",
+      "name": "全部工单",
+      "reference": "tmp/figma-references/5-29.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/assignment-toast-final.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 918
+      },
+      "layoutEvidence": "tmp/orders-columns-current.jpg",
+      "layoutEvidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "layoutEvidenceScope": "full desktop layout only; visibly blurred; pixel acceptance pending"
+    },
+    {
+      "nodeId": "5:30",
+      "name": "待接单筛选",
+      "reference": "tmp/figma-references/5-30.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/scene-5-30-pending-orders.jpg",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 335,
+        "height": 752
+      },
+      "evidenceScope": "narrow-viewport-interaction-only"
+    },
+    {
+      "nodeId": "5:31",
+      "name": "批量操作",
+      "reference": "tmp/figma-references/5-31.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/orders-filter-batch-audit.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "nodeId": "5:32",
+      "name": "双人推荐及已选",
+      "reference": "tmp/figma-references/5-32.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/batch-drawer-font-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "nodeId": "5:33",
+      "name": "派单优先级期限备注",
+      "reference": "tmp/figma-references/5-33.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/dispatch-final.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 918
+      }
+    },
+    {
+      "nodeId": "5:34",
+      "name": "派单成功",
+      "reference": "tmp/figma-references/5-34.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/assignment-toast-final.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 918
+      }
+    },
+    {
+      "nodeId": "5:35",
+      "name": "工单时间线",
+      "reference": "tmp/figma-references/5-35.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/timeline-aligned.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 1180
+      },
+      "layoutEvidence": "tmp/order-timeline-step-current.jpg",
+      "layoutEvidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "layoutEvidenceScope": "full desktop layout only; visibly blurred; pixel acceptance pending"
+    },
+    {
+      "nodeId": "5:36",
+      "name": "审计日志",
+      "reference": "tmp/figma-references/5-36.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/supervisor-audit-aligned.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:37",
+      "name": "审计变更详情",
+      "reference": "tmp/figma-references/5-37.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/audit-detail-final-audit.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "layoutEvidence": "tmp/audit-detail-spacing-current.jpg",
+      "layoutEvidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "layoutEvidenceScope": "measured desktop geometry only; blurred screenshot; pixel acceptance pending"
+    },
+    {
+      "nodeId": "5:38",
+      "name": "个人资料表单一",
+      "reference": "tmp/figma-references/5-38.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/basic-profile-final-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:39",
+      "name": "个人资料表单二",
+      "reference": "tmp/figma-references/5-39.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/basic-profile-final-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:40",
+      "name": "安全设置",
+      "reference": "tmp/figma-references/5-40.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/password-final-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:41",
+      "name": "修改密码",
+      "reference": "tmp/figma-references/5-41.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/password-final-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "nodeId": "5:42",
+      "name": "通知偏好",
+      "reference": "tmp/figma-references/5-42.png",
+      "referenceViewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidence": "tmp/preferences-final-verified.png",
+      "visualAcceptance": "pending",
+      "note": "证据仅证明曾操作或渲染相应组件；不能代替最新字体及样式下的逐状态完整对照。",
+      "referenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "evidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "layoutEvidence": "tmp/preferences-policy-desktop-current.jpg",
+      "layoutEvidenceImageSize": {
+        "width": 1440,
+        "height": 900
+      },
+      "layoutEvidenceScope": "layout and copy only; visibly blurred; pixel acceptance pending"
+    }
+  ]
+}

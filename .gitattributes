@@ -1,0 +1,17 @@
+* text=auto
+*.md text eol=lf
+*.java text eol=lf
+*.sql text eol=lf
+*.vue text eol=lf
+*.ts text eol=lf
+*.ets text eol=lf
+*.mjs text eol=lf
+*.cjs text eol=lf
+*.json text eol=lf
+*.json5 text eol=lf
+*.yml text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.ps1 text eol=lf
+*.cmd text eol=crlf
+*.bat text eol=crlf

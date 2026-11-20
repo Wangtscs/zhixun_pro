@@ -1,0 +1,12 @@
+spring:
+  config:
+    import: classpath:application-mysql.yml
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+server:
+  error:
+    include-message: never
+    include-stacktrace: never

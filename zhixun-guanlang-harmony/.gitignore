@@ -1,0 +1,16 @@
+node_modules/
+oh_modules/
+.hvigor/
+.idea/
+build/
+local.properties
+build-profile.local.json5
+*.hap
+*.hsp
+*.app
+*.p12
+*.p7b
+*.jks
+.npm-cache/
+design/reference-react/dist/
+design/reference-react/web/

@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="366" height="530" viewBox="0 0 366 530">          <path
+            d="M34 117 226 42 343 111 146 192Z"
+            fill="#202832"
+            stroke="#3a4652"
+          />
+          <path
+            d="M34 117 146 192v273L34 370Z"
+            fill="#171d24"
+            stroke="#35414d"
+          />
+          <path
+            d="m146 192 197-81v249l-197 105Z"
+            fill="#1c232b"
+            stroke="#3b4753"
+          />
+          <path
+            d="m34 370 112 95 197-105-114-74Z"
+            fill="#252e37"
+            stroke="#46535f"
+          />
+          <path
+            d="M59 132 224 68l93 54-171 70Z"
+            fill="#151a20"
+            stroke="#2c3742"
+          />
+          <path
+            d="M59 132 146 192v236l-87-72Z"
+            fill="#13181e"
+            stroke="#303b46"
+          />
+          <path
+            d="m146 192 171-70v218l-171 88Z"
+            fill="#1a2027"
+            stroke="#303b46"
+          />
+
+          <path
+            d="M76 167 145 205l150-61"
+            fill="none"
+            stroke="#5b6670"
+            stroke-width="10"
+          />
+          <path
+            d="M76 167 145 205l150-61"
+            fill="none"
+            stroke="#35e0d0"
+            stroke-opacity=".25"
+            stroke-width="2"
+          />
+          <path
+            d="M80 200 145 235l148-59"
+            fill="none"
+            stroke="#414d58"
+            stroke-width="7"
+          />
+          <path
+            d="M80 200 145 235l148-59"
+            fill="none"
+            stroke="#70808d"
+            stroke-width="2"
+          />
+          <path
+            d="M80 265 145 300l148-63"
+            fill="none"
+            stroke="#4d5964"
+            stroke-width="7"
+          />
+          <path
+            d="M80 265 145 300l148-63"
+            fill="none"
+            stroke="#ffb020"
+            stroke-opacity=".35"
+            stroke-width="2"
+          />
+          <path
+            d="M80 297 145 331l148-62"
+            fill="none"
+            stroke="#3f4a54"
+            stroke-width="6"
+          />
+
+          <path
+            d="M89 187v-45M115 202v-47M257 175v-45M286 163v-45M88 281v-56M116 296v-57M255 253v-54M285 241v-54"
+            stroke="#596571"
+            stroke-width="3"
+          />
+          <path
+            d="M111 105 229 59l61 35"
+            fill="none"
+            stroke="#55616c"
+            stroke-width="14"
+            stroke-linecap="round"
+          />
+          <path
+            d="M111 105 229 59l61 35"
+            fill="none"
+            stroke="#77838d"
+            stroke-width="5"
+            stroke-linecap="round"
+          />
+          <path d="M159 88v38M234 65v31" stroke="#4a5661" stroke-width="4" />
+
+          <path
+            d="M55 358 148 431l165-87"
+            fill="none"
+            stroke="#333e49"
+            stroke-width="2"
+            stroke-dasharray="5 6"
+          />
+          <path
+            d="M88 381 151 423M129 357l63 43M176 333l61 42M224 311l60 39"
+            stroke="#2d3741"
+          />
+          <path d="M89 408 267 320M63 385l176-88" stroke="#2d3741" />
+
+</svg>

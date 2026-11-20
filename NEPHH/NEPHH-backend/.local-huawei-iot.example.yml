@@ -1,0 +1,26 @@
+# Copy to .local-huawei-iot.yml in the backend working directory.
+# Disabled until the endpoint, credentials and actual product-model mappings are configured.
+app:
+  huawei-iot:
+    enabled: false
+    endpoint: ${HUAWEI_IOT_ENDPOINT:}
+    project-id: ${HUAWEI_IOT_PROJECT_ID:}
+    instance-id: ${HUAWEI_IOT_INSTANCE_ID:}
+    auth-token: ${HUAWEI_IOT_AUTH_TOKEN:}
+    mappings:
+      methane:
+        service-id: environment
+        property-name: methane
+        unit: "%LEL"
+      temperature:
+        service-id: environment
+        property-name: temperature
+        unit: "°C"
+      humidity:
+        service-id: environment
+        property-name: humidity
+        unit: "%RH"
+      infrared:
+        service-id: environment
+        property-name: infrared
+        unit: "°C"
