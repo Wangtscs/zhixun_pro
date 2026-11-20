@@ -17,7 +17,7 @@ import { useOverlayScrollLock } from '../composables/useOverlayScrollLock'
 import { shouldAlertNotification } from '../notification-policy'
 import { dispatchAreaIds, eligibleDispatchWorkers, validDispatchCrew } from '../dispatch-policy'
 import { clearDispatchDraft, restoreDispatchDraft, saveDispatchDraft } from '../dispatch-draft'
-import { allowedOrderActions, createWriteWorkflow, provesOrderWrite, restoreDraftRecords, topEscapeLayer, savePendingOrderWrite, restorePendingOrderWrite, clearPendingOrderWrite } from '../write-workflow'
+import { allowedOrderActions, createWriteWorkflow, provesOrderWrite, restoreDraftRecords, topEscapeLayer, savePendingOrderWrite, restorePendingOrderWrite, clearPendingOrderWrite, orderDeadline } from '../write-workflow'
 import './workspace.css'
 const router = useRouter(), route=useRoute()
 const tab=ref(route.path.slice(1)||'overview'), identity=ref<Row>({}), corridors=ref<Row[]>([]), areas=ref<Row[]>([]), nodes=ref<Row[]>([]), orders=ref<Row[]>([]), alarms=ref<Row[]>([]), users=ref<Row[]>([]), notifications=ref<Row[]>([]), books=ref<Row[]>([]), sections=ref<Row[]>([]), plans=ref<Row[]>([]), runs=ref<Row[]>([]), audits=ref<Row[]>([]), rules=ref<Row[]>([]), stats=ref<Row>({})
@@ -146,8 +146,8 @@ async function save(){
  case 'editNode':path=`/nodes/${f.id}`;method='PUT';body.metrics=f.metricList.join(',');break
  case 'rule':path='/rules';body.areaId=Number(f.areaId);body.threshold=Number(f.threshold);body.durationSeconds=Number(f.durationSeconds);break
  case 'order':path='/orders';body.nodeId=Number(f.nodeId);break
- case 'schedule':path=`/orders/${f.id}/schedule`;body.dueAt=f.dueAt?new Date(f.dueAt).toISOString():null;break
- case 'assign':body.participantIds=f.participantIds||[Number(f.assigneeId)];if(!validDispatchCrew(users.value,dispatchAreaIds(f.orderIds||[f.id],operation.before,nodes.value)||[],body.participantIds))throw new Error('请选择对全部所选工单区域都有授权的1至2位巡检员；无共同人选时请按区域拆批');body.note=f.note||'请按工单要求处理并提交现场记录';body.assigneeId=Number(body.participantIds[0]);path=f.orderIds?.length?'/orders/batch-assign':`/orders/${f.id}/assign`;body.dueAt=f.dueAt?new Date(f.dueAt).toISOString():null;break
+ case 'schedule':path=`/orders/${f.id}/schedule`;body.dueAt=orderDeadline(f.dueAt);break
+ case 'assign':body.participantIds=f.participantIds||[Number(f.assigneeId)];if(!validDispatchCrew(users.value,dispatchAreaIds(f.orderIds||[f.id],operation.before,nodes.value)||[],body.participantIds))throw new Error('请选择对全部所选工单区域都有授权的1至2位巡检员；无共同人选时请按区域拆批');body.note=f.note||'请按工单要求处理并提交现场记录';body.assigneeId=Number(body.participantIds[0]);path=f.orderIds?.length?'/orders/batch-assign':`/orders/${f.id}/assign`;body.dueAt=orderDeadline(f.dueAt);break
  case 'ack':path=`/alarms/${f.id}/acknowledge`;break
  case 'action':path=`/orders/${f.id}/action`;break
  case 'handbook':path=f.id?`/handbooks/${f.id}`:'/handbooks';method=f.id?'PUT':'POST';break
@@ -162,7 +162,7 @@ async function save(){
  else if(outcome.kind==='rejected')error.value=outcome.error instanceof Error?outcome.error.message:'操作被拒绝，输入已保留'
  }finally{busy.value=false}
 }
-function confirmFormWrite(operation:Row){clearPendingOrderWrite(draftStorage());if(operation.kind==='assign'){clearDispatchDraft(draftStorage());draftAvailable.value=false}form.value=null;dispatchRecords.value=null;dispatchOwner.value=0;selectedIds.value=[];pendingWrite.value=null}
+function confirmFormWrite(operation:Row){clearPendingOrderWrite(draftStorage(),operation.actorId);if(operation.kind==='assign'){clearDispatchDraft(draftStorage());draftAvailable.value=false}form.value=null;dispatchRecords.value=null;dispatchOwner.value=0;selectedIds.value=[];pendingWrite.value=null}
 async function refreshAfterWrite(operation:Row){await load();if(operation.orderId&&selectedOrder.value?.id===operation.orderId)selectedOrder.value=await request(`/orders/${operation.orderId}`);if(operation.runId&&selectedRun.value?.id===operation.runId)selectedRun.value=await request(`/patrol/runs/${operation.runId}`);workbenchRefreshKey.value++}
 async function checkPendingWrite(){
  const operation=pendingWrite.value;if(!operation||busy.value)return

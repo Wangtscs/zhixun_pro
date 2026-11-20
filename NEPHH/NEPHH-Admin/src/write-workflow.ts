@@ -2,28 +2,51 @@ type Row = Record<string, any>
 type Storage = { getItem(key: string): string | null; setItem(key: string, value: string): void; removeItem(key: string): void }
 export const pendingWriteKey = 'nephh-pending-order-write'
 
-/** Persist evidence and editable order fields only. Never persist a session, credentials or server records. */
+export function orderDeadline(value: unknown): string | null {
+  if (value === null || value === undefined || value === '') return null
+  const time = new Date(String(value)).getTime()
+  if (!Number.isFinite(time)) throw new Error('截止时间无效')
+  return new Date(Math.floor(time / 1000) * 1000).toISOString()
+}
+function actorKey(actorId: number): string { return `${pendingWriteKey}:${actorId}` }
+
+/** Persist evidence and editable order fields only, separately for every authenticated actor. */
 export function savePendingOrderWrite(storage: Storage | null, operation: Row): boolean {
   if (!storage) return false
   const kind = operation.kind, body = operation.body || {}
-  if (!['assign', 'action', 'schedule'].includes(kind) || !Number.isSafeInteger(operation.actorId) || !Array.isArray(operation.before)) return false
+  if (!['assign', 'action', 'schedule'].includes(kind) || !Number.isSafeInteger(operation.actorId) || operation.actorId <= 0 || !Array.isArray(operation.before)) return false
   const fields = kind === 'assign' ? ['participantIds', 'assigneeId', 'priority', 'dueAt', 'note'] : kind === 'action' ? ['action', 'note', 'result', 'readings'] : ['priority', 'dueAt', 'note']
   const safeBody = Object.fromEntries(fields.filter(key => body[key] !== undefined).map(key => [key, body[key]]))
   const before = operation.before.map((row: Row) => ({ id: row.id, events: [{ id: Math.max(0, ...(row.events || []).map((event: Row) => Number(event.id) || 0)) }] }))
-  try { storage.setItem(pendingWriteKey, JSON.stringify({ version: 1, kind, actorId: operation.actorId, body: safeBody, before })); return true } catch { return false }
+  try { storage.setItem(actorKey(operation.actorId), JSON.stringify({ version: 1, kind, actorId: operation.actorId, body: safeBody, before })); return true } catch { return false }
 }
-export function clearPendingOrderWrite(storage: Storage | null): void { try { storage?.removeItem(pendingWriteKey) } catch {} }
-export function restorePendingOrderWrite(storage: Storage | null, actorId: number): Row | null {
+export function clearPendingOrderWrite(storage: Storage | null, actorId: number): void {
   try {
-    const raw = storage?.getItem(pendingWriteKey); if (!raw) return null
-    if (raw.length > 65536) { clearPendingOrderWrite(storage); return null }
+    storage?.removeItem(actorKey(actorId))
+    const legacy = storage?.getItem(pendingWriteKey)
+    if (legacy && JSON.parse(legacy).actorId === actorId) storage?.removeItem(pendingWriteKey)
+  } catch {}
+}
+export function restorePendingOrderWrite(storage: Storage | null, actorId: number): Row | null {
+  if (!Number.isSafeInteger(actorId) || actorId <= 0) return null
+  let key = actorKey(actorId)
+  try {
+    let raw = storage?.getItem(key)
+    if (!raw) {
+      const legacy = storage?.getItem(pendingWriteKey)
+      // Another account's unresolved write must survive both reading and writing this account's key.
+      if (!legacy || legacy.length > 65536 || JSON.parse(legacy).actorId !== actorId) return null
+      raw = legacy; key = pendingWriteKey
+    }
+    if (raw.length > 65536) { storage?.removeItem(key); return null }
     const value = JSON.parse(raw)
-    if (value.version !== 1 || value.actorId !== actorId || !['assign', 'action', 'schedule'].includes(value.kind) || !value.body || !Array.isArray(value.before) || !value.before.length || value.before.length > 100 || value.before.some((row: Row) => !Number.isSafeInteger(row.id) || row.id <= 0 || !Array.isArray(row.events))) { clearPendingOrderWrite(storage); return null }
-    // Reuse the allowlist even when storage has been modified outside the application.
+    if (value.version !== 1 || value.actorId !== actorId || !['assign', 'action', 'schedule'].includes(value.kind) || !value.body || !Array.isArray(value.before) || !value.before.length || value.before.length > 100 || value.before.some((row: Row) => !Number.isSafeInteger(row.id) || row.id <= 0 || !Array.isArray(row.events))) { storage?.removeItem(key); return null }
     const scratch = new Map<string, string>()
-    savePendingOrderWrite({ getItem: key => scratch.get(key) || null, setItem: (key, text) => { scratch.set(key, text) }, removeItem: key => { scratch.delete(key) } }, value)
-    return JSON.parse(scratch.get(pendingWriteKey)!)
-  } catch { clearPendingOrderWrite(storage); return null }
+    savePendingOrderWrite({ getItem: name => scratch.get(name) || null, setItem: (name, text) => { scratch.set(name, text) }, removeItem: name => { scratch.delete(name) } }, value)
+    const safe = JSON.parse(scratch.get(actorKey(actorId))!)
+    if (key === pendingWriteKey && savePendingOrderWrite(storage, safe)) storage?.removeItem(pendingWriteKey)
+    return safe
+  } catch { try { if (key !== pendingWriteKey) storage?.removeItem(key) } catch {} return null }
 }
 type Outcome = { kind: 'blocked' | 'committed' | 'unknown' | 'rejected' | 'abandoned'; error?: unknown; refreshError?: unknown }
 interface CommitWork { commit: () => void; refresh: () => Promise<unknown>; current?: () => boolean }
@@ -102,7 +125,9 @@ export function provesOrderWrite(kind: string, body: Row, before: readonly Row[]
     if (kind === 'action' && body.action === 'submit' && (current.result_text !== String(body.result || '').trim() || current.readings !== String(body.readings || ''))) return false
     if (kind === 'assign' || kind === 'schedule') {
       if (current.priority !== body.priority) return false
-      if ((current.due_at ? Date.parse(current.due_at) : null) !== (body.dueAt ? Date.parse(body.dueAt) : null)) return false
+      const sent = body.dueAt ? Date.parse(body.dueAt) : null, received = current.due_at ? Date.parse(current.due_at) : null
+      // Old millisecond requests may have been rounded or truncated by SQL; do not guess their outcome.
+      if ((sent !== null && (!Number.isFinite(sent) || sent % 1000 !== 0)) || received !== sent) return false
     }
     return true
   })

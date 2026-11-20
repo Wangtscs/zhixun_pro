@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { allowedOrderActions, createWriteWorkflow, provesOrderWrite, restoreDraftRecords, topEscapeLayer, pendingWriteKey, savePendingOrderWrite, restorePendingOrderWrite, clearPendingOrderWrite } from '../src/write-workflow.ts'
+import { allowedOrderActions, createWriteWorkflow, provesOrderWrite, restoreDraftRecords, topEscapeLayer, pendingWriteKey, savePendingOrderWrite, restorePendingOrderWrite, clearPendingOrderWrite, orderDeadline } from '../src/write-workflow.ts'
 
 test('confirmed write closes before a failed refresh and cannot be repeated by the same in-flight click', async () => {
   const flow = createWriteWorkflow(), events = []; let finish
@@ -99,13 +99,49 @@ test('unknown order evidence survives reload with only allowed fields and cannot
   const values = new Map(), storage = { getItem: key => values.get(key) || null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) }
   const operation = { kind: 'action', actorId: 2, session: 'never-store', body: { action: 'submit', result: 'done', readings: '0', note: 'review', password: 'never-store' }, before: [{ id: 701, title: 'server-record', events: [{ id: 9, note: 'server-record' }] }] }
   assert.equal(savePendingOrderWrite(storage, operation), true)
-  assert.equal(values.get(pendingWriteKey).includes('never-store'), false)
-  assert.equal(values.get(pendingWriteKey).includes('server-record'), false)
+  assert.equal(values.get(pendingWriteKey+':2').includes('never-store'), false)
+  assert.equal(values.get(pendingWriteKey+':2').includes('server-record'), false)
   const restored = restorePendingOrderWrite(storage, 2)
   assert.equal(restored.before[0].id, 701); assert.equal(restored.before[0].events[0].id, 9)
   const flow = createWriteWorkflow(); flow.resumeUnknown()
   assert.equal((await flow.submit({ write: async () => assert.fail('no retry'), commit: () => {}, refresh: async () => {} })).kind, 'blocked')
-  assert.equal(restorePendingOrderWrite(storage, 3), null); assert.equal(values.has(pendingWriteKey), false)
-  storage.setItem(pendingWriteKey, '{invalid'); assert.equal(restorePendingOrderWrite(storage, 2), null)
-  savePendingOrderWrite(storage, operation); clearPendingOrderWrite(storage); assert.equal(values.size, 0)
+  assert.equal(restorePendingOrderWrite(storage, 3), null); assert.equal(values.has(pendingWriteKey+':2'), true)
+  storage.setItem(pendingWriteKey+':2', '{invalid'); assert.equal(restorePendingOrderWrite(storage, 2), null)
+  savePendingOrderWrite(storage, operation); clearPendingOrderWrite(storage, 2); assert.equal(values.size, 0)
+})
+
+
+test('A unknown lock survives B login, B unknown write and B clear, then A login', () => {
+  const values = new Map(), storage = { getItem: key => values.get(key) || null, setItem: (key, value) => values.set(key, value), removeItem: key => values.delete(key) }
+  const a = { kind: 'action', actorId: 1, body: { action: 'accept', note: 'A' }, before: [{ id: 700, events: [] }] }
+  const b = { kind: 'action', actorId: 2, body: { action: 'start', note: 'B' }, before: [{ id: 701, events: [] }] }
+  savePendingOrderWrite(storage, a)
+  assert.equal(restorePendingOrderWrite(storage, 2), null)
+  assert.equal(restorePendingOrderWrite(storage, 1).body.note, 'A')
+  savePendingOrderWrite(storage, b)
+  assert.equal(restorePendingOrderWrite(storage, 1).before[0].id, 700)
+  assert.equal(restorePendingOrderWrite(storage, 2).before[0].id, 701)
+  clearPendingOrderWrite(storage, 2)
+  assert.equal(restorePendingOrderWrite(storage, 1).body.note, 'A')
+  // Legacy single-key locks are migrated only by their own actor; B writes cannot overwrite A.
+  storage.removeItem(pendingWriteKey+':1'); storage.setItem(pendingWriteKey, JSON.stringify({ ...a, version: 1 }))
+  assert.equal(restorePendingOrderWrite(storage, 2), null)
+  savePendingOrderWrite(storage, b); clearPendingOrderWrite(storage, 2)
+  assert.equal(values.has(pendingWriteKey), true)
+  assert.equal(restorePendingOrderWrite(storage, 1).body.note, 'A')
+  assert.equal(values.has(pendingWriteKey), false); assert.equal(values.has(pendingWriteKey+':1'), true)
+})
+
+test('outgoing millisecond deadlines normalize to SQL seconds and exact second readback confirms', () => {
+  const dueAt = orderDeadline('2026-11-20T12:30:00.987Z')
+  assert.equal(dueAt, '2026-11-20T12:30:00.000Z')
+  assert.equal(orderDeadline(null), null); assert.throws(() => orderDeadline('invalid'))
+  for (const kind of ['schedule', 'assign']) {
+    const body = { dueAt, priority: 'HIGH', note: 'seconds', assigneeId: 2, participantIds: [2] }
+    const before = [{ id: 1, events: [] }]
+    const after = [{ id: 1, status: 'ASSIGNED', assignee_id: 2, participant_ids: [2], priority: 'HIGH', due_at: '2026-11-20T12:30:00Z', events: [{ id: 1, actor_id: 3, action: kind === 'assign' ? 'ASSIGN' : 'UPDATE_SCHEDULE', note: 'seconds' }] }]
+    assert.equal(provesOrderWrite(kind, body, before, after, 3), true)
+    assert.equal(provesOrderWrite(kind, { ...body, dueAt: '2026-11-20T12:30:00.987Z' }, before, after, 3), false, 'un-normalized legacy deadlines remain locked')
+    assert.equal(provesOrderWrite(kind, body, before, [{ ...after[0], due_at: '2026-11-20T12:30:01Z' }], 3), false)
+  }
 })
