@@ -1,15 +1,26 @@
 import { tokenKey, clearSession } from './auth'
 export type Row = Record<string, any>
+/** Preserves existing Error messages while exposing HTTP/business status to callers. */
+export class BusinessRequestError extends Error {
+ readonly status: number
+ readonly code: unknown
+ constructor(message: string, status: number, code?: unknown) {
+  super(message)
+  this.name = 'BusinessRequestError'
+  this.status = status
+  this.code = code
+ }
+}
 export async function request<T = any>(path: string, method = 'GET', body?: unknown): Promise<T> {
  if(sessionStorage.getItem('nephh-demo'))return (await import('./demo')).demoRequest(path,method,body) as Promise<T>
  const headers: Record<string, string> = { Authorization: `Bearer ${sessionStorage.getItem(tokenKey) || ''}` }
  if (!(body instanceof FormData)) headers['Content-Type'] = 'application/json'
  const response = await fetch('/api/business' + path, { method, headers, cache: 'no-store', signal: AbortSignal.timeout(10000), ...(body === undefined ? {} : { body: body instanceof FormData ? body : JSON.stringify(body) }) })
  let result: any
- try { result = await response.json() } catch { throw new Error('服务返回异常，请检查后端连接') }
+ try { result = await response.json() } catch { throw new BusinessRequestError('服务返回异常，请检查后端连接',response.status) }
  if (!response.ok || result.code !== 0) {
   if (response.status === 401) { clearSession(); window.location.assign('/login') }
-  throw new Error(result.message || '请求失败')
+  throw new BusinessRequestError(result.message || '请求失败',response.status,result.code)
  }
  return result.data as T
 }

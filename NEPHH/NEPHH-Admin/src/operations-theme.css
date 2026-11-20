@@ -1,4 +1,7 @@
 /* T07: Scoped operations UI tokens. Import after the existing workspace and theme styles. */
+.design-app .overview-modes { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.design-app .overview-modes button[aria-pressed="true"] { background: var(--ops-accent-bg); color: var(--ops-accent); border-color: var(--ops-accent); }
+.design-app .data-quality-note { font-size: 12px; line-height: 1.7; color: var(--ops-muted); margin: 0 0 16px; }
 .design-app {
   --ops-space-1: 8px;
   --ops-space-2: 12px;

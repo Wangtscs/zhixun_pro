@@ -27,6 +27,7 @@ const clones=<T>(value:T):T=>JSON.parse(JSON.stringify(value))
 export async function demoRequest(path:string,method='GET',body?:any):Promise<any>{
  const url=new URL(path,'http://demo'),p=url.pathname
  if(method==='GET'){
+ if(p==='/workbench')return clones(demoWorkbench(url))
  if(p==='/identity')return clones(identity)
  if(p==='/profile')return clones(profile)
  if(p==='/sessions')return [{id:'current',browser:'Chrome',platform:'Windows',location:'上海市',ip:'127.0.0.1',lastSeen:now(),current:true},{id:'phone',browser:'Safari',platform:'iPhone 15',location:'上海市',ip:'移动网络',lastSeen:new Date(Date.now()-7200000).toISOString(),current:false},{id:'edge',browser:'Edge',platform:'Windows',location:'上海市',ip:'172.18.2.44',lastSeen:new Date(Date.now()-86400000).toISOString(),current:false}].filter(s=>!revoked.includes(s.id))
@@ -58,5 +59,46 @@ export async function demoRequest(path:string,method='GET',body?:any):Promise<an
  if(p.startsWith('/notifications/')){const n=notices.find(n=>n.id===Number(p.split('/')[2]));if(n)n.is_read=true;return null}
  if(p.startsWith('/alarms/')){const a=alarms.find(a=>a.id===Number(p.split('/')[2]));if(a)a.status='ACKNOWLEDGED';return null}
  throw new Error('此操作需登录账号；预览模式不能修改业务数据库')
+}
+// The workbench reads the same fictional mutable orders while preserving every legacy path.
+function demoWorkbench(url:URL):Row {
+ const fail=(message:string,status:number):never=>{throw Object.assign(new Error(message),{status})}
+ const integer=(name:string,fallback:number,min:number,max:number):number=>{
+  const raw=url.searchParams.get(name)
+  if(raw===null)return fallback
+  if(!/^\d+$/.test(raw))return fail('待办分页或区域参数无效',400)
+  const value=Number(raw)
+  if(!Number.isSafeInteger(value)||value<min||value>max)return fail('待办分页或区域参数无效',400)
+  return value
+ }
+ const personal=identity.role==='INSPECTOR'
+ const allowed=personal?['assigned','processing','overdue','patrol']:['urgentAlarms','unassigned','review','overdue','patrol']
+ const key=url.searchParams.get('queue')||(personal?'assigned':'unassigned')
+ if(!['urgentAlarms','unassigned','review','overdue','patrol','assigned','processing'].includes(key))fail('待办队列不存在',400)
+ if(!allowed.includes(key))fail('当前演示角色不能访问该队列',403)
+ const limit=integer('limit',20,1,100),offset=integer('offset',0,0,Number.MAX_SAFE_INTEGER)
+ const areaId=url.searchParams.has('areaId')?integer('areaId',0,1,Number.MAX_SAFE_INTEGER):null
+ const authorized=identity.role==='ADMIN'?areas.map(area=>area.id):identity.areas.map(area=>area.area_id)
+ if(areaId!==null&&!authorized.includes(areaId))fail('当前演示账号未授权该区域',403)
+ const areaIds=areaId===null?authorized:[areaId]
+ const visibleOrders=orders.map((order):Row=>({...order,area_id:nodes.find(node=>node.id===order.node_id)?.area_id}))
+  .filter(order=>areaIds.includes(order.area_id)&&(!personal||order.assignee_id===identity.id||order.participant_ids?.includes(identity.id)))
+ const serverTime=now(),time=Date.parse(serverTime)
+ const overdue=(order:Row)=>!['COMPLETED','CANCELLED'].includes(order.status)&&order.due_at&&Date.parse(order.due_at)<time
+ const orderSort=(a:Row,b:Row)=>{
+  const ad=a.due_at?Date.parse(a.due_at):Infinity,bd=b.due_at?Date.parse(b.due_at):Infinity
+  return ad-bd||Number(a.id)-Number(b.id)
+ }
+ const queueItems=(queue:string):Row[]=>{
+  if(queue==='urgentAlarms')return alarms.filter(alarm=>!alarm.eventOnly&&alarm.severity==='HIGH'&&!alarm.recovered_at)
+   .map((alarm):Row=>({...alarm,area_id:nodes.find(node=>node.id===alarm.node_id)?.area_id,location:nodes.find(node=>node.id===alarm.node_id)?.location}))
+   .filter(alarm=>areaIds.includes(alarm.area_id)).sort((a,b)=>Date.parse(a.triggered_at)-Date.parse(b.triggered_at)||a.id-b.id)
+  // Legacy demonstration has no patrol runs; do not fabricate unseen business records.
+  if(queue==='patrol')return []
+  return visibleOrders.filter(order=>queue==='overdue'?overdue(order):queue==='processing'?['ACCEPTED','PROCESSING'].includes(order.status):order.status===({unassigned:'DRAFT',review:'REVIEW',assigned:'ASSIGNED'} as Row)[queue]).sort(orderSort)
+ }
+ const counts=Object.fromEntries(allowed.map(queue=>[queue,queueItems(queue).length]))
+ const all=queueItems(key),items=all.slice(offset,offset+limit)
+ return {scope:{role:identity.role,areaId,areaIds,personal},serverTime,counts,queue:{key,total:all.length,items,hasMore:offset+items.length<all.length,limit,offset}}
 }
 const revoked:string[]=[]
