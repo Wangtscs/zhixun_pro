@@ -27,3 +27,40 @@ Vue 3、TypeScript、Vite。依据 Figma 文件 OoFTKpYDkOjLVy9dZ8qPPi 的41个�
 npm run build 同时执行TypeScript检查和生产构建。后端测试见后端README。
 
 还原记录见 ../docs/figma-redesign-progress.md。原始Figma为整页图片，缺少字体及组件属性，因此以1440×900的布局、颜色、尺寸和状态对照为依据；参考图片不作为运行页面背景。真实数据、权限、数量与时间以接口为准。
+
+## 当前浏览器验证脚本
+
+使用满足锁文件全部工具要求的 Node.js 版本；本轮验证使用24.22.3。先执行 `npm ci`、`npm run build`，再启动专用Vite端口：
+
+```powershell
+$env:BACKEND_URL='http://127.0.0.1:18081'
+npm run dev -- --host 127.0.0.1 --port 5174 --strictPort
+```
+
+另开终端运行脚本。所有脚本支持 `--help`，浏览器默认可见Edge；可通过 `BROWSER_CHANNEL` 指定已安装的Playwright浏览器通道，通过 `UI_ARTIFACT_DIR` 指定截图输出目录。
+
+纯演示冒烟不需要后台和账号，脚本拦截业务API与真实硬件访问：
+
+```powershell
+$env:UI_BASE='http://127.0.0.1:5174'
+node smoke.mjs
+```
+
+真实接口页面和工单流程必须使用独立local/H2测试服务。仅当后端显式开启 `app.verification-mode=true`、实际启用local且使用H2时，健康接口才返回 `data.isolatedVerification=true`。脚本同时检查API地址和Vite代理对应的健康接口，不接受未配置标记的服务。仅允许专用loopback端口，不接受8080、5173或远程主机。
+
+```powershell
+$env:UI_BASE='http://127.0.0.1:5174'
+$env:API_BASE='http://127.0.0.1:18081/api'
+$env:ADMIN_USERNAME='<隔离环境管理员>'
+$env:ADMIN_PASSWORD='<隔离环境密码>'
+node scripts/verify-ui.mjs
+
+$env:ALLOW_ISOLATED_WRITES='1'
+node scripts/verify-workflow-ui.mjs
+```
+
+`verify-ui.mjs`验证真实登录、11个页面、节点详情及窄窗口截图；除登录会话外，不写业务数据。`verify-workflow-ui.mjs`创建唯一测试账号和工单，通过真实界面派发、接单、开始、上传图片、提交结果、管理复核，再由巡检员刷新核对；无论成功失败，均尝试关闭未结束测试工单并停用账号。测试记录只允许留在专用隔离库。不要将真实密码写入脚本或文档。
+
+登录页现在隐藏硬件面板，浮层层级低于表单和抽屉。业务页展开的面板仍可能覆盖主内容，因此登录和刷新后的脚本会执行用户可操作的“收起”再继续业务流程，不使用强制点击、脚本隐藏或CSS绕过。独立调试入口和业务页覆盖的完整改造属于T14；本轮仅修复回归所需前置问题。
+
+`node scripts/verify-live-ui.mjs`使用完全隔离的接口样本验证列表/详情自动刷新、编辑保留、断线恢复和采集面板拖拽。仅需UI_BASE；它不代表真实设备接入或真实业务API验收。

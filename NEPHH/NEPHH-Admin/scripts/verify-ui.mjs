@@ -1,25 +1,40 @@
-import { chromium } from 'playwright';
-const browser=await chromium.launch({channel:'msedge',headless:true});
-const page=await browser.newPage({viewport:{width:1440,height:960}});
-const errors=[];page.on('pageerror',e=>errors.push(e.message));
-try{
- await page.goto('http://127.0.0.1:5174');
- await page.getByPlaceholder('请输入用户名').fill('admin');
- await page.getByPlaceholder('请输入登录密码').fill('123456789012');
- await page.getByRole('button',{name:'登 录',exact:true}).click();
- await page.getByRole('heading',{name:'运行总览',exact:true}).waitFor();
- await page.locator('.work-map-node').first().waitFor();
- await page.screenshot({path:'../tmp/pdfs/workspace-desktop.png',fullPage:true});
- for(const name of ['节点与监测','告警中心','工单管理','巡检计划','处置手册','消息通知','统计报表','用户权限','操作审计']){
-  await page.locator('.work-sidebar').getByRole('button',{name,exact:false}).click();
-  await page.getByRole('heading',{name,exact:true,level:1}).waitFor();
- }
- await page.locator('.work-sidebar').getByRole('button',{name:'节点与监测',exact:true}).click();
- await page.getByRole('button',{name:'历史曲线',exact:true}).first().click();
- await page.locator('.work-dialog').getByRole('heading').waitFor();
- await page.locator('.work-dialog').getByRole('button',{name:'关闭',exact:true}).click();
- await page.setViewportSize({width:390,height:844});
- await page.screenshot({path:'../tmp/pdfs/workspace-mobile.png',fullPage:true});
- if(errors.length)throw new Error(errors.join('\n'));
- console.log(JSON.stringify({passed:true,pages:10,pageErrors:errors.length}));
-}catch(e){console.log('PAGE',page.url(),await page.locator('body').innerText());await page.screenshot({path:'../tmp/pdfs/ui-failure.png'});throw e}finally{await browser.close()}
+import assert from 'node:assert/strict'
+import { join } from 'node:path'
+import { configuration, verifyIsolation, openBrowser, isolateHardware, loginPage } from './ui-verification.mjs'
+
+const config = configuration({ authenticated: true })
+if (config) {
+  await verifyIsolation(config)
+  const browser = await openBrowser(config)
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } })
+  const errors = [], writes = []
+  page.on('pageerror', error => errors.push(error.message))
+  page.on('request', request => {
+    const url = new URL(request.url())
+    if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(request.method()) && url.pathname !== '/api/auth/login') writes.push(url.pathname)
+  })
+  await isolateHardware(page)
+  try {
+    await loginPage(page, config)
+    await page.screenshot({ path: join(config.output, 'authenticated-overview.png'), fullPage: true })
+    const pages = [['nodes', '节点管理'], ['alarms', '告警中心'], ['orders', '工单管理'], ['patrol', '巡检计划'], ['handbooks', '处置手册'], ['notifications', '消息通知'], ['statistics', '报表'], ['users', '用户权限'], ['audit', '审计日志'], ['settings', '个人设置']]
+    for (const [route, title] of pages) {
+      await page.goto(config.ui + '/' + route)
+      await page.getByRole('heading', { name: title, exact: true, level: 1 }).waitFor()
+      await page.locator('.work-sidebar:not([inert])').waitFor()
+    }
+    await page.locator('.work-sidebar').getByRole('button', { name: '节点管理', exact: true }).click()
+    const view = page.getByRole('row').filter({ has: page.getByRole('button', { name: '查看', exact: true }) }).first()
+    await view.getByRole('button', { name: '查看', exact: true }).click()
+    await page.getByRole('button', { name: '关闭节点详情', exact: true }).waitFor()
+    await page.getByRole('button', { name: '关闭节点详情', exact: true }).click()
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.screenshot({ path: join(config.output, 'authenticated-narrow.png'), fullPage: true })
+    assert.deepEqual(writes, [], 'Read-only page verification must not write business data')
+    assert.deepEqual(errors, [], 'Pages must not throw browser errors')
+    console.log(JSON.stringify({ passed: true, pages: pages.length + 1, nodeDetailOpened: true, businessWrites: writes.length, pageErrors: errors.length }))
+  } catch (error) {
+    await page.screenshot({ path: join(config.output, 'authenticated-failure.png'), fullPage: true })
+    throw error
+  } finally { await browser.close() }
+}

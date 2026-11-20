@@ -18,7 +18,7 @@ class FrameworkIntegrationTest {
  @Autowired MockMvc mvc;
  @Autowired JwtEncoder encoder;
  @Autowired JdbcTemplate jdbc;
- @Test void publicHealth() throws Exception { mvc.perform(get("/api/health")).andExpect(status().isOk()).andExpect(jsonPath("$.code").value(0)); }
+ @Test void publicHealth() throws Exception { mvc.perform(get("/api/health")).andExpect(status().isOk()).andExpect(jsonPath("$.code").value(0)).andExpect(jsonPath("$.data.status").value("UP")).andExpect(jsonPath("$.data.application").value("nephh-backend")).andExpect(jsonPath("$.data.isolatedVerification").value(false)); }
  @Test void anonymousIsRejected() throws Exception { mvc.perform(get("/api/auth/me")).andExpect(status().isUnauthorized()).andExpect(jsonPath("$.code").value(401)); }
  @Test void invalidTokenIsRejected() throws Exception { mvc.perform(get("/api/auth/me").header("Authorization","Bearer invalid")).andExpect(status().isUnauthorized()); }
  String token(Instant expires,String issuer) {

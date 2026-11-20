@@ -1,8 +1,10 @@
-import { chromium } from 'playwright'
 import assert from 'node:assert/strict'
+import { configuration, openBrowser } from './ui-verification.mjs'
 
 // Isolated API fixtures: this regression never writes to the business database.
-const browser = await chromium.launch({ channel: 'msedge', headless: true })
+const config = configuration()
+if (!config) process.exit(0)
+const browser = await openBrowser(config)
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } })
 const errors = []
 page.on('pageerror', e => errors.push(e.message))
@@ -22,7 +24,7 @@ await page.route('**/api/**', async route => {
 })
 await page.route('**/hardware-bridge/**', route => route.fulfill({json:{application:'nephh-usb-bridge',fresh:false}}))
 try {
- await page.goto(process.env.UI_BASE || 'http://127.0.0.1:5175/nodes')
+ await page.goto(config.ui + '/nodes')
  const row=page.getByRole('row').filter({hasText:'LIVE-01'})
  await row.waitFor()
  value=31.7
