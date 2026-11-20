@@ -1,0 +1,45 @@
+# Dependencies, generated output, local runtime and editor state
+node_modules/
+oh_modules/
+target/
+dist/
+dist-ssr/
+build/
+.hvigor/
+.idea/
+.nephh-runtime/
+.nephh-integration/
+.data/
+coverage/
+*.log
+*.tsbuildinfo
+*.iml
+.DS_Store
+
+# Local credentials, SDK paths and signing material
+.env
+.env.*
+!.env.example
+!.env.*.example
+.local-database.yml
+.local-huawei-iot.yml
+local.properties
+*.p12
+*.p7b
+*.jks
+*.keystore
+*.cer
+*.key
+*.pem
+
+# Existing files need sanitizing before they may enter version control.
+/NEPHH/NEPHH-backend/src/main/resources/application-mysql.yml
+/zhixun-guanlang-harmony/build-profile.json5
+
+# Packaged delivery, duplicate extraction and scratch snapshots
+*.zip
+*.hap
+*.hsp
+*.app
+/NEPHH/tmp/
+/zhixun-guanlang-harmony/zhixun-guanlang-harmony/
