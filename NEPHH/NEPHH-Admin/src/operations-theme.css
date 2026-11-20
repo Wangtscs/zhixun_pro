@@ -1,4 +1,4 @@
-/* T07: Scoped operations UI tokens. Import after the existing workspace and theme styles. */
+/* Operations foundation: load after legacy workspace/theme rules. No login or hardware-console scope. */
 .design-app .overview-modes { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
 .design-app .overview-modes button[aria-pressed="true"] { background: var(--ops-accent-bg); color: var(--ops-accent); border-color: var(--ops-accent); }
 .design-app .data-quality-note { font-size: 12px; line-height: 1.7; color: var(--ops-muted); margin: 0 0 16px; }
@@ -7,25 +7,29 @@
   --ops-space-2: 12px;
   --ops-space-3: 16px;
   --ops-space-4: 24px;
-  --ops-bg: #0e151c;
-  --ops-surface: #16212a;
-  --ops-raised: #1d2c37;
-  --ops-text: #e0eaf0;
-  --ops-muted: #a7b9c6;
-  --ops-line: #3a4d5a;
-  --ops-accent: #58e1d3;
-  --ops-accent-bg: #163e40;
-  --ops-on-accent: #092a2d;
-  --ops-danger: #ff9da4;
-  --ops-danger-bg: #43272f;
-  --ops-warning: #f2c77e;
-  --ops-warning-bg: #403423;
-  --ops-info: #b0ccff;
-  --ops-info-bg: #24354e;
-  --ops-offline: #b2bcc6;
-  --ops-offline-bg: #29333e;
-  --ops-radius: 10px;
+  --ops-bg: #141b23;
+  --ops-surface: #1c252f;
+  --ops-raised: #25313e;
+  --ops-text: #e6ecf2;
+  --ops-muted: #afbdcc;
+  --ops-line: #3b4b5d;
+  --ops-control-line: #8091a3;
+  --ops-accent: #92b9eb;
+  --ops-accent-bg: #2a3b50;
+  --ops-on-accent: #142638;
+  --ops-danger: #ffabad;
+  --ops-danger-bg: #412a31;
+  --ops-warning: #e9c58c;
+  --ops-warning-bg: #3b3326;
+  --ops-info: #a5c5ed;
+  --ops-info-bg: #2a3b50;
+  --ops-offline: #b7c0ca;
+  --ops-offline-bg: #303b47;
+  --ops-success: #92cfb4;
+  --ops-success-bg: #243c35;
+  --ops-radius: 5px;
   --teal: var(--ops-accent);
+  --bg: var(--ops-bg);
   --muted: var(--ops-muted);
   --line: var(--ops-line);
   --panel: var(--ops-surface);
@@ -38,23 +42,26 @@
 }
 
 [data-theme="light"] .design-app {
-  --ops-bg: #eff3f5;
+  --ops-bg: #f3f5f7;
   --ops-surface: #ffffff;
-  --ops-raised: #f0f5f7;
-  --ops-text: #203742;
-  --ops-muted: #526b79;
-  --ops-line: #bdcdd6;
-  --ops-accent: #006e65;
-  --ops-accent-bg: #dfefec;
+  --ops-raised: #f4f6f8;
+  --ops-text: #1e2b3b;
+  --ops-muted: #536375;
+  --ops-line: #d0d8e1;
+  --ops-control-line: #7a8b9d;
+  --ops-accent: #234f7d;
+  --ops-accent-bg: #e9f0f8;
   --ops-on-accent: #ffffff;
-  --ops-danger: #ab2d3b;
-  --ops-danger-bg: #fbe9ec;
-  --ops-warning: #835200;
-  --ops-warning-bg: #faf0dc;
-  --ops-info: #2a568c;
-  --ops-info-bg: #e6eefb;
-  --ops-offline: #586d7b;
-  --ops-offline-bg: #e7edf1;
+  --ops-danger: #ae303b;
+  --ops-danger-bg: #fbeef0;
+  --ops-warning: #805400;
+  --ops-warning-bg: #fbf3e4;
+  --ops-info: #315d8a;
+  --ops-info-bg: #eaf1fa;
+  --ops-offline: #566574;
+  --ops-offline-bg: #edf0f3;
+  --ops-success: #28684f;
+  --ops-success-bg: #eaf4ee;
 }
 
 .work-app.design-app {
@@ -83,7 +90,7 @@
 }
 
 .design-app .d-page-heading h1 {
-  font-size: 26px;
+  font-size: 24px;
   line-height: 1.4;
   font-weight: 600;
   letter-spacing: 0;
@@ -91,7 +98,7 @@
 }
 
 .design-app :is(.work-panel h2, .d-settings-card > header h2, .work-dialog .work-title h2) {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.5;
   color: var(--ops-text);
 }
@@ -110,7 +117,7 @@
 
 .design-app .d-metric {
   height: auto;
-  min-height: 140px;
+  min-height: 112px;
   padding: var(--ops-space-3);
 }
 
@@ -122,7 +129,7 @@
 }
 
 .design-app .d-metric-value {
-  font-size: 30px;
+  font-size: 28px;
   line-height: 1.4;
   margin: var(--ops-space-1) 0;
 }
@@ -147,7 +154,7 @@
 }
 
 .design-app .d-table-toolbar {
-  min-height: 72px;
+  min-height: 64px;
   padding: var(--ops-space-3);
   border-color: var(--ops-line);
 }
@@ -159,7 +166,7 @@
   color: var(--ops-text);
   background: var(--ops-raised);
   border-color: var(--ops-line);
-  border-radius: 7px;
+  border-radius: var(--ops-radius);
   min-height: 40px;
   padding: var(--ops-space-1) var(--ops-space-2);
 }
@@ -169,11 +176,16 @@
   opacity: 1;
 }
 
+.design-app :is(.work-toolbar, .work-dialog, .d-dispatch-options, .d-table-toolbar, .d-settings-card, .d-node-rules, .d-note-label)
+  :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea) {
+  border-color: var(--ops-control-line);
+}
+
 .design-app :is(.work-toolbar, .work-actions, .d-table-toolbar, .work-dialog, .d-drawer > footer, .d-profile-form > footer) > button,
 .design-app :is(.d-dispatch, .d-alert-card button, .d-settings-card button, .d-order-tabs button) {
   min-height: 36px;
   padding: var(--ops-space-1) var(--ops-space-2);
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.5;
 }
 
@@ -184,7 +196,7 @@
 }
 
 .design-app :is(button.primary, .d-pagination button.current):hover:not(:disabled) {
-  filter: brightness(1.08);
+  filter: brightness(1.06);
 }
 
 .design-app :is(button, input, select, textarea):disabled {
@@ -210,7 +222,7 @@
   min-height: 40px;
   height: auto;
   background: var(--ops-raised);
-  border-color: var(--ops-line);
+  border-color: var(--ops-control-line);
   padding: 0 var(--ops-space-2);
 }
 
@@ -240,9 +252,9 @@
 }
 
 .design-app :is(.d-nodes-table, .d-orders-table, .d-audit-table) td {
-  height: auto;
-  padding-top: var(--ops-space-3);
-  padding-bottom: var(--ops-space-3);
+  height: 54px;
+  padding-top: var(--ops-space-2);
+  padding-bottom: var(--ops-space-2);
   font-size: 14px;
   line-height: 1.5;
   color: var(--ops-text);
@@ -294,8 +306,8 @@
 }
 
 .design-app .d-pagination {
-  min-height: 64px;
-  padding: var(--ops-space-3);
+  min-height: 56px;
+  padding: var(--ops-space-2) var(--ops-space-3);
   gap: var(--ops-space-1);
   font-size: 12px;
   border-color: var(--ops-line);
@@ -318,9 +330,9 @@
   padding: 3px 7px;
   font-size: 12px;
   line-height: 1.5;
-  background: var(--ops-accent-bg);
-  border-color: var(--ops-accent);
-  color: var(--ops-accent);
+  border-color: transparent;
+  color: var(--ops-offline);
+  background: var(--ops-offline-bg);
 }
 
 .design-app :is(.d-pill.red, .work-error) {
@@ -418,7 +430,127 @@
 .design-app :is(.d-settings-nav > small, .d-settings-card > header p, .d-profile-avatar p, .d-profile-form > footer > small, .d-security-row small, .d-settings-row small, .d-device-row small, .d-device-row .push > span, .d-theme-options small, .work-dialog label) { font-size: 12px; line-height: 1.6; color: var(--ops-muted); }
 .design-app :is(.d-security-row b, .d-settings-row b, .d-device-row b) { color: var(--ops-text); }
 
+/* One quiet surface hierarchy; floating layers alone receive a shadow. */
+.design-app :is(.work-panel, .d-metric, .d-settings-card, .d-report-metrics > article, .d-order-card, .d-person-card) {
+  box-shadow: none;
+  background-image: none;
+  border-radius: var(--ops-radius);
+}
+.design-app .brand-mark { filter: none; }
+.design-app :is(.d-user-menu, .d-notice-menu, .d-more-menu, .d-management-tools, .d-date-popover, .work-dialog, .d-password-modal) {
+  background: var(--ops-surface);
+  color: var(--ops-text);
+  border-color: var(--ops-line);
+  border-radius: var(--ops-radius);
+  box-shadow: 0 8px 24px #0002;
+}
+.design-app .d-drawer { box-shadow: -6px 0 20px #0001; }
+.design-app .d-drawer-overlay { backdrop-filter: none; }
+.design-app :is(.d-drawer > header, .d-drawer > footer, .d-selected-people, .d-recommended, .d-detail-list > div, .d-timeline-panel) { border-color: var(--ops-line); }
+.design-app .d-topbar { box-shadow: none; }
+.design-app :is(.d-breadcrumb b, .d-user > b) { color: var(--ops-text); font-size: 14px; }
+.design-app :is(.d-global-search, .d-zones) { background: var(--ops-surface); border-color: var(--ops-line); border-radius: var(--ops-radius); }
+.design-app .d-global-search input { font-size: 14px; color: var(--ops-text); }
+.design-app :is(.d-zones button.selected, .d-settings-nav button.selected, .d-dispatch-options button.selected, .d-order-tabs button.selected) {
+  color: var(--ops-accent);
+  border-color: var(--ops-accent);
+  background: var(--ops-accent-bg);
+  box-shadow: none;
+}
+.design-app :is(.d-heading-actions, .work-toolbar, .work-actions, .work-dialog, .d-drawer, .d-table-toolbar, .d-order-workflow, .d-settings-card, .d-pagination)
+  button:not(.d-link):not(.d-switch):not(.d-person-card):not(.d-person-check) {
+  border-radius: var(--ops-radius);
+  box-shadow: none;
+  font-size: 14px;
+}
+.design-app :is(.d-heading-actions, .d-table-toolbar, .work-actions, .d-order-workflow, .d-drawer > footer)
+  button:not(.d-link):not(.d-switch) { min-height: 36px; height: auto; }
+.design-app :is(.d-heading-actions > button, .d-table-toolbar > button, .work-actions > button, .d-order-workflow .d-inline > button, .d-drawer > footer > button):not(.primary) {
+  background: var(--ops-surface);
+  color: var(--ops-text);
+  border-color: var(--ops-line);
+}
+.design-app :is(.d-heading-actions > button, .d-table-toolbar > button, .work-actions > button, .d-order-workflow .d-inline > button, .d-drawer > footer > button):not(.primary):hover:not(:disabled) {
+  background: var(--ops-raised);
+  border-color: var(--ops-accent);
+}
+.design-app .d-link { color: var(--ops-accent); }
+.design-app .d-link:hover:not(:disabled) { text-decoration: underline; text-underline-offset: 3px; }
+.design-app .d-dispatch { color: var(--ops-accent); background: var(--ops-accent-bg); border: 1px solid var(--ops-line); border-radius: var(--ops-radius); }
+.design-app :is(.d-nodes-table, .d-orders-table, .d-audit-table) tbody tr:hover td { background: var(--ops-raised); }
+.design-app .d-nodes-table tbody tr.located td { background: var(--ops-accent-bg); }
+.design-app .d-nodes-table tbody tr.located td:first-child { box-shadow: inset 3px 0 var(--ops-accent); }
+.design-app :is(.d-pill, .d-worker-tags em, .d-order-note, .d-audit-meta, .d-node-metrics, .d-person-chips > button) { border-radius: 4px; }
+.design-app .d-pill { border-color: transparent; font-weight: 500; }
+.design-app .d-pill.teal { color: var(--ops-success); background: var(--ops-success-bg); }
+.design-app .d-pill i { box-shadow: none; }
+.design-app .d-avatar { background: var(--ops-accent-bg); color: var(--ops-accent); border-radius: 5px; }
+.design-app .d-avatar.tiny { background: var(--ops-raised); color: var(--ops-muted); border-color: var(--ops-line); }
+.design-app :is(.d-person-chips .d-avatar, .d-person-card > .d-avatar) { background: var(--ops-raised); color: var(--ops-text); border-color: var(--ops-line); }
+.design-app :is(.d-pill, .d-board-countdown, .d-pagination, .d-order-tabs) { font-variant-numeric: tabular-nums; }
+
+/* Remove legacy detail-page offsets rather than introducing another layout. */
+.design-app .d-order-workflow { margin-top: 16px; }
+.design-app .d-order-workflow .work-title { gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+.design-app .d-order-workflow .d-inline { gap: 8px; flex-wrap: wrap; }
+.design-app .d-order-workflow .work-pre { font-size: 14px; line-height: 1.7; color: var(--ops-text); overflow-wrap: anywhere; }
+/* These two declarations replace existing !important legacy detail rules. */
+.design-app .d-order-summary { padding: 20px !important; min-height: 108px; gap: 16px; }
+.design-app .d-order-summary h2 { font-weight: 600 !important; font-size: 20px !important; line-height: 1.5; }
+.design-app .d-order-summary > .d-inline { transform: none; flex-wrap: wrap; }
+.design-app .d-order-summary > div > small { font-size: 12px; color: var(--ops-muted); }
+.design-app :is(.order-case, .order-list) { min-width: 0; }
+.design-app .order-case { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+.design-app :is(.order-case__evidence, .order-case__requirements) { min-width: 0; padding: 0 0 20px; margin: 0 0 20px; border-bottom: 1px solid var(--ops-line); }
+.design-app :is(.order-case__evidence, .order-case__requirements) h3 { margin: 0 0 12px; font-size: 16px; font-weight: 600; line-height: 1.5; }
+.design-app :is(.order-case__evidence, .order-case__requirements) p { font-size: 14px; line-height: 1.7; color: var(--ops-text); white-space: pre-wrap; overflow-wrap: anywhere; }
+.design-app .order-case__evidence .work-list-row { min-height: 48px; padding: 8px 0; gap: 12px; border-color: var(--ops-line); font-size: 14px; }
+.design-app .order-case__evidence .work-list-row > span { min-width: 0; overflow-wrap: anywhere; }
+.design-app .order-case__evidence input[type="file"] { max-width: 100%; margin: 0 0 12px; font-size: 14px; }
+.design-app .order-case__metadata { min-width: 0; border-left: 1px solid var(--ops-line); padding-left: 24px; color: var(--ops-text); }
+.design-app .order-case__metadata h3 { font-size: 14px; font-weight: 600; margin: 0 0 12px; }
+.design-app .order-case__metadata dl { margin: 0; }
+.design-app .order-case__metadata dl > div { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--ops-line); }
+.design-app .order-case__metadata dt { color: var(--ops-muted); font-size: 12px; line-height: 1.7; }
+.design-app .order-case__metadata dd { margin: 0; font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+.design-app .order-case__history { margin: 20px 0; border-top: 1px solid var(--ops-line); border-bottom: 1px solid var(--ops-line); }
+.design-app :is(.order-case__history, .order-case__more) > summary { cursor: pointer; color: var(--ops-text); font-size: 14px; font-weight: 600; line-height: 1.5; padding: 12px 0; }
+.design-app :is(.order-case__history, .order-case__more) > summary:focus-visible { outline: 2px solid var(--ops-accent); outline-offset: 3px; }
+.design-app .order-case__actions { position: static; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin: 16px 0 0; }
+.design-app .order-case__actions .work-title { width: 100%; margin: 0; }
+.design-app .order-case__actions button { min-height: 36px; font-size: 14px; }
+.design-app .order-case__more { min-width: 0; }
+.design-app .order-case__more[open] > :not(summary) { display: flex; flex-wrap: wrap; gap: 8px; }
+.design-app .d-detail-list dd { overflow-wrap: anywhere; }
+.design-app .d-timeline { margin-top: 16px; }
+.design-app .d-timeline p { margin-top: 4px; }
+.design-app .d-person-card { background: var(--ops-surface); border-radius: var(--ops-radius); padding: 12px; gap: 12px; }
+.design-app .d-person-card.chosen { background: var(--ops-accent-bg); border-color: var(--ops-accent); }
+.design-app .d-person-card > span:nth-child(2) { min-width: 0; }
+.design-app .d-person-card > span:nth-child(2) > small { display: block; white-space: normal; }
+.design-app .d-worker-tags em { color: var(--ops-muted); background: var(--ops-raised); }
+.design-app .chosen .d-person-check { background: var(--ops-accent); color: var(--ops-on-accent); border-color: var(--ops-accent); }
+.design-app .d-person-chips > button { color: var(--ops-accent); background: var(--ops-accent-bg); border-color: var(--ops-line); }
+.design-app .d-dispatch-options > label { gap: 12px; flex-wrap: wrap; }
+.design-app .d-dispatch-options > label > div { flex-wrap: wrap; }
+.design-app .d-dispatch-options button { height: auto; min-height: 36px; color: var(--ops-text); background: var(--ops-surface); border-color: var(--ops-line); }
+.design-app .d-dispatch-options textarea { width: 100%; }
+
+/* Scoped component surfaces follow the same foundation as legacy panels. */
+.design-app .workbench__header h2 { font-size: 22px; font-weight: 600; }
+.design-app .workbench__cards { gap: 12px; }
+.design-app .workbench__cards button { min-height: 108px; padding: 12px 16px; border-radius: var(--ops-radius); box-shadow: none; }
+.design-app .workbench__cards button.selected { background: var(--ops-accent-bg); box-shadow: inset 3px 0 var(--ops-accent); }
+.design-app .workbench__cards strong { font-size: 26px; margin: 2px 0; }
+.design-app :is(.workbench__queue, .workbench__demo, .workbench__error, .workbench__actions button, .workbench__pagination button, .workbench__status) { border-radius: var(--ops-radius); }
+.design-app .workbench__queue h3 { font-size: 16px; }
+.design-app .workbench__items button { padding: 12px 16px; }
+.design-app .workbench__status { border-color: transparent; background: var(--ops-raised); }
+.design-app .hardware-collection-summary { box-shadow: none; border-color: var(--ops-line); border-radius: var(--ops-radius); }
+
 @media (max-width: 900px) {
+  .design-app .order-case { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .design-app .order-case__metadata { border-left: 0; border-top: 1px solid var(--ops-line); padding: 16px 0 0; }
   .design-app .d-page-heading { flex-wrap: wrap; }
   .design-app .d-heading-actions { flex-wrap: wrap; }
   .design-app :is(.d-orders-table, .d-nodes-table, .d-audit-table) { min-width: 900px; }

@@ -3,7 +3,7 @@ import { ref } from 'vue'
 export type Theme = 'dark' | 'light'
 const key = 'nephh-theme'
 function savedTheme(): Theme {
-  try { return localStorage.getItem(key) === 'light' ? 'light' : 'dark' } catch { return 'dark' }
+  try { return localStorage.getItem(key) === 'dark' ? 'dark' : 'light' } catch { return 'light' }
 }
 export const theme = ref<Theme>(savedTheme())
 function applyTheme(value: Theme) {

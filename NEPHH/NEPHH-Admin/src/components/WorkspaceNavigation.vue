@@ -35,28 +35,32 @@ const groups = computed(() => [...new Set(props.items.map(item => item.group || 
 </template>
 
 <style>
-.design-app { --navigation-width: 208px; }
+.design-app { --navigation-width: 192px; }
 .design-app.nav-collapsed { --navigation-width: 72px; }
-.design-app .work-sidebar.operations-navigation { width: var(--navigation-width); align-items: stretch; padding: 0 12px; }
+.design-app .work-sidebar.operations-navigation { width: var(--navigation-width); align-items: stretch; padding: 0 12px; background: var(--ops-surface); border-color: var(--ops-line); }
 .design-app .operations-navigation .d-brand { width: 100%; gap: 12px; display: flex; align-items: center; justify-content: flex-start; }
 .design-app .operations-navigation .d-brand > svg { flex: 0 0 30px; width: 30px; height: 30px; }
 .design-app .operations-navigation .nav-label { white-space: nowrap; font-size: 14px; }
-.design-app .operations-navigation .d-brand .nav-label { font-weight: 650; letter-spacing: 1px; }
-.design-app .operations-navigation .nav-collapse { width: 100%; display: flex; gap: 12px; padding: 10px 12px; align-items: center; margin: 8px 0; background: transparent; border: 1px solid var(--ops-line, #35414c); }
+.design-app .operations-navigation .d-brand .nav-label { font-weight: 650; letter-spacing: 0; color: var(--ops-text); }
+.design-app .operations-navigation .d-brand { border-color: var(--ops-line); }
+.design-app .operations-navigation .nav-collapse { width: 100%; min-height: 36px; display: flex; gap: 12px; padding: 8px 12px; align-items: center; margin: 12px 0; color: var(--ops-muted); background: transparent; border: 1px solid transparent; border-radius: 5px; }
 .design-app .operations-navigation nav { display: block; width: 100%; margin: 0; flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; scrollbar-width: thin; }
-.design-app .nav-group { margin-bottom: 12px; }
-.design-app .nav-group-title { font-size: 12px; color: var(--ops-muted, #a7b9c6); padding: 8px 12px; font-weight: 500; }
+.design-app .nav-group { margin-bottom: 16px; }
+.design-app .nav-group-title { font-size: 12px; line-height: 1.5; color: var(--ops-muted, #afbdcc); padding: 8px 12px; margin: 0; font-weight: 500; }
 .design-app .operations-navigation .nav-group > button,
-.design-app .operations-navigation .d-profile-nav { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 42px; padding: 10px 12px; margin: 2px 0; background: transparent; color: var(--ops-muted, #a7b9c6); border: 1px solid transparent; border-radius: 6px; }
-.design-app .operations-navigation .nav-group > button.active { color: var(--ops-accent, #58e1d3); background: var(--ops-accent-bg, #163e40); border-color: var(--ops-line, #35414c); }
+.design-app .operations-navigation .d-profile-nav { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 42px; padding: 10px 12px; margin: 2px 0; background: transparent; color: var(--ops-text, #e6ecf2); border: 1px solid transparent; border-radius: 5px; }
+.design-app .operations-navigation .nav-group > button.active { color: var(--ops-accent, #92b9eb); background: var(--ops-accent-bg, #2a3b50); border-color: transparent; box-shadow: inset 3px 0 var(--ops-accent); }
+.design-app .operations-navigation :is(.nav-group > button, .d-profile-nav, .nav-collapse):hover:not(:disabled) { background: var(--ops-raised); color: var(--ops-accent); }
 .design-app .operations-navigation button[aria-current="page"] { font-weight: 650; }
-.design-app .operations-navigation .d-profile-nav { margin: 8px 0 16px; border-color: var(--ops-line, #35414c); }
+.design-app .operations-navigation .d-profile-nav { margin: 8px 0 16px; border-top-color: var(--ops-line, #3b4b5d); border-radius: 0; }
 .work-app.design-app .work-sidebar.operations-navigation :is(.d-brand, .d-profile-nav) { width: 100%; justify-content: flex-start; }
 .work-app.design-app .work-sidebar.operations-navigation .d-profile-nav { height: auto; min-height: 42px; padding: 10px 12px; }
-.design-app .operations-navigation button:focus-visible { outline: 3px solid var(--ops-accent, #58e1d3); outline-offset: -3px; }
+.design-app .operations-navigation button:focus-visible { outline: 2px solid var(--ops-accent, #92b9eb); outline-offset: -2px; }
 .design-app .operations-navigation svg { flex-shrink: 0; }
 .design-app.nav-collapsed .operations-navigation .nav-label,
 .design-app.nav-collapsed .operations-navigation .nav-group-title { display: none; }
+.design-app.nav-collapsed .operations-navigation :is(.nav-group > button, .nav-collapse, .d-profile-nav) { justify-content: center; padding-left: 0; padding-right: 0; }
+.work-app.design-app.nav-collapsed .work-sidebar.operations-navigation :is(.d-brand, .d-profile-nav) { justify-content: center; }
 .work-app.design-app .d-topbar { left: var(--navigation-width); }
 .work-app.design-app .work-main { width: calc(100% - var(--navigation-width)); margin-left: var(--navigation-width); }
 .work-app.design-app .d-drawer-overlay { left: var(--navigation-width); }
@@ -64,7 +68,7 @@ const groups = computed(() => [...new Set(props.items.map(item => item.group || 
 .design-app .operations-area select { max-width: 180px; min-height: 36px; }
 @media (max-width: 900px) {
   .design-app { --navigation-width: 72px; }
-  .design-app:not(.nav-collapsed) .work-sidebar.operations-navigation { width: 208px; box-shadow: 12px 0 24px #0005; }
+  .design-app:not(.nav-collapsed) .work-sidebar.operations-navigation { width: 192px; box-shadow: 4px 0 16px #0002; }
   .design-app .d-header-actions { gap: 8px; }
   .design-app .d-take-mode { display: none; }
   .design-app .d-global-search { width: 150px; }
