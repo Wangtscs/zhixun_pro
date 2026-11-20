@@ -9,7 +9,7 @@ const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } })
 const errors = []
 page.on('pageerror', e => errors.push(e.message))
 let value = 24, requests = 0, failNodes = false
-const node = () => ({ id: 1, code: 'LIVE-01', location: '实时验证节点', area_id: 1, area_name: 'A区', enabled: true, maintenance: false, report_seconds: 30, last_seen: new Date().toISOString(), metrics: 'temperature,humidity', active_alarms: 0, latest: [{metric:'temperature',metric_value:value,unit:'°C'}, {metric:'humidity',metric_value:60,unit:'%RH'}] })
+const node = () => { const collectedAt = new Date().toISOString(); return { id: 1, code: 'LIVE-01', location: '实时验证节点', area_id: 1, area_name: 'A区', enabled: true, maintenance: false, report_seconds: 30, last_seen: collectedAt, metrics: 'temperature,humidity', active_alarms: 0, latest: [{metric:'temperature',metric_value:value,unit:'°C',source:'ESP32_DHT11_WIFI',collected_at:collectedAt,received_at:collectedAt}, {metric:'humidity',metric_value:60,unit:'%RH',source:'ESP32_DHT11_WIFI',collected_at:collectedAt,received_at:collectedAt}] } }
 await page.addInitScript(() => sessionStorage.setItem('nephh-access-token', 'isolated-test'))
 await page.route('**/api/**', async route => {
  const path = new URL(route.request().url()).pathname.replace('/api/business', '')

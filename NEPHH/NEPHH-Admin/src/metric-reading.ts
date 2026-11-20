@@ -1,17 +1,18 @@
+import { assessSample, classifySource } from './source-status.ts'
+
 type DataRow=Record<string,any>
-export function visibleMetric(node:DataRow,metric:string,isDemo:boolean,nowMs:number):DataRow|null {
- const row=node.latest?.find((r:DataRow)=>r.metric===metric)
- if(!row)return null
- if(metric==='methane'&&!isDemo){
-  if(row.source==='SIMULATOR')return null
-  const age=nowMs-Date.parse(row.collected_at)
-  if(!Number.isFinite(age)||age< -60000||age>Math.max(6500,Number(node.report_seconds||30)*3000))return null
- }
- return row
+
+function latestMetric(node:DataRow,metric:string):DataRow|null {
+ return Array.isArray(node.latest)?node.latest.find((row:unknown)=>row!==null&&typeof row==='object'&&(row as DataRow).metric===metric)||null:null
 }
-export function methaneOrigin(node:DataRow,isDemo:boolean,nowMs:number):string {
- const row=visibleMetric(node,'methane',isDemo,nowMs)
- if(!row)return ''
- if(String(row.source).startsWith('ESP32_CH4_DEMO_'))return '主控上报'
- return row.source==='SIMULATOR'?'平台数据':'主控上报'
+
+/** Main readouts show only finite, time-confirmed and fresh values, including explicitly labelled simulations. */
+export function visibleMetric(node:DataRow,metric:string,_isDemo:boolean,nowMs:number):DataRow|null {
+ const row=latestMetric(node,metric)
+ return assessSample(row,node.report_seconds,nowMs).state==='fresh'?row:null
+}
+
+/** Sample provenance remains meaningful when its value is stale or unavailable. */
+export function methaneOrigin(node:DataRow,_isDemo:boolean,_nowMs:number):string {
+ return classifySource(latestMetric(node,'methane')?.source).label
 }
