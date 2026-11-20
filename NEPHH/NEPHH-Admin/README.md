@@ -68,3 +68,5 @@ node scripts/verify-workflow-ui.mjs
 `node scripts/verify-dispatch-ui.mjs`复用同样的隔离写入开关与管理员环境变量。它创建11名合法候选及外区/禁用对照账号，通过真实派单界面搜索第11名并派发，再回读确认执行人；finally停用所有测试账号并取消测试工单。
 
 `node scripts/verify-batch-dispatch-ui.mjs`在两个区域验证共同执行人、真实授权变化后的整批事务回滚、409错误反馈保留输入、无共同人选拆批提示；finally停用临时账号并取消测试工单。401按现有行为转登录，草稿恢复留待统一鉴权改造。
+
+`node scripts/verify-navigation-ui.mjs`验证文字导航、折叠持久化、键盘、窄屏、旧URL、角色入口及全部区域选择在刷新/轮询后保持。演示部分不请求业务API；真实角色部分需要隔离写入开关，并在finally停用临时账号。

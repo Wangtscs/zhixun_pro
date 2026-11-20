@@ -5,7 +5,7 @@ import { clearSession, tokenKey } from '../auth'
 import { request, attachment, roleName, statusName, metricName, severityName, type Row } from '../business'
 import Icon from './Icon.vue'
 import {visibleMetric,methaneOrigin} from '../metric-reading'
-import BrandMark from './BrandMark.vue'
+import WorkspaceNavigation from './WorkspaceNavigation.vue'
 import SettingsPanel from './SettingsPanel.vue'
 import ReportChart from './ReportChart.vue'
 import MetricSparkline from './MetricSparkline.vue'
@@ -25,6 +25,10 @@ const dispatchCrewValid=computed(()=>!!form.value&&validDispatchCrew(users.value
 const dispatchEmptyMessage=computed(()=>!dispatchAreas.value?'部分工单信息缺失或状态已变化，请刷新核对后重新选择。':!eligibleDispatchWorkers(users.value,dispatchAreas.value).length?(form.value?.orderIds?.length?'本批工单没有共同授权的巡检员，请按区域拆批派发。':'该区域暂无可用巡检员，请先创建启用账号并分配区域。'):'未找到匹配的授权巡检员，请调整姓名或账号。')
 const takeMode=ref(localStorage.getItem('nephh-take-mode')!=='false'),viewRole=ref('manager'), userMenu=ref(false),roleMenu=ref(false),moreMenu=ref(false),noticeMenu=ref(false)
 const isDemo=!!sessionStorage.getItem('nephh-demo')
+function initialNavigationCollapsed(){try{const saved=localStorage.getItem('nephh-navigation-collapsed');return saved===null?window.matchMedia('(max-width:900px)').matches:saved==='true'}catch{return false}}
+const navigationCollapsed=ref(initialNavigationCollapsed())
+watch(navigationCollapsed,value=>{try{localStorage.setItem('nephh-navigation-collapsed',String(value))}catch{}})
+let areaSelectionInitialized=false
 const isAdmin=computed(()=>viewRole.value!=='readonly'&&identity.value.role==='ADMIN'), manager=computed(()=>viewRole.value!=='readonly'&&['ADMIN','MANAGER'].includes(identity.value.role))
 const navigation=computed(()=>[{key:'overview',name:'运行总览'},{key:'nodes',name:'节点与监测'},{key:'alarms',name:'告警中心'},{key:'orders',name:viewRole.value==='readonly'||manager.value?'工单管理':'我的工单'},{key:'patrol',name:manager.value?'巡检计划':'我的巡检'},{key:'handbooks',name:'处置手册'},{key:'notifications',name:'消息通知'},...(manager.value?[{key:'statistics',name:'统计报表'},{key:'audit',name:'操作审计'}]:[]),...(isAdmin.value?[{key:'users',name:'用户权限'}]:[])])
 const sectionFilter=ref(''),nodeStatus=ref('全部状态'),nodePage=ref(1),pageSize=ref(20),orderPage=ref(1),orderFilter=ref('ALL'),selectedIds=ref<number[]>([]),sortDirection=ref(1),hoverNode=ref<number|null>(null),auditActor=ref(''),auditAction=ref(''),auditFrom=ref(''),auditTo=ref(''),selectedAudit=ref<Row|null>(null),nodeThresholds=ref<Row>({}),nodeRuleSettings=ref<Row>({}),lastUpdate=ref(new Date()),profile=ref<Row>({}),settingTab=ref('基本信息'),passwordForm=ref<Row|null>(null)
@@ -61,7 +65,7 @@ async function load(){
  const results=await Promise.all([request<Row[]>('/areas'),request<Row[]>('/nodes'),request<Row[]>('/orders'),request<Row[]>('/alarms'),request<Row[]>('/notifications'),request<Row[]>('/handbooks'),request<Row[]>('/patrol/runs')])
  if(disposed||version!==dataVersion)return
  ;[areas.value,nodes.value,orders.value,alarms.value,notifications.value,books.value,runs.value]=results
- if(!areaFilter.value&&areas.value.length)areaFilter.value=String(areas.value[0]!.id);lastUpdate.value=new Date()
+ if(!areaSelectionInitialized){if(areas.value.length)areaFilter.value=String(areas.value[0]!.id);areaSelectionInitialized=true}lastUpdate.value=new Date()
  if(manager.value){const extra=await Promise.all([request<Row[]>('/users'),request<Row[]>('/patrol/plans'),request<Row>('/statistics'+reportQuery())]);if(disposed||version!==dataVersion)return;[users.value,plans.value,stats.value]=extra}
  if(manager.value){const result=await request<Row[]>('/audit');if(disposed||version!==dataVersion)return;audits.value=result}if(!profile.value.username)await loadProfile();notifyNewMessages()
  }finally{loadingData--}
@@ -150,7 +154,7 @@ async function showRules(){await act(async()=>{rules.value=await request(`/rules
 function exportCsv(rows:Row[],name:string){if(!rows.length){error.value='没有可导出的数据';return}const keys=Object.keys(rows[0]!);const cell=(v:unknown)=>{let s=typeof v==='object'?JSON.stringify(v):String(v??'');if(/^[=+@\-\t\r]/.test(s))s="'"+s;return '"'+s.replaceAll('"','""')+'"'};const blob=new Blob(['\ufeff'+[keys.map(cell).join(','),...rows.map(r=>keys.map(k=>cell(r[k])).join(','))].join('\r\n')],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name+'.csv';a.click();URL.revokeObjectURL(url)}
 let lastActivity=Date.now()
 function activity(){lastActivity=Date.now()}
-function keyShortcut(e:KeyboardEvent){activity();if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();document.querySelector<HTMLInputElement>('.d-global-search input')?.focus()}if(e.key==='Escape'){nodeTools.value=false;selectedNode.value=null;selectedAudit.value=null;form.value=null;userMenu.value=false;noticeMenu.value=false;moreMenu.value=false}}
+function keyShortcut(e:KeyboardEvent){activity();if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();document.querySelector<HTMLInputElement>('.d-global-search input')?.focus()}if(e.key==='Escape'){if(window.matchMedia('(max-width:900px)').matches)navigationCollapsed.value=true;nodeTools.value=false;selectedNode.value=null;selectedAudit.value=null;form.value=null;userMenu.value=false;noticeMenu.value=false;moreMenu.value=false}}
 let secondTimer:ReturnType<typeof setInterval>|undefined
 let timer:ReturnType<typeof setInterval>|undefined
 onMounted(()=>{
@@ -177,7 +181,6 @@ const titleMap:Row={overview:'总览',nodes:'节点管理',orders:'工单管理'
 const subtitleMap:Row={overview:'AI运行态势与事件处置中心',nodes:'监测节点实时状态、指标与阈值管理',orders:'风险处置工单的全流程追踪',audit:'系统关键操作与配置变更记录',statistics:'巡检效率、风险趋势与处置质量分析',settings:'账号、安全与通知偏好'}
 const pageTitle=computed(()=>selectedOrder.value?'工单详情':titleMap[tab.value]||'业务管理')
 const displayName=computed(()=>profile.value.displayName||identity.value.displayName||identity.value.username||'用户')
-const primaryAreas=computed(()=>areas.value.slice(0,3))
 const pagedNodes=computed(()=>visibleNodes.value.slice((nodePage.value-1)*pageSize.value,nodePage.value*pageSize.value))
 const pagedOrders=computed(()=>visibleOrders.value.slice((orderPage.value-1)*pageSize.value,orderPage.value*pageSize.value))
 const zoneNodes=computed(()=>nodes.value.filter(n=>!areaFilter.value||String(n.area_id)===areaFilter.value))
@@ -188,7 +191,12 @@ const onlineCount=computed(()=>zoneNodes.value.filter(n=>!['离线','停用','�
 const boardColumns=[{status:'DRAFT',name:'待派发',color:'amber'},{status:'ASSIGNED',name:'待接单',color:'blue'},{status:'PROCESSING',name:'处理中',color:'blue'},{status:'REVIEW',name:'待复核',color:'teal'}]
 const visibleAudits=computed(()=>audits.value.filter(a=>(!auditActor.value||a.actor_name===auditActor.value)&&(!auditAction.value||a.action===auditAction.value)&&(!auditFrom.value||new Date(a.created_at)>=new Date(auditFrom.value))&&(!auditTo.value||new Date(a.created_at)<=new Date(auditTo.value+'T23:59:59.999'))&&`${a.actor_name}${a.object_type}${a.object_id}`.includes(search.value)))
 const actionLabels:Row={SIMULATE:'更新节点读数',CREATE:'创建工单',ASSIGN:'派发工单',ACCEPT:'接收工单',START:'开始处理',SUBMIT:'提交复核',APPROVE:'复核完成',REJECT:'退回重做',CANCEL:'取消工单',UPDATE:'修改配置',UPDATE_SCHEDULE:'调整截止时间',ACKNOWLEDGE:'确认告警',UPLOAD:'上传照片',RESET_PASSWORD:'重置密码',CHECK:'点位检查',GENERATE:'生成巡检任务',TOGGLE:'调整启用状态'}
-const navItems=computed(()=>viewRole.value==='supervisor'?[{key:'statistics',name:'报表',icon:'chart'},{key:'audit',name:'审计日志',icon:'history'}]:[{key:'overview',name:'总览',icon:'grid'},{key:'nodes',name:'节点管理',icon:'nodes'},{key:'orders',name:viewRole.value==='readonly'||manager.value?'工单管理':'我的工单',icon:'orders'},...(['ADMIN','MANAGER'].includes(identity.value.role)?[{key:'audit',name:'审计日志',icon:'history'}]:[])])
+const navItems=computed(()=>{
+ const icons:Record<string,string>={overview:'grid',nodes:'nodes',alarms:'warning',orders:'orders',patrol:'check',handbooks:'shield',notifications:'bell',statistics:'chart',audit:'history',users:'user'}
+ if(viewRole.value==='supervisor')return [{key:'statistics',name:'报表',icon:'chart',group:'统计与追溯'},{key:'audit',name:'审计日志',icon:'history',group:'统计与追溯'}]
+ return navigation.value.map(n=>({key:n.key,name:n.key==='orders'&&identity.value.role==='INSPECTOR'?'我的工单':n.key==='patrol'&&identity.value.role==='INSPECTOR'?'我的巡检':titleMap[n.key]||n.name,icon:icons[n.key]||'grid',group:['statistics','audit'].includes(n.key)?'统计与追溯':n.key==='users'?'管理配置':'运行作业'}))
+})
+function navigateWorkspace(key:string){tab.value=key;closeDetails();if(window.matchMedia('(max-width:900px)').matches)navigationCollapsed.value=true}
 watch(areaFilter,()=>{sectionFilter.value=''})
 watch([search,nodeStatus,areaFilter,sectionFilter],()=>{nodePage.value=1;hoverNode.value=null;locatedNode.value=null})
 watch([search,orderFilter],()=>{orderPage.value=1;selectedIds.value=[]})
@@ -222,9 +230,9 @@ watch(tab,value=>{if(value==='settings')loadProfile()})
 </script>
 
 <template>
-<div class="work-app design-app">
- <aside class="work-sidebar" :inert="busy"><button class="d-brand" aria-label="智巡管廊首页" @click="tab='overview'"><BrandMark/></button><nav><button v-for="n in navItems" :key="n.key" :class="{active:tab===n.key}" :aria-label="n.name" :title="n.name" @click="tab=n.key;closeDetails()"><Icon :name="n.icon"/><span class="nav-tooltip">{{n.name}}</span></button></nav><button class="d-profile-nav" aria-label="个人设置" title="个人设置" :class="{active:tab==='settings'}" @click="tab='settings';closeDetails()"><Icon name="user"/></button></aside>
- <header class="d-topbar"><div class="d-breadcrumb"><b>隧检智控</b><span>/</span>{{titleMap[tab]||pageTitle}}</div><div class="d-header-actions"><div class="d-zones"><button v-for="a in primaryAreas" :key="a.id" :class="{selected:areaFilter===String(a.id)}" @click="areaFilter=String(a.id)">{{a.name}}</button></div><span class="d-connection" :title="isDemo?'平台预览':'后端数据连接'"><i class="dot" :class="{gray:liveError}"></i>{{liveError?'连接异常':'实时连接'}}</span><label class="d-take-mode">抢单模式<button class="d-switch" :class="{on:takeMode}" type="button" role="switch" :aria-checked="takeMode" aria-label="抢单模式" @click="takeMode=!takeMode"><i></i></button></label><div class="d-global-search"><Icon name="search"/><input v-model="search" placeholder="搜索节点编号或区域..." aria-label="全局搜索"/><kbd>⌘ K</kbd></div><button class="d-notice" aria-label="消息通知" @click="noticeMenu=!noticeMenu;userMenu=false"><Icon name="bell"/><sup v-if="unread">{{unread>99?'99+':unread}}</sup></button><span v-if="viewRole==='readonly'" class="d-pill blue">只读模式</span><button class="d-user" aria-label="用户菜单" @click="userMenu=!userMenu;noticeMenu=false"><span class="d-avatar"><img v-if="profile.avatarBlob" :src="profile.avatarBlob" alt="个人头像"/><template v-else>{{displayName.slice(0,1)}}</template></span><span><b>{{displayName}}</b><small>{{viewRole==='readonly'?'只读':viewRole==='supervisor'?'运维主管':roleName[identity.role]}}</small></span><Icon name="chevron"/></button></div>
+<div class="work-app design-app" :class="{'nav-collapsed':navigationCollapsed}">
+ <WorkspaceNavigation :items="navItems" :active="tab" :collapsed="navigationCollapsed" :inert="busy" @toggle="navigationCollapsed=!navigationCollapsed" @navigate="navigateWorkspace" @settings="navigateWorkspace('settings')"/>
+ <header class="d-topbar"><div class="d-breadcrumb"><b>智巡管廊</b><span>/</span>{{titleMap[tab]||pageTitle}}</div><div class="d-header-actions"><label class="operations-area"><span>业务区域</span><select v-model="areaFilter" aria-label="业务区域"><option value="">全部授权区域</option><option v-for="a in areas" :key="a.id" :value="String(a.id)">{{a.name}}</option></select></label><span class="d-connection" :title="isDemo?'平台预览':'后端数据连接'"><i class="dot" :class="{gray:liveError}"></i>{{liveError?'连接异常':'实时连接'}}</span><label class="d-take-mode">抢单模式<button class="d-switch" :class="{on:takeMode}" type="button" role="switch" :aria-checked="takeMode" aria-label="抢单模式" @click="takeMode=!takeMode"><i></i></button></label><div class="d-global-search"><Icon name="search"/><input v-model="search" placeholder="搜索节点编号或区域..." aria-label="全局搜索"/><kbd>⌘ K</kbd></div><button class="d-notice" aria-label="消息通知" @click="noticeMenu=!noticeMenu;userMenu=false"><Icon name="bell"/><sup v-if="unread">{{unread>99?'99+':unread}}</sup></button><span v-if="viewRole==='readonly'" class="d-pill blue">只读模式</span><button class="d-user" aria-label="用户菜单" @click="userMenu=!userMenu;noticeMenu=false"><span class="d-avatar"><img v-if="profile.avatarBlob" :src="profile.avatarBlob" alt="个人头像"/><template v-else>{{displayName.slice(0,1)}}</template></span><span><b>{{displayName}}</b><small>{{viewRole==='readonly'?'只读':viewRole==='supervisor'?'运维主管':roleName[identity.role]}}</small></span><Icon name="chevron"/></button></div>
  <div v-if="userMenu" class="d-user-menu"><button @click="tab='settings';settingTab='基本信息';userMenu=false"><Icon name="user"/>个人信息</button><button @click="roleMenu=!roleMenu"><Icon name="refresh"/>切换角色<Icon name="arrow" class="push"/></button><div v-if="roleMenu" class="d-role-list"><button v-for="r in [{key:'manager',name:'值班长'},{key:'supervisor',name:'运维主管'},{key:'readonly',name:'只读'}]" :class="{chosen:viewRole===r.key}" :disabled="r.key!=='readonly'&&!['ADMIN','MANAGER'].includes(identity.role)" @click="profileRole(r.key)"><i class="dot"></i>{{r.name}}<Icon v-if="viewRole===r.key" class="push" name="check"/></button></div><button @click="moreMenu=!moreMenu;userMenu=false"><Icon name="edit"/>系统设置</button><div class="d-menu-line"></div><button class="red" @click="logout"><Icon name="logout"/>退出登录</button></div>
  <div v-if="noticeMenu" class="d-notice-menu"><h3>消息通知 <small>{{unread}} 条未读</small></h3><button v-for="n in visibleNotifications.slice(0,5)" @click="readMessage(n)"><i class="dot" :class="{gray:n.is_read}"></i><span><b>{{n.title}}</b><small>{{displayMessage(n.content)}}</small></span></button><button class="d-link" @click="tab='notifications';noticeMenu=false">查看全部消息 <Icon name="arrow"/></button></div>
  <div v-if="moreMenu" class="d-more-menu"><div class="work-title"><h3>功能中心</h3><button aria-label="关闭功能中心" @click="moreMenu=false"><Icon name="close"/></button></div><button v-for="n in navigation" @click="tab=n.key;moreMenu=false;closeDetails()"><Icon :name="n.key==='statistics'?'chart':n.key==='audit'?'history':n.key==='users'?'user':'grid'"/>{{n.name}}<Icon class="push" name="arrow"/></button></div>
