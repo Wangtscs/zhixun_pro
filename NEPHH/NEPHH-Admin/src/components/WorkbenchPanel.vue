@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, useId, watch } from 'vue'
-import { tokenKey } from '../auth'
-import { request, statusName } from '../business'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, watch } from 'vue'
+import { tokenKey, sessionChangedEvent } from '../auth'
+import { request, severityName, statusName } from '../business'
+import EvidencePreview from './EvidencePreview.vue'
+import { workbenchPreviewTarget, type WorkbenchPreviewTarget } from '../workbench-preview'
 
 type Item = Record<string, unknown>
 type QueueKey = 'urgentAlarms' | 'unassigned' | 'review' | 'overdue' | 'patrol' | 'assigned' | 'processing'
@@ -17,7 +19,9 @@ class WorkbenchError extends Error {
 }
 
 const props = defineProps<{ areaId: string; role: string; readonly: boolean; refreshKey?: number }>()
-const headingId = useId()
+const headingId = useId(), previewId = useId()
+const previewTarget = ref<WorkbenchPreviewTarget | null>(null), previewRefresh = ref(0)
+let originButton: HTMLButtonElement | null = null
 const emit = defineEmits<{
   openOrder: [id: number]; openAlarm: [id: number]; openPatrol: [id: number]; openNode: [id: number]; space: []
 }>()
@@ -73,12 +77,36 @@ function itemTitle(item: Item): string {
     : selected.value === 'patrol' ? text(item.name, '巡检任务') : text(item.title, '工单')
 }
 function itemId(item: Item): number | null { return positiveId(item.id) }
-function openItem(item: Item): void {
-  const id = itemId(item)
-  if (id === null) return
-  if (selected.value === 'urgentAlarms') emit('openAlarm', id)
-  else if (selected.value === 'patrol') emit('openPatrol', id)
-  else emit('openOrder', id)
+async function selectItem(item: Item, event: MouseEvent): Promise<void> {
+  previewTarget.value = workbenchPreviewTarget(selected.value, item, props.areaId)
+  originButton = event.currentTarget instanceof HTMLButtonElement ? event.currentTarget : null
+  await nextTick()
+  if (previewTarget.value) document.getElementById(previewId)?.focus()
+}
+function clearPreview(): void { previewTarget.value = null; originButton = null }
+async function closePreview(): Promise<void> {
+  const button = originButton
+  clearPreview()
+  await nextTick()
+  if (button?.isConnected) button.focus()
+}
+function openPreview(target: WorkbenchPreviewTarget): void {
+  if (stale.value || !previewTarget.value || target.kind !== previewTarget.value.kind || target.id !== previewTarget.value.id) return
+  if (target.kind === 'alarm') emit('openAlarm', target.id)
+  else if (target.kind === 'patrol') emit('openPatrol', target.id)
+  else emit('openOrder', target.id)
+}
+function itemState(item: Item): string {
+  if (selected.value === 'urgentAlarms') return '高等级 · 未恢复'
+  return String(statusName[String(item.status)] || '状态待确认')
+}
+function itemPriority(item: Item): string {
+  return selected.value === 'patrol' || selected.value === 'urgentAlarms' ? '' : String(severityName[String(item.priority)] || '优先级未提供')
+}
+function itemTime(item: Item): string {
+  if (selected.value === 'urgentAlarms') return formatTime(item.triggered_at)
+  if (selected.value === 'patrol') return formatTime(item.created_at)
+  return item.due_at ? formatTime(item.due_at) : '未设置截止时间'
 }
 
 function validate(value: WorkbenchResponse, key: QueueKey, requestedOffset: number): WorkbenchResponse {
@@ -106,6 +134,7 @@ async function load(): Promise<void> {
   if (!['ADMIN', 'MANAGER', 'INSPECTOR'].includes(role.value)) {
     loading.value = false
     response.value = null
+    clearPreview()
     error.value = role.value ? '当前账号角色不能访问任务工作台' : ''
     errorKind.value = role.value ? 'unauthorized' : null
     return
@@ -117,7 +146,7 @@ async function load(): Promise<void> {
   const isDemo = Boolean(sessionStorage.getItem('nephh-demo'))
   const token = sessionStorage.getItem(tokenKey) || ''
   const nextIdentity = `${isDemo}|${token}`
-  if (identityKey !== nextIdentity) { response.value = null; identityKey = nextIdentity }
+  if (identityKey !== nextIdentity) { response.value = null; clearPreview(); identityKey = nextIdentity }
   demo.value = isDemo
   loading.value = true
   error.value = ''
@@ -129,6 +158,8 @@ async function load(): Promise<void> {
     if (disposed || currentRevision !== revision || requestedScope !== scopeKey.value ||
         token !== (sessionStorage.getItem(tokenKey) || '') || isDemo !== Boolean(sessionStorage.getItem('nephh-demo'))) return
     response.value = validate(data, requestedKey, requestedOffset)
+    if (previewTarget.value && !data.queue.items.some(item => itemId(item) === previewTarget.value?.id)) clearPreview()
+    previewRefresh.value++
     stale.value = false
   } catch (failure) {
     if (disposed || currentRevision !== revision || requestedScope !== scopeKey.value ||
@@ -136,7 +167,7 @@ async function load(): Promise<void> {
     const status = failure instanceof Error && 'status' in failure ? Number(failure.status) : 0
     const denied = status === 401 || status === 403
     errorKind.value = denied ? 'unauthorized' : 'error'
-    if (denied) { response.value = null; stale.value = false }
+    if (denied) { response.value = null; stale.value = false; clearPreview() }
     else stale.value = response.value !== null
     error.value = status === 401 ? '登录已失效，请重新登录后读取待办'
       : denied ? '当前账号没有此区域或队列的访问权限，请重新确认授权'
@@ -148,16 +179,22 @@ async function load(): Promise<void> {
 
 function selectQueue(key: QueueKey): void {
   if (!allowedQueues.value.includes(key)) return
+  clearPreview()
   selected.value = key
   offset.value = 0
   void load()
 }
-function nextPage(): void { if (!loading.value && queuePage.value?.hasMore) { offset.value += limit; void load() } }
-function previousPage(): void { if (!loading.value && offset.value > 0) { offset.value = Math.max(0, offset.value - limit); void load() } }
+function nextPage(): void { if (!loading.value && queuePage.value?.hasMore) { clearPreview(); offset.value += limit; void load() } }
+function previousPage(): void { if (!loading.value && offset.value > 0) { clearPreview(); offset.value = Math.max(0, offset.value - limit); void load() } }
 watch(()=>props.refreshKey,()=>{if(!loading.value)void load()})
 function resumeVisible(): void { if (!document.hidden && !loading.value) void load() }
 
+function resetSession(): void {
+  revision++; response.value = null; clearPreview(); loading.value = false; stale.value = false
+  error.value = '账号会话已变化，请刷新待办确认当前范围'; errorKind.value = null
+}
 watch(scopeKey, () => {
+  clearPreview()
   revision++
   response.value = null
   offset.value = 0
@@ -170,37 +207,43 @@ watch(scopeKey, () => {
 onMounted(() => {
   timer = setInterval(() => { if (!document.hidden && !loading.value) void load() }, 15000)
   document.addEventListener('visibilitychange', resumeVisible)
+  window.addEventListener(sessionChangedEvent, resetSession)
+  window.addEventListener('storage', resetSession)
 })
 onBeforeUnmount(() => {
   disposed = true
   revision++
   clearInterval(timer)
   document.removeEventListener('visibilitychange', resumeVisible)
+  window.removeEventListener(sessionChangedEvent, resetSession)
+  window.removeEventListener('storage', resetSession)
 })
 </script>
 
 <template>
   <section class="workbench" :aria-labelledby="headingId" :aria-busy="loading">
-    <header class="workbench__header"><div><p class="workbench__eyebrow">下一步工作</p><h2 :id="headingId">{{ role === 'INSPECTOR' ? '我的任务工作台' : '区域任务工作台' }}</h2><p class="workbench__meta">{{ scopeDescription }}<span v-if="readonly"> · 只读查看</span></p></div><div class="workbench__actions"><button type="button" @click="emit('space')">空间定位</button><button type="button" :disabled="loading || !role" @click="load">{{ loading ? '读取中…' : '刷新待办' }}</button></div></header>
-    <p v-if="demo" class="workbench__demo"><strong>独立演示数据</strong> · 当前数字与队列仅来自内存样本，不代表真实设备或业务记录。</p>
-    <p class="workbench__explanation">数量由同一服务器范围计算，不受旧列表条数上限影响。队列可能重叠，不相加作为总待办。</p>
-    <div v-if="role" class="workbench__cards"><button v-for="key in allowedQueues" :key="key" type="button" :class="{ selected: selected === key, urgent: key === 'urgentAlarms', warning: key === 'overdue' }" :aria-pressed="selected === key" @click="selectQueue(key)"><span>{{ labels[key] }}</span><strong>{{ response ? response.counts[key] : '—' }}</strong><small>{{ descriptions[key] }}</small></button></div>
-    <p v-if="error" class="workbench__error" role="status"><strong>{{ errorKind === 'unauthorized' ? '访问受限' : stale ? '刷新失败，快照已过期' : '暂时无法读取待办' }}</strong>：{{ error }}<a v-if="error.includes('重新登录')" href="/login">重新登录</a></p>
-    <p v-if="response" class="workbench__snapshot" :class="{ stale }">{{ stale ? '历史快照，非当前实时状态' : '服务器快照' }}：{{ formatTime(response.serverTime) }}（上海时间）。{{ loading ? '正在读取，请勿将旧快照视作新结果。' : '每15秒刷新；跨页期间业务记录可能变化。' }}</p>
-    <div class="workbench__queue">
-      <header><h3>{{ labels[selected] }}</h3><span v-if="queuePage">共 {{ queuePage.total }} 项</span><span v-else>{{ loading ? '正在读取队列…' : '尚无已确认的队列结果' }}</span></header>
-      <p v-if="!role" class="workbench__empty">正在确认账号角色与业务范围。</p>
-      <p v-else-if="errorKind === 'unauthorized'" class="workbench__empty">已清除当前范围的旧数据。请确认账号、区域授权和登录状态。</p>
-      <p v-else-if="loading && !queuePage" class="workbench__empty" role="status">正在读取服务器待办，请稍候。</p>
-      <p v-else-if="!response && error" class="workbench__empty">当前没有可用快照。可点击“刷新待办”重试，不将错误显示为零任务。</p>
-      <p v-else-if="response && !response.scope.areaIds.length" class="workbench__empty">当前账号尚无授权业务区域，请联系管理员分配区域。</p>
-      <p v-else-if="queuePage && !queuePage.items.length" class="workbench__empty">{{ queuePage.total === 0 ? '当前范围暂无此类待办。' : '此页已无记录，业务状态可能变化；请返回上一页或刷新。' }}</p>
-      <ul v-else-if="queuePage" class="workbench__items"><li v-for="item in queuePage.items" :key="String(item.id)"><button type="button" :disabled="itemId(item) === null" @click="openItem(item)"><div><p class="workbench__item-meta"><span>#{{ item.id }}</span><span>{{ selected === 'patrol' ? text(item.assignee_name, '执行人未提供') : text(item.node_code || item.code, '节点未提供') }}</span><span>区域 #{{ item.area_id }}</span></p><h4>{{ itemTitle(item) }}</h4><p class="workbench__item-meta"><span>{{ selected === 'urgentAlarms' ? '触发于 '+formatTime(item.triggered_at) : selected === 'patrol' ? '创建于 '+formatTime(item.created_at) : '截止 '+formatTime(item.due_at) }}</span><span v-if="selected !== 'urgentAlarms' && selected !== 'patrol'">{{ text(item.assignee_name, '未派发') }}</span></p></div><span class="workbench__status">{{ selected === 'urgentAlarms' ? '未恢复 · 查看告警' : String(statusName[String(item.status)] || item.status || '查看详情') }}</span></button></li></ul>
-      <footer class="workbench__pagination"><span v-if="queuePage">第 {{ Math.floor(queuePage.offset / limit) + 1 }} 页 · 本页 {{ queuePage.items.length }} 项 / 共 {{ queuePage.total }} 项</span><span v-else>每页20项 · 计数以服务器为准</span><div><button type="button" :disabled="loading || offset === 0 || errorKind === 'unauthorized'" @click="previousPage">上一页</button><button type="button" :disabled="loading || !queuePage?.hasMore || errorKind === 'unauthorized'" @click="nextPage">下一页</button></div></footer>
+    <header class="workbench__header"><div><h2 :id="headingId">{{ role === 'INSPECTOR' ? '我的待办' : '区域待办' }}</h2><p class="workbench__meta">{{scopeDescription}}<strong v-if="readonly"> · 只读查看</strong></p></div><div class="workbench__actions"><button type="button" @click="emit('space')">空间定位</button><button type="button" :disabled="loading || !role" @click="load">{{loading?'读取中…':'刷新待办'}}</button></div></header>
+    <p v-if="demo" class="workbench__notice"><strong>独立演示数据</strong> · 当前数字与队列来自内存样本，不代表真实业务记录。</p>
+    <nav v-if="role" class="workbench__queues" aria-label="待办队列"><button v-for="key in allowedQueues" :key="key" type="button" :class="{selected:selected===key}" :aria-pressed="selected===key" @click="selectQueue(key)">{{labels[key]}}<strong>{{response?response.counts[key]:'—'}}</strong></button></nav>
+    <p v-if="error" class="workbench__error" role="alert"><strong>{{errorKind==='unauthorized'?'访问受限':stale?'刷新失败，快照已过期':'暂时无法读取待办'}}</strong>：{{error}}<a v-if="error.includes('重新登录')" href="/login">重新登录</a></p>
+    <div class="workbench__scope"><span v-if="response" :class="{stale}">{{stale?'过期快照':'更新于'}} {{formatTime(response.serverTime)}}（上海时间）{{loading?' · 正在刷新':''}}</span><details><summary>范围与计数说明</summary><p>{{descriptions[selected]}}。数量由服务器按当前权限范围计算；队列可能重叠，不相加为总待办。每15秒刷新，跨页期间业务可能变化。</p></details></div>
+    <div class="workbench__body" :class="{'has-preview':previewTarget}">
+      <div class="workbench__queue">
+        <header><h3>{{labels[selected]}}</h3><span v-if="queuePage">共 {{queuePage.total}} 项</span><span v-else>{{loading?'读取队列中…':'数量尚未确认'}}</span></header>
+        <p v-if="!role" class="workbench__empty">正在确认账号角色与业务范围。</p>
+        <p v-else-if="errorKind==='unauthorized'" class="workbench__empty">已清除旧数据，请确认账号与区域授权。</p>
+        <p v-else-if="loading&&!queuePage" class="workbench__empty" role="status">正在读取服务器待办…</p>
+        <p v-else-if="!response&&error" class="workbench__empty">当前没有可用快照，请刷新重试。读取失败不代表零任务。</p>
+        <p v-else-if="response&&!response.scope.areaIds.length" class="workbench__empty">尚无授权业务区域，请联系管理员分配。</p>
+        <p v-else-if="queuePage&&!queuePage.items.length" class="workbench__empty">{{queuePage.total===0?'当前范围暂无此类待办。':'此页已无记录，请返回上一页或刷新。'}}</p>
+        <div v-else-if="queuePage" class="workbench__table-scroll"><table><caption class="workbench__sr">{{labels[selected]}}事项列表，选择事项读取详情预览</caption><thead><tr><th scope="col">事项</th><th scope="col">节点</th><th scope="col">优先级 / 状态</th><th scope="col">{{selected==='urgentAlarms'?'触发时间':selected==='patrol'?'创建时间':'截止时间'}}</th><th scope="col">执行人</th></tr></thead><tbody><tr v-for="item in queuePage.items" :key="String(item.id)" :class="{'is-selected':previewTarget?.id===itemId(item)}"><td><button type="button" class="workbench__record" :disabled="!workbenchPreviewTarget(selected,item,areaId)" :aria-expanded="previewTarget?.id===itemId(item)" :aria-controls="previewId" @click="selectItem(item,$event)"><span>{{itemTitle(item)}}</span><small>#{{item.id}}</small></button></td><td>{{text(item.node_code||item.code,selected==='patrol'?'点位见详情':'节点未提供')}}</td><td><span :class="{'workbench__uncertain':itemState(item)==='状态待确认'}">{{itemState(item)}}</span><small v-if="itemPriority(item)">{{itemPriority(item)}}</small></td><td>{{itemTime(item)}}</td><td>{{selected==='urgentAlarms'?'见关联工单':text(item.assignee_name,item.status==='DRAFT'?'未派发':'执行人未提供')}}</td></tr></tbody></table></div>
+        <footer class="workbench__pagination"><span v-if="queuePage">第 {{Math.floor(queuePage.offset/limit)+1}} 页 · 本页 {{queuePage.items.length}} 项 / 共 {{queuePage.total}} 项</span><span v-else>每页20项</span><div><button type="button" :disabled="loading||offset===0||errorKind==='unauthorized'" @click="previousPage">上一页</button><button type="button" :disabled="loading||!queuePage?.hasMore||errorKind==='unauthorized'" @click="nextPage">下一页</button></div></footer>
+      </div>
+      <EvidencePreview :id="previewId" :target="previewTarget" :scope-key="scopeKey" :readonly="readonly" :refresh-key="previewRefresh" :stale="stale" @close="closePreview" @open="openPreview" />
     </div>
   </section>
 </template>
 
 <style scoped>
-.workbench{margin-bottom:24px;color:var(--ops-text,var(--text));font-size:14px;line-height:1.5}.workbench__header{display:flex;align-items:start;justify-content:space-between;gap:16px;margin-bottom:16px}.workbench__header h2{margin:0;font-size:22px;line-height:1.5}.workbench__eyebrow{font-size:12px;color:var(--ops-accent,var(--teal));margin:0 0 5px}.workbench__meta,.workbench__explanation,.workbench__snapshot{font-size:12px;line-height:1.7;color:var(--ops-muted,var(--muted));margin:7px 0 14px}.workbench__actions{display:flex;gap:8px;flex-wrap:wrap}.workbench button{font:inherit}.workbench__actions button,.workbench__pagination button{min-height:38px;padding:8px 12px;font-size:12px;border:1px solid var(--ops-line,var(--line));border-radius:7px;background:var(--ops-raised,var(--panel));color:inherit}.workbench button:focus-visible,.workbench a:focus-visible{outline:3px solid var(--ops-accent,var(--teal));outline-offset:3px}.workbench button:disabled{opacity:.6;cursor:not-allowed}.workbench__demo{padding:12px 16px;border:1px solid var(--ops-warning,#f2c77e);background:var(--ops-warning-bg,#403423);color:var(--ops-warning,#f2c77e);font-size:12px;border-radius:7px}.workbench__cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}.workbench__cards button{text-align:left;min-height:136px;border:1px solid var(--ops-line,var(--line));border-radius:9px;padding:16px;background:var(--ops-surface,var(--panel));color:inherit}.workbench__cards button:hover,.workbench__cards button.selected{border-color:var(--ops-accent,var(--teal))}.workbench__cards button.selected{box-shadow:inset 0 3px var(--ops-accent,var(--teal))}.workbench__cards strong{display:block;font:30px/1.5 "Cascadia Code",Consolas,monospace;font-variant-numeric:tabular-nums;margin:5px 0}.workbench__cards small{display:block;color:var(--ops-muted,var(--muted));font-size:12px;line-height:1.6}.workbench__cards .urgent>span{color:var(--ops-danger,#ff9da4)}.workbench__cards .warning>span{color:var(--ops-warning,#f2c77e)}.workbench__error{padding:12px 16px;border:1px solid var(--ops-danger,#ff9da4);background:var(--ops-danger-bg,#43272f);color:var(--ops-danger,#ff9da4);border-radius:7px}.workbench__error a{color:inherit;text-decoration:underline;margin-left:12px}.workbench__snapshot.stale{color:var(--ops-warning,#f2c77e)}.workbench__queue{border:1px solid var(--ops-line,var(--line));border-radius:9px;background:var(--ops-surface,var(--panel));overflow:hidden}.workbench__queue>header{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--ops-line,var(--line))}.workbench__queue h3{font-size:18px;margin:0}.workbench__queue>header>span{font-size:12px;color:var(--ops-muted,var(--muted))}.workbench__items{list-style:none;margin:0;padding:0}.workbench__items li+li{border-top:1px solid var(--ops-line,var(--line))}.workbench__items button{width:100%;border:0;border-radius:0;background:transparent;color:inherit;display:flex;justify-content:space-between;text-align:left;align-items:center;gap:16px;padding:16px 20px;cursor:pointer}.workbench__items button:hover{background:var(--ops-raised,var(--panel))}.workbench__items h4{font-size:14px;line-height:1.6;font-weight:600;margin:6px 0}.workbench__item-meta{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--ops-muted,var(--muted));margin:0;line-height:1.7}.workbench__status{font-size:12px;white-space:nowrap;border:1px solid var(--ops-line,var(--line));padding:5px 8px;border-radius:6px}.workbench__empty{padding:32px 20px;margin:0;text-align:center;color:var(--ops-muted,var(--muted));font-size:14px;line-height:1.7}.workbench__pagination{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid var(--ops-line,var(--line));gap:12px;flex-wrap:wrap}.workbench__pagination>span{font-size:12px;color:var(--ops-muted,var(--muted))}.workbench__pagination>div{display:flex;gap:8px}@media(max-width:600px){.workbench__header{flex-direction:column}.workbench__cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.workbench__cards button{padding:12px;min-height:130px}.workbench__items button{padding:14px 12px;flex-wrap:wrap}.workbench__queue>header,.workbench__pagination{padding:14px 12px}.workbench__status{white-space:normal}}
+.workbench{margin-bottom:28px;color:var(--ops-text,var(--text));font-size:14px;line-height:1.6}.workbench__header{display:flex;justify-content:space-between;gap:16px;align-items:start}.workbench h2{margin:0;font-size:21px;font-weight:600;letter-spacing:.02em}.workbench__meta,.workbench__scope{font-size:12px;color:var(--ops-muted,var(--muted))}.workbench__meta{margin:4px 0 18px}.workbench__actions{display:flex;gap:8px}.workbench button{font:inherit;color:inherit;cursor:pointer}.workbench__actions button,.workbench__pagination button{font-size:12px;background:transparent;border:1px solid var(--ops-line,var(--line));border-radius:3px;padding:7px 10px;min-height:36px}.workbench :is(button,a,summary):focus-visible{outline:2px solid var(--ops-accent,var(--teal));outline-offset:3px}.workbench button:disabled{opacity:.55;cursor:not-allowed}.workbench__queues{display:flex;flex-wrap:wrap;gap:0 24px;border-bottom:1px solid var(--ops-line,var(--line));margin-bottom:12px}.workbench__queues button{position:relative;display:flex;align-items:center;gap:10px;background:transparent;border:0;border-bottom:2px solid transparent;padding:12px 0;min-height:46px;font-size:13px}.workbench__queues button.selected{border-bottom-color:var(--ops-accent,var(--teal));color:var(--ops-accent,var(--teal));font-weight:600}.workbench__queues strong{font-variant-numeric:tabular-nums;font-size:13px;font-weight:600;min-width:16px}.workbench__scope{display:flex;justify-content:space-between;gap:12px;align-items:start;margin-bottom:20px}.workbench__scope details{max-width:420px}.workbench__scope summary{cursor:pointer;text-align:right}.workbench__scope p{margin:8px 0}.workbench__notice,.workbench__error{padding:9px 0 9px 12px;border-left:3px solid var(--ops-warning,#835200);font-size:13px}.workbench__error{border-color:var(--ops-danger,#ad3340)}.workbench__error a{margin-left:12px;color:inherit;text-decoration:underline}.workbench__scope .stale,.workbench__uncertain{color:var(--ops-warning,#835200);font-weight:600}.workbench__body{display:grid;grid-template-columns:minmax(0,1fr) minmax(270px,30%);gap:24px;align-items:start}.workbench__queue{min-width:0}.workbench__queue>header{display:flex;align-items:center;justify-content:space-between;margin:0 0 10px;gap:12px}.workbench h3{margin:0;font-size:15px;font-weight:600}.workbench__queue>header>span{font-size:12px;color:var(--ops-muted,var(--muted))}.workbench__table-scroll{overflow-x:auto}.workbench table{border-collapse:collapse;width:100%;min-width:720px;text-align:left;font-size:14px}.workbench th{font-weight:500;color:var(--ops-muted,var(--muted));font-size:12px;white-space:nowrap;border-bottom:1px solid var(--ops-line,var(--line));padding:9px 10px}.workbench td{border-bottom:1px solid var(--ops-line,var(--line));padding:10px;vertical-align:top;overflow-wrap:anywhere;max-width:180px}.workbench td:first-child{width:33%;padding-left:0}.workbench th:first-child{padding-left:0}.workbench td:nth-child(4){min-width:115px;font-variant-numeric:tabular-nums}.workbench td small{display:block;color:var(--ops-muted,var(--muted));font-size:12px;margin-top:3px}.workbench .workbench__record{display:block;width:100%;text-align:left;border:0;border-radius:0;background:transparent;padding:0;font-size:14px;line-height:1.7}.workbench__record>span{display:block}.workbench__record:hover>span{text-decoration:underline;text-underline-offset:3px}.workbench tr.is-selected .workbench__record>span{color:var(--ops-accent,var(--teal));font-weight:600}.workbench tr.is-selected td:first-child{box-shadow:inset 2px 0 var(--ops-accent,var(--teal));padding-left:10px}.workbench__empty{margin:0;padding:38px 12px;text-align:center;color:var(--ops-muted,var(--muted));border-block:1px solid var(--ops-line,var(--line))}.workbench__pagination{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:14px;flex-wrap:wrap}.workbench__pagination>span{font-size:12px;color:var(--ops-muted,var(--muted))}.workbench__pagination>div{display:flex;gap:8px}.workbench__sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(max-width:1100px){.workbench__body{grid-template-columns:minmax(0,1fr)}.workbench__body.has-preview>.workbench__queue{display:none}}@media(max-width:600px){.workbench__header{flex-direction:column;gap:0}.workbench__actions{margin-bottom:12px}.workbench__queues{gap:0 18px}.workbench__scope{flex-direction:column}.workbench__scope summary{text-align:left}.workbench__pagination{align-items:start}}
 </style>
