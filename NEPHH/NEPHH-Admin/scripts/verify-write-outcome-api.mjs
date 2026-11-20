@@ -3,7 +3,7 @@ import { randomBytes } from 'node:crypto'
 import { readFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { createWriteWorkflow, provesOrderWrite } from '../src/write-workflow.ts'
+import { createWriteWorkflow, provesOrderWrite, orderDeadline } from '../src/write-workflow.ts'
 
 if (process.argv.includes('--help')) {
   console.log('API_BASE=http://127.0.0.1:18081/api ALLOW_ISOLATED_WRITES=1 ADMIN_USERNAME=... ADMIN_PASSWORD=... node --experimental-strip-types scripts/verify-write-outcome-api.mjs\nUses the actual write-workflow.ts helper and real isolated HTTP records. A caller-generated outcomeUnknown error simulates a lost response after a successful POST; does not interrupt the server/network. No browser or VM.')
@@ -117,12 +117,16 @@ if (process.argv.includes('--help')) {
     const worker = await account('worker', 'INSPECTOR', area.id)
     const order = await createOrder('workflow')
     const unchangedOrder = await createOrder('unchanged-control')
+    // Match Workspace's actual submission normalization instead of relying on a null deadline.
+    const deadline = orderDeadline(new Date(Date.now() + 1800000).toISOString())
+    assert.ok(deadline)
+    assert.equal(Date.parse(deadline) % 1000, 0)
 
     // Negative control: an actual unchanged GET must not unlock an already-unknown operation.
     const baseline = [await send('/business/orders/' + unchangedOrder.id, manager.token)]
     const unknown = createWriteWorkflow()
     unknown.resumeUnknown()
-    const unchangedBody = { assigneeId: worker.id, participantIds: [worker.id], priority: 'HIGH', dueAt: null, note: `T12-${suffix}-unchanged` }
+    const unchangedBody = { assigneeId: worker.id, participantIds: [worker.id], priority: 'HIGH', dueAt: deadline, note: `T12-${suffix}-unchanged` }
     let negativeWrites = 0, negativeCommits = 0
     const negative = {
       current: () => true,
@@ -139,7 +143,7 @@ if (process.argv.includes('--help')) {
     assert.equal(negativeCommits, 0)
     unknown.abandon()
 
-    await lostResponseTransition(manager, order, 'assign', { assigneeId: worker.id, participantIds: [worker.id], priority: 'HIGH', dueAt: null, note: `T12-${suffix}-assign` }, 'ASSIGNED', 'assign')
+    await lostResponseTransition(manager, order, 'assign', { assigneeId: worker.id, participantIds: [worker.id], priority: 'HIGH', dueAt: deadline, note: `T12-${suffix}-assign` }, 'ASSIGNED', 'assign')
     await lostResponseTransition(worker, order, 'action', { action: 'accept', note: `T12-${suffix}-accept` }, 'ACCEPTED', 'accept')
     await lostResponseTransition(worker, order, 'action', { action: 'start', note: `T12-${suffix}-start` }, 'PROCESSING', 'start')
     await lostResponseTransition(worker, order, 'action', { action: 'submit', result: '  隔离首次处理结果  ', readings: '温度0℃为测试输入，非现场实测', note: `T12-${suffix}-submit` }, 'REVIEW', 'submit')
@@ -148,7 +152,7 @@ if (process.argv.includes('--help')) {
     await lostResponseTransition(manager, order, 'action', { action: 'approve', note: `T12-${suffix}-approve` }, 'COMPLETED', 'approve')
     assert.equal((await api('/orders/' + order.id)).status, 'COMPLETED')
     assert.equal((await api('/orders/' + unchangedOrder.id)).status, 'DRAFT')
-    Object.assign(evidence, { transitions, unchangedRealGetStayedLocked: true, unchangedControlPosts: 0, automaticSecondPosts: 0 })
+    Object.assign(evidence, { transitions, secondPrecisionDeadline: true, unchangedRealGetStayedLocked: true, unchangedControlPosts: 0, automaticSecondPosts: 0 })
   } finally {
     for (const order of orders) {
       try {

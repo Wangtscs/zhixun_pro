@@ -26,3 +26,7 @@
 ## 验证范围
 
 当前证据保存在 `NEPHH/docs/verification`。构建、单元测试、隔离业务闭环、模拟器和真实设备分别记录；历史记录不能替代当前版本验收。
+
+## 网页优化阶段状态
+
+当前任务逐项状态以[执行记录](NEPHH/docs/verification/task-status.md)为准，最新[代码/API回归](NEPHH/docs/verification/t15-code-api-regression.md)记录87项网页测试、54项Java测试及隔离业务证据。T09–T14实现检查已通过，浏览器交互仍待验收；T15整体及T16最终交付未完成。用户要求只使用Codex内置预览且当前继续代码/API；不自动启动外部浏览器或鸿蒙虚拟机。此前鸿蒙构建证据不等于设备验收。
