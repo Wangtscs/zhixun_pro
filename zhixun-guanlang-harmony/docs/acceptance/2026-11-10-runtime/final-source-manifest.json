@@ -1,0 +1,110 @@
+[
+  {
+    "path": "entry/src/main/ets/common/Feedback.ets",
+    "sha256": "85f34b5a2572bb651df68743fc1658da234a57b322ca4470a708d3236e9dd857"
+  },
+  {
+    "path": "entry/src/main/ets/common/Theme.ets",
+    "sha256": "95b13342ad1ed8becb4c4470909d8155814b48b4a6bfb3317f5a3e00c37ea2bc"
+  },
+  {
+    "path": "entry/src/main/ets/common/Ui.ets",
+    "sha256": "f4afede873914ac0ee0c255aa18b966295e57da919347b173e025c7ae644d74a"
+  },
+  {
+    "path": "entry/src/main/ets/entryability/EntryAbility.ets",
+    "sha256": "5cd678358d218a12dc9fa12caef1b9f787ea939fb1dec6857070ae8615d2a5c8"
+  },
+  {
+    "path": "entry/src/main/ets/features/assistant/AssistantPage.ets",
+    "sha256": "6b967e238bf0a260d752cb074aa4724f5ca09b9b19403b5ec9d18b81790fe956"
+  },
+  {
+    "path": "entry/src/main/ets/features/auth/LoginPage.ets",
+    "sha256": "997fa4bcaff34b24523d4914cbfe10df5eab6737657af8881e5db1307186cb1d"
+  },
+  {
+    "path": "entry/src/main/ets/features/auth/RecoveryPage.ets",
+    "sha256": "b2f1c43807a8f956cda79655dd70fe242349bfda543e2a3c1fa9688cc35efa38"
+  },
+  {
+    "path": "entry/src/main/ets/features/inspection/InspectionPage.ets",
+    "sha256": "7367eebf89a5c62978014d0d58eec5a320ecf879eec6ab2f72af783bb2cbba0f"
+  },
+  {
+    "path": "entry/src/main/ets/features/inspection/NodeCard.ets",
+    "sha256": "adb4cbbc64d5144be043fe0b45ccdbb9c5f8fb952df64f8d1d9b5ae162be16a7"
+  },
+  {
+    "path": "entry/src/main/ets/features/inspection/NodeDetailPage.ets",
+    "sha256": "d6bde6fbe672188106e6a4803771f1fc668db81b910c47c003859a342033afbf"
+  },
+  {
+    "path": "entry/src/main/ets/features/inspection/NodeQuickSheet.ets",
+    "sha256": "9616af714c41976da168d729e0c58bcecdc93607a54a23b28e379b3723505563"
+  },
+  {
+    "path": "entry/src/main/ets/features/inspection/PerspectiveView.ets",
+    "sha256": "092afaafccc3fc08c517a10097e1b1d77ed983117c69c66bb602834bb46d3e55"
+  },
+  {
+    "path": "entry/src/main/ets/features/inspection/RepairSheet.ets",
+    "sha256": "81baad0c0e3f02b4f13dc6012c4e0f60a546aaee3a7baac30258c71c410fc733"
+  },
+  {
+    "path": "entry/src/main/ets/features/inspection/RiskPage.ets",
+    "sha256": "4b30636dd47de87a50c302bc1ee0bffd840682dfa351ec846b9e85235d8e5260"
+  },
+  {
+    "path": "entry/src/main/ets/features/orders/OrdersPage.ets",
+    "sha256": "c7b458a4d31ccc0d7d49db9c238c334f6ef44366caf6d250699c971a2f260d5f"
+  },
+  {
+    "path": "entry/src/main/ets/features/orders/TaskPage.ets",
+    "sha256": "7a261eb3fb6fe746ea4314d2db62463548b22e6423bb2c896d4d460b6071846f"
+  },
+  {
+    "path": "entry/src/main/ets/features/profile/NotificationsPage.ets",
+    "sha256": "90ec9d0d36fb3350082d36bd568fc8edc2206b49d619a680b6a4831c6e93107f"
+  },
+  {
+    "path": "entry/src/main/ets/features/profile/ProfileData.ets",
+    "sha256": "11d37bbfb8ef12190684fa8f66e5f24280de898d2820e29843fd50d7077e847f"
+  },
+  {
+    "path": "entry/src/main/ets/features/profile/ProfileDetailPage.ets",
+    "sha256": "5045de192b92cbfc1481be3ed7ae65e018d478a8306eacb1d503c0157c007a2d"
+  },
+  {
+    "path": "entry/src/main/ets/features/profile/ProfileLogic.ets",
+    "sha256": "0afcfc73b462fc7c0fe9a9b7aeaaa8413f15352b48d0ff9053cfa67263f5a87e"
+  },
+  {
+    "path": "entry/src/main/ets/features/profile/ProfilePage.ets",
+    "sha256": "fc8856d4657c63333d163b01bccbd99ef9237da31c905fc9abb2a9be90400c47"
+  },
+  {
+    "path": "entry/src/main/ets/features/profile/SettingsPage.ets",
+    "sha256": "39eca06deb68f921cde2957ce52f91fa1b53d190a305b803fda1e0e8411bdab2"
+  },
+  {
+    "path": "entry/src/main/ets/models/Inspection.ets",
+    "sha256": "a3b9502b18daf5cdc2ea44582317de05335e172e34de6339602abf1443638c60"
+  },
+  {
+    "path": "entry/src/main/ets/pages/Index.ets",
+    "sha256": "92ac8d6f5db3579f838e1a20e3794283a7b637142cad952386e7f777756df539"
+  },
+  {
+    "path": "entry/src/main/ets/services/DemoRepository.ets",
+    "sha256": "dc0b900aab6a499f3c993e15553d0af309df0bc7634e682dd33f7114184e24cd"
+  },
+  {
+    "path": "entry/src/main/ets/services/RecoveryState.ets",
+    "sha256": "a346a4ee757323a4881ff88c164c2ffa7645954a2d13a5d93f10465a566c060c"
+  },
+  {
+    "path": "entry/src/main/ets/services/TaskRepository.ets",
+    "sha256": "5243c39e544707a817310846bd447c817be93cf6f09e7ecf4446a2291e35a58a"
+  }
+]
