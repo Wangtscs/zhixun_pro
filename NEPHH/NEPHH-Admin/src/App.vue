@@ -66,20 +66,20 @@ async function openHardwareConsole():Promise<void> {try{await router.push('/simu
 
 <style scoped>
 /* Login owns complete surface/text pairs; legacy light-theme rules must not mix them. */
-.operations-login{--login-bg:#f3f5f7;--login-surface:#fff;--login-text:#1e2b3b;--login-muted:#536375;--login-line:#7a8b9d;--login-soft-line:#d0d8e1;--login-accent:#234f7d;--login-on-accent:#fff;--login-error:#ae303b;--muted:var(--login-muted);--line:var(--login-soft-line);--teal:var(--login-accent);min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:48px 24px;background:var(--login-bg);color:var(--login-text);font:14px/1.6 "Nephh Sans UI","Microsoft YaHei UI","PingFang SC",sans-serif}
-:global([data-theme="dark"]) .operations-login{--login-bg:#141b23;--login-surface:#1c252f;--login-text:#e6ecf2;--login-muted:#afbdcc;--login-line:#8091a3;--login-soft-line:#3b4b5d;--login-accent:#92b9eb;--login-on-accent:#142638;--login-error:#ffabad}
-.operations-login .login-brand{display:flex;align-items:center;gap:12px;width:min(100%,400px);padding:0;background:none;border:0}
+.operations-login{--login-bg:#f3f5f7;--login-surface:#fff;--login-text:#1e2b3b;--login-muted:#536375;--login-line:#7a8b9d;--login-soft-line:#d0d8e1;--login-accent:#234f7d;--login-accent-hover:#1b3f65;--login-accent-press:#163453;--login-accent-bg:#e9f0f8;--login-accent-bg-hover:#dce8f5;--login-accent-line:#a8bfd6;--login-on-accent:#fff;--login-error:#ae303b;--muted:var(--login-muted);--line:var(--login-soft-line);--teal:var(--login-accent);min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:48px 24px;background:var(--login-bg);color:var(--login-text);font:14px/1.6 "Nephh Sans UI","Microsoft YaHei UI","PingFang SC",sans-serif}
+:global([data-theme="dark"]) .operations-login{--login-bg:#141b23;--login-surface:#1c252f;--login-text:#e6ecf2;--login-muted:#afbdcc;--login-line:#8091a3;--login-soft-line:#3b4b5d;--login-accent:#92b9eb;--login-accent-hover:#a9caf3;--login-accent-press:#7ba7de;--login-accent-bg:#2a3b50;--login-accent-bg-hover:#32465e;--login-accent-line:#5b7fa8;--login-on-accent:#142638;--login-error:#ffabad}
+.operations-login .login-brand{display:flex;align-items:center;gap:12px;width:min(100%,420px);padding:0;background:none;border:0}
 .operations-login .login-brand :deep(.brand-mark){color:var(--login-accent);background:none;border:0;box-shadow:none;flex:none}
 .operations-login .login-brand h1{font-size:22px;line-height:1.4;font-weight:600;letter-spacing:0;margin:0;color:var(--login-text)}
 .operations-login .login-brand p{font-size:12px;margin:3px 0 0;color:var(--login-muted);letter-spacing:0}
-.operations-login .login-main{width:min(100%,400px);padding:28px;background:var(--login-surface);border:1px solid var(--login-soft-line);border-radius:5px;box-shadow:none}
+.operations-login .login-main{position:relative;width:min(100%,420px);padding:32px;background:var(--login-surface);border:1px solid var(--login-soft-line);border-radius:6px;box-shadow:0 18px 44px #1e2b3b0f}.operations-login .login-main::before{content:"";position:absolute;inset:0 0 auto;height:2px;background:var(--login-accent);border-radius:6px 6px 0 0}
 .operations-login .login-form{width:100%;transform:none}
 .operations-login .login-form h2{font-size:20px;font-weight:600;line-height:1.5;margin:0 0 6px;color:var(--login-text)}
 .operations-login .login-intro{font-size:13px;margin:0 0 24px;color:var(--login-muted)}
 .operations-login .login-form>label{display:block;font-size:13px;margin:16px 0 7px;color:var(--login-text)}
-.operations-login .login-input{display:flex;align-items:center;gap:10px;width:100%;height:44px;padding:0 12px;border:1px solid var(--login-line);border-radius:4px;background:var(--login-surface);color:var(--login-text)}
+.operations-login .login-input{display:flex;align-items:center;gap:10px;width:100%;height:46px;padding:0 12px;border:1px solid var(--login-line);border-radius:4px;background:var(--login-surface);color:var(--login-text);transition:border-color .15s ease}
 .operations-login .login-input>svg{width:17px;height:17px;flex:none;color:var(--login-muted)}
-.operations-login .login-input input{width:100%;min-width:0;flex:1;height:42px;padding:0;background:transparent;border:0;border-radius:0;box-shadow:none;font:inherit;color:var(--login-text)}
+.operations-login .login-input input{width:100%;min-width:0;flex:1;height:44px;padding:0;background:transparent;border:0;border-radius:0;box-shadow:none;font:inherit;color:var(--login-text)}
 .operations-login .login-input input::placeholder{color:var(--login-muted)}
 .operations-login .login-input input:focus{outline:none;box-shadow:none}
 .operations-login .login-input:focus-within{outline:2px solid var(--login-accent);outline-offset:2px}
@@ -90,15 +90,19 @@ async function openHardwareConsole():Promise<void> {try{await router.push('/simu
 .operations-login .login-remember{display:flex;align-items:center;flex-direction:row;gap:8px;font-size:13px;color:var(--login-text)}
 .operations-login .login-remember input{appearance:auto;width:16px;height:16px;margin:0;padding:0;accent-color:var(--login-accent)}
 .operations-login .login-help{font:inherit;font-size:13px;padding:4px 0;min-height:32px;background:none;border:0;border-radius:0;color:var(--login-accent);text-decoration:underline;text-underline-offset:3px}
-.operations-login .login-submit,.operations-login .login-demo{display:flex;align-items:center;justify-content:center;width:100%;min-height:44px;gap:8px;padding:10px 16px;font:inherit;font-weight:600;letter-spacing:0;border:1px solid var(--login-accent);border-radius:4px;box-shadow:none;background:var(--login-accent);color:var(--login-on-accent)}
+.operations-login .login-submit,.operations-login .login-demo{display:flex;align-items:center;justify-content:center;width:100%;min-height:46px;gap:8px;padding:10px 16px;font:inherit;font-weight:600;letter-spacing:0;border:1px solid var(--login-accent);border-radius:4px;box-shadow:none;background:var(--login-accent);color:var(--login-on-accent)}
 .operations-login .login-demo{background:transparent;color:var(--login-accent);border-color:var(--login-soft-line);font-weight:400}
+.operations-login .login-submit:hover:not(:disabled){background:var(--login-accent-hover);border-color:var(--login-accent-hover)}
+.operations-login .login-submit:active:not(:disabled){background:var(--login-accent-press);border-color:var(--login-accent-press)}
+.operations-login .login-demo:hover:not(:disabled){background:var(--login-accent-bg);border-color:var(--login-accent-line);color:var(--login-accent)}
+.operations-login .login-demo:active:not(:disabled){background:var(--login-accent-bg-hover)}
 .operations-login .login-submit:disabled,.operations-login .login-demo:disabled{opacity:.65;cursor:wait}
 .operations-login :is(button,input[type="checkbox"]):focus-visible{outline:2px solid var(--login-accent);outline-offset:3px}
 .operations-login .login-error{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--login-error);background:none;padding:0;border:0;margin:0 0 16px}
 .operations-login .login-error svg{width:16px;height:16px;flex:none;margin-top:3px}
 .operations-login .login-demo-entry{border-top:1px solid var(--login-soft-line);padding-top:20px;margin-top:24px}
 .operations-login .login-demo-entry p{font-size:12px;line-height:1.7;margin:12px 0 0;color:var(--login-muted)}
-.operations-login .login-footer{font-size:12px;text-align:center;color:var(--login-muted);padding:0;width:min(100%,400px)}
+.operations-login .login-footer{font-size:12px;text-align:center;color:var(--login-muted);padding:0;width:min(100%,420px)}
 @media(max-width:480px){.operations-login{justify-content:flex-start;padding:32px 20px;gap:24px}.operations-login .login-main{padding:24px 20px}.operations-login .login-brand h1{font-size:21px}}
 
 .hardware-console-host:not([hidden]){margin:0 24px 100px 216px;width:calc(100% - 240px);scroll-margin-top:90px}
