@@ -46,15 +46,15 @@ export struct LiveTaskPage {
     Column({ space: 12 }) {
       Row() {
         Text('现场照片').fontSize(12).fontWeight(600).fontColor(T.text(this.dark)).layoutWeight(1)
-        Text(this.photos().length + ' 张').fontSize(8).fontColor(T.muted(this.dark))
+        Text(this.photos().length + ' 张').fontSize(10).fontColor(T.muted(this.dark))
       }.width('100%')
       if (this.photos().length === 0) {
-        Text('暂无现场照片').fontSize(10).fontColor(T.muted(this.dark)).width('100%')
+        Text('暂无现场照片').fontSize(11).fontColor(T.muted(this.dark)).width('100%')
       } else {
         ForEach(this.photos(), (file: OrderAttachment) => {
           Row({ space: 8 }) {
             AppIcon({ name: 'camera', iconSize: 16, color: T.tint(this.dark) })
-            Text(file.original_name).fontSize(10).fontColor(T.text(this.dark)).layoutWeight(1)
+            Text(file.original_name).fontSize(12).fontColor(T.text(this.dark)).layoutWeight(1)
           }.width('100%').padding(8).borderRadius(8).backgroundColor(T.inset(this.dark))
         }, (file: OrderAttachment) => file.id.toString())
       }
@@ -63,7 +63,7 @@ export struct LiveTaskPage {
       }
       if (this.order.status === 'PROCESSING') {
         TextArea({ placeholder: '补充现场情况、读数或处置结果…', text: this.result })
-          .height(76).maxLength(4000).fontSize(10).fontColor(T.text(this.dark))
+          .height(76).maxLength(4000).fontSize(12).fontColor(T.text(this.dark))
           .placeholderColor(T.muted(this.dark)).backgroundColor(T.inset(this.dark)).borderRadius(10)
           .border({ width: 1, color: T.border(this.dark) }).enabled(!this.busy)
           .onChange((value: string) => this.result = value)

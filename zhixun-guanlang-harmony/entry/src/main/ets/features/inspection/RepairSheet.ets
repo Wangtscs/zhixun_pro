@@ -79,7 +79,7 @@ export struct RepairSheet {
       Column({ space: 10 }) {
         Rect().width(42).height(4).radius(2).fill('#3B4651').margin({ bottom: 8 })
         Text('发起报修').fontSize(16).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark)).width('100%')
-        Text('节点 ' + this.node.id + ' · ' + this.node.zone + ' · ' + this.node.place).fontSize(9).fontColor(T.muted(this.dark)).width('100%').margin({ bottom: 8 })
+        Text('节点 ' + this.node.id + ' · ' + this.node.zone + ' · ' + this.node.place).fontSize(11).fontColor(T.muted(this.dark)).width('100%').margin({ bottom: 8 })
         if (this.orderId > 0) {
           Text('报修单 #' + this.orderId + ' 已创建').fontSize(14).fontColor(T.tint(this.dark)).width('100%')
           Text('请由管理员在网页端派单；派发给你的工单会出现在手机「我的工单」。')
@@ -101,7 +101,7 @@ export struct RepairSheet {
             Column({ space: 5 }) {
               Text(label).fontSize(11).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
               Text(index === 0 ? '自动填写风险与处置步骤' : this.node.live ? '自行补充故障描述' : '自行补充故障描述与处理人')
-                .fontSize(8).fontColor(T.muted(this.dark))
+                .fontSize(10).fontColor(T.muted(this.dark))
             }.alignItems(HorizontalAlign.Start).layoutWeight(1)
             AppIcon({ name: 'chevron', iconSize: 18 })
           }.height(66).width('100%').padding(12).backgroundColor(T.inset(this.dark)).borderRadius(13)

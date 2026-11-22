@@ -93,12 +93,12 @@ export struct NodeCard {
   @Builder
   metric(label: string, value: string, unit: string, index: number) {
     Column({ space: 2 }) {
-      Text(label).fontSize(11).lineHeight(14).fontColor(T.muted(this.dark))
+      Text(label).fontSize(12).lineHeight(16).fontColor(T.muted(this.dark))
       Row({ space: 2 }) {
-        Text(value).fontSize(18).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
-        Text(unit).fontSize(10).fontColor(T.muted(this.dark)).margin({ top: 5 })
+        Text(value).fontSize(20).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
+        Text(unit).fontSize(11).fontColor(T.muted(this.dark)).margin({ top: 6 })
       }
-    }.alignItems(HorizontalAlign.Start).layoutWeight(1).height(36)
+    }.alignItems(HorizontalAlign.Start).layoutWeight(1).height(40)
       .padding({ left: index === 0 ? 0 : 8, right: 8 })
       .border({ width: { right: index === 2 ? 0 : 1 }, color: T.border(this.dark) })
   }
@@ -107,9 +107,9 @@ export struct NodeCard {
       Column() {
         Row({ space: 8 }) {
           if (chartState(this.node) === 'alarm') { Circle().width(5).height(5).fill(T.danger) }
-          Text(this.node.id).fontSize(13).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
-          Text(this.node.place).fontSize(8).fontColor(T.muted(this.dark))
-        }.width('100%').height(20).padding({ right: this.node.live ? 0 : 38 })
+          Text(this.node.id).fontSize(14).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
+          Text(this.node.place).fontSize(10).fontColor(T.muted(this.dark))
+        }.width('100%').height(22).padding({ right: this.node.live ? 0 : 46 })
         Row() {
           this.metric('甲烷', this.node.methane, '%LEL', 0)
           this.metric('温度', this.node.temp, '℃', 1)
@@ -117,27 +117,27 @@ export struct NodeCard {
         }.width(this.node.live ? '100%' : 'calc(100% - 52vp)').margin({ top: 3 }).alignSelf(ItemAlign.Start)
         Row() {
           Text(cardStatusLabel(this.node))
-            .fontSize(8).fontColor(T.state(chartState(this.node))).padding({ left: 5, right: 5, top: 2, bottom: 2 })
-            .backgroundColor(chartState(this.node) === 'alarm' ? '#15FF4D4F' : chartState(this.node) === 'watch' ? '#15FFB020' : '#1535E0D0').borderRadius(3)
+            .fontSize(10).fontColor(T.state(chartState(this.node))).padding({ left: 6, right: 6, top: 3, bottom: 3 })
+            .backgroundColor(chartState(this.node) === 'alarm' ? '#15FF4D4F' : chartState(this.node) === 'watch' ? '#15FFB020' : '#1535E0D0').borderRadius(4)
           Blank()
           if (!this.node.live) {
-            Text('24s').fontSize(8).fontColor(T.muted(this.dark)).margin({ right: 6 })
-            Row() { TrendChart({ node: this.node, state: chartState(this.node) }) }.width(78).height(18)
+            Text('24s').fontSize(10).fontColor(T.muted(this.dark)).margin({ right: 6 })
+            Row() { TrendChart({ node: this.node, state: chartState(this.node) }) }.width(78).height(20)
           }
-        }.width('100%').margin({ top: 3 })
+        }.width('100%').margin({ top: 4 })
       }.width('100%')
       if (!this.node.live) {
         Column({ space: 2 }) {
           Stack() {
             Progress({ value: this.node.score, total: 100, type: ProgressType.Ring })
-              .width(40).height(40).color(T.state(chartState(this.node)))
+              .width(44).height(44).color(T.state(chartState(this.node)))
               .backgroundColor(T.border(this.dark)).style({ strokeWidth: 4 })
-            Text(this.node.score.toString()).fontSize(11).fontWeight(FontWeight.Bold)
+            Text(this.node.score.toString()).fontSize(12).fontWeight(FontWeight.Bold)
               .fontColor(T.state(chartState(this.node)))
-          }.width(40).height(40)
-        }.width(40)
+          }.width(44).height(44)
+        }.width(44)
       }
-    }.height(108).width('100%').padding(12).backgroundColor(T.card(this.dark))
+    }.height(116).width('100%').padding(14).backgroundColor(T.card(this.dark))
       .border({ width: { left: chartState(this.node) === 'alarm' ? 3 : 1, right: 1, top: 1, bottom: 1 },
         color: { left: chartState(this.node) === 'alarm' ? T.danger : T.border(this.dark), right: T.border(this.dark), top: T.border(this.dark), bottom: T.border(this.dark) } })
       .borderRadius(16).onClick(this.onOpen)

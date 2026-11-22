@@ -13,10 +13,10 @@ export struct NodeQuickSheet {
   @Builder
   metric(label: string, value: string, unit: string) {
     Column({ space: 5 }) {
-      Text(label).fontSize(9).fontColor(T.muted(this.dark))
+      Text(label).fontSize(11).fontColor(T.muted(this.dark))
       Row({ space: 3 }) {
-        Text(value).fontSize(21).fontWeight(600).fontColor(T.text(this.dark))
-        Text(unit).fontSize(8).fontColor(T.muted(this.dark))
+        Text(value).fontSize(22).fontWeight(600).fontColor(T.text(this.dark))
+        Text(unit).fontSize(10).fontColor(T.muted(this.dark))
       }.alignItems(VerticalAlign.Bottom)
     }.alignItems(HorizontalAlign.Start).layoutWeight(1).padding(10)
       .backgroundColor(T.inset(this.dark)).borderRadius(10).border({ width: 1, color: T.border(this.dark) })
@@ -31,10 +31,10 @@ export struct NodeQuickSheet {
           Circle().width(8).height(8).fill(T.state(this.node.state))
           Column({ space: 4 }) {
             Text('节点 ' + this.node.id).fontSize(16).fontWeight(600).fontColor(T.text(this.dark))
-            Text(this.node.place).fontSize(9).fontColor(T.muted(this.dark))
+            Text(this.node.place).fontSize(11).fontColor(T.muted(this.dark))
           }.alignItems(HorizontalAlign.Start).layoutWeight(1)
           Text(this.node.live ? riskLabel(this.node) : this.node.state === 'alarm' ? '警告' : this.node.state === 'watch' ? '关注' : '正常')
-            .fontSize(10).fontColor(T.state(this.node.state)).padding(5).borderRadius(5).backgroundColor(T.inset(this.dark))
+            .fontSize(11).fontColor(T.state(this.node.state)).padding(6).borderRadius(5).backgroundColor(T.inset(this.dark))
           Text('×').fontSize(22).fontColor(T.muted(this.dark)).width(32).height(36).textAlign(TextAlign.Center)
             .onClick(this.onClose).accessibilityText('关闭节点信息')
         }.width('100%')

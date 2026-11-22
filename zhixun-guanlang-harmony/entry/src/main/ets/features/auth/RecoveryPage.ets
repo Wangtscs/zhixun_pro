@@ -44,23 +44,23 @@ export struct RecoveryPage {
   @Builder
   identity() {
     Column({ space: 8 }) {
-      Text('工号').fontSize(12).fontColor('#8A94A6').width('100%')
+      Text('工号').fontSize(13).fontColor('#8A94A6').width('100%')
       TextInput({ placeholder: '请输入工号', text: this.job }).type(InputType.Normal).maxLength(20)
         .height(52).fontSize(14).fontColor('#DCE5EE').placeholderColor('#4F6072').backgroundColor('#0E1116')
         .borderRadius(12).border({ width: 1, color: this.error ? T.danger : '#232B36' })
         .onChange((value: string) => { this.job = value.replace(/[^a-z0-9]/gi, ''); this.error = ''; })
-      Text('例如 ZX2026001').fontSize(10).fontColor('#596B7E').width('100%')
+      Text('例如 ZX2026001').fontSize(11).fontColor('#596B7E').width('100%')
       Text(this.error).fontSize(11).fontColor(T.danger).width('100%')
       Row() {
-        Text('绑定手机').fontSize(12).fontColor('#8A94A6').layoutWeight(1)
-        Text('换绑').fontSize(10).fontColor('#596B7E').enabled(false).accessibilityText('换绑不可用，请先联系管理员')
+        Text('绑定手机').fontSize(13).fontColor('#8A94A6').layoutWeight(1)
+        Text('换绑').fontSize(11).fontColor('#596B7E').enabled(false).accessibilityText('换绑不可用，请先联系管理员')
       }.width('100%').margin({ top: 8 })
       Text('138****6721').fontSize(14).fontColor('#8A94A6').width('100%').height(52).padding(12)
         .backgroundColor('#0E1116').borderRadius(12)
     }.padding(16).width('100%').backgroundColor('#161B22').borderRadius(16).border({ width: 1, color: '#232B36' })
     ActionButton({ label: '获取验证码', isEnabled: RecoveryState.validJob(this.job), onAction: () => this.send() })
     Text('本地演示：使用 ZX2026001；输入 000000 可预览工号错误。不会发送真实短信。')
-      .fontSize(10).lineHeight(18).fontColor('#596B7E').width('100%')
+      .fontSize(11).lineHeight(19).fontColor('#596B7E').width('100%')
   }
   @Builder
   verification() {
@@ -91,16 +91,16 @@ export struct RecoveryPage {
         .fontColor(this.remaining > 0 ? '#596B7E' : T.accent).height(44).enabled(this.remaining === 0).onClick(() => this.send())
     }.width('100%').justifyContent(FlexAlign.Center)
     ActionButton({ label: '下一步', isEnabled: this.code.length === 6 && this.attempts > 0, onAction: () => this.verify() })
-    Text('演示验证码：123456\n输入其他 6 位数字可预览验证失败状态。').fontSize(10).lineHeight(18).fontColor('#596B7E').width('100%')
+    Text('演示验证码：123456\n输入其他 6 位数字可预览验证失败状态。').fontSize(11).lineHeight(19).fontColor('#596B7E').width('100%')
   }
   @Builder
   newPassword() {
     Column({ space: 8 }) {
-      Text('新密码').fontSize(12).fontColor('#8A94A6').width('100%')
+      Text('新密码').fontSize(13).fontColor('#8A94A6').width('100%')
       TextInput({ placeholder: '请输入至少 8 位新密码', text: this.password }).type(InputType.Password).showPasswordIcon(true)
         .height(52).fontSize(14).fontColor('#DCE5EE').placeholderColor('#4F6072').backgroundColor('#0E1116')
         .onChange((value: string) => this.password = value)
-      Text('确认新密码').fontSize(12).fontColor('#8A94A6').width('100%').margin({ top: 12 })
+      Text('确认新密码').fontSize(13).fontColor('#8A94A6').width('100%').margin({ top: 12 })
       TextInput({ placeholder: '请再次输入新密码', text: this.confirmation }).type(InputType.Password).showPasswordIcon(true)
         .height(52).fontSize(14).fontColor('#DCE5EE').placeholderColor('#4F6072').backgroundColor('#0E1116')
         .border({ width: 1, color: this.touched && this.confirmation !== this.password ? T.danger : '#232B36' }).borderRadius(12)
@@ -114,7 +114,7 @@ export struct RecoveryPage {
       })
     }.width('100%').alignItems(HorizontalAlign.Start).padding({ left: 12, top: 8, bottom: 8 })
     ActionButton({ label: '完成', isEnabled: this.canComplete(), onAction: () => { if (this.model.complete(this.password, this.confirmation)) { this.step = 3; } } })
-    Text('旧密码比对使用演示值 Tunnel2026。\n请勿输入真实密码；新密码不会保存或上传。').fontSize(10).lineHeight(18).fontColor('#596B7E').width('100%')
+    Text('旧密码比对使用演示值 Tunnel2026。\n请勿输入真实密码；新密码不会保存或上传。').fontSize(11).lineHeight(19).fontColor('#596B7E').width('100%')
   }
   build() {
     Column() {
@@ -124,25 +124,25 @@ export struct RecoveryPage {
             .backgroundColor('#1035E0D0').borderRadius(44).border({ width: 1, color: '#4035E0D0' })
           Text('密码已重置').fontSize(24).fontColor('#EEF4F8').fontWeight(600)
           Text('请返回登录页，使用新密码登录').fontSize(13).fontColor('#8A94A6')
-          Text('演示完成 · 未修改真实账号密码').fontSize(10).fontColor('#596B7E')
+          Text('演示完成 · 未修改真实账号密码').fontSize(11).fontColor('#596B7E')
         }.width('100%').layoutWeight(1).justifyContent(FlexAlign.Center)
         Row() { ActionButton({ label: '返回登录', onAction: this.onBack }) }.padding(24).width('100%')
       } else {
         Row() {
           Row() { AppIcon({ name: 'back', color: '#DCE5EC' }) }.width(44).height(52).justifyContent(FlexAlign.Center)
             .onClick(() => { if (this.step > 0) { this.step--; } else { this.onBack(); } })
-          Text('找回密码').fontSize(16).fontColor('#EEF4F8').fontWeight(600).layoutWeight(1).textAlign(TextAlign.Center)
+          Text('找回密码').fontSize(18).fontColor('#EEF4F8').fontWeight(600).layoutWeight(1).textAlign(TextAlign.Center)
           Text((this.step + 1) + '/3').fontSize(12).fontColor(T.accent).width(44).textAlign(TextAlign.Center)
         }.width('100%').height(56)
         Progress({ value: this.step + 1, total: 3, type: ProgressType.Linear }).width('100%').height(3).color(T.accent).backgroundColor('#232B36')
         Scroll() {
           Column({ space: 18 }) {
-            Text('步骤 0' + (this.step + 1) + ' / 03').fontSize(10).fontColor('#596B7E').width('100%')
+            Text('步骤 0' + (this.step + 1) + ' / 03').fontSize(11).fontColor('#596B7E').width('100%')
             Text(['验证身份', '输入验证码', '设置新密码'][this.step]).fontSize(24).fontColor('#EEF4F8').fontWeight(600).width('100%')
             Text(this.step === 0 ? '确认工号与绑定手机号，保障账号安全' : this.step === 1 ? '已发送至 138****6721' : '为你的巡检账号设置一个安全的新密码')
-              .fontSize(12).fontColor('#8A94A6').width('100%')
+              .fontSize(13).fontColor('#8A94A6').width('100%')
             if (this.step === 0) { this.identity() } else if (this.step === 1) { this.verification() } else { this.newPassword() }
-            Text('账号安全验证 · 智巡管廊').fontSize(10).fontColor('#596B7E').width('100%').textAlign(TextAlign.Center).margin({ top: 24 })
+            Text('账号安全验证 · 智巡管廊').fontSize(11).fontColor('#596B7E').width('100%').textAlign(TextAlign.Center).margin({ top: 24 })
           }.width('100%').padding({ top: 36, left: 24, right: 24, bottom: 24 }).alignItems(HorizontalAlign.Start)
         }.width('100%').layoutWeight(1).scrollBar(BarState.Off).align(Alignment.Top)
       }

@@ -37,19 +37,19 @@ export struct PageHeader {
           .backgroundColor('#0D35E0D0').border({ width: 1, color: '#6635E0D0' })
       }
       Column({ space: 3 }) {
-        Text(this.title).fontSize(16).fontWeight(FontWeight.Medium).fontColor(T.text(this.dark))
-        if (this.subtitle) { Text(this.subtitle).fontSize(8).fontColor(T.muted(this.dark)) }
+        Text(this.title).fontSize(18).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
+        if (this.subtitle) { Text(this.subtitle).fontSize(11).fontColor(T.muted(this.dark)) }
       }.alignItems(HorizontalAlign.Start).layoutWeight(1)
       if (this.actionLabel) {
-        Button(this.actionLabel, { type: ButtonType.Normal }).height(32).borderRadius(8)
-          .fontSize(10).fontColor(T.tint(this.dark)).backgroundColor(T.selected(this.dark))
+        Button(this.actionLabel, { type: ButtonType.Normal }).height(34).borderRadius(9)
+          .fontSize(12).fontColor(T.tint(this.dark)).backgroundColor(T.selected(this.dark))
           .onClick(this.onAction)
       }
       Row({ space: 5 }) {
-        Circle().width(5).height(5).fill(this.connected ? T.accent : T.muted(this.dark))
-        Text(this.connected ? '实时连接' : '同步已暂停').fontSize(8).fontColor(T.muted(this.dark))
+        Circle().width(6).height(6).fill(this.connected ? T.accent : T.muted(this.dark))
+        Text(this.connected ? '实时连接' : '同步已暂停').fontSize(10).fontColor(T.muted(this.dark))
       }
-    }.width('100%').height(58).padding({ left: 14, right: 14 + this.rightInset })
+    }.width('100%').height(60).padding({ left: 16, right: 16 + this.rightInset })
       .backgroundColor(T.chrome(this.dark)).border({ width: { bottom: 1 }, color: T.border(this.dark) })
   }
 }
@@ -62,11 +62,11 @@ export struct ActionButton {
   @Prop isEnabled: boolean = true;
   onAction: () => void = () => {};
   build() {
-    Button(this.label, { type: ButtonType.Normal }).height(52).width('100%').borderRadius(13)
-      .fontSize(12).fontWeight(FontWeight.Bold)
+    Button(this.label, { type: ButtonType.Normal }).height(52).width('100%').borderRadius(14)
+      .fontSize(14).fontWeight(FontWeight.Bold)
       .backgroundColor(this.outlined ? T.card(this.dark) : T.accent)
       .fontColor(this.outlined ? T.text(this.dark) : '#092421')
       .border({ width: this.outlined ? 1 : 0, color: T.border(this.dark) })
-      .enabled(this.isEnabled).opacity(this.isEnabled ? 1 : 0.45).borderRadius(13).clip(true).onClick(this.onAction)
+      .enabled(this.isEnabled).opacity(this.isEnabled ? 1 : 0.45).borderRadius(14).clip(true).onClick(this.onAction)
   }
 }

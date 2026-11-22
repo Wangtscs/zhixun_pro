@@ -12,8 +12,8 @@ export struct OrderDetailSummary {
   @Builder
   field(label: string, value: string, highlighted: boolean) {
     Column({ space: 5 }) {
-      Text(label).fontSize(9).fontColor(T.muted(this.dark))
-      Text(value).fontSize(10).fontWeight(500).fontColor(highlighted ? T.warning : T.text(this.dark))
+      Text(label).fontSize(11).fontColor(T.muted(this.dark))
+      Text(value).fontSize(12).fontWeight(500).fontColor(highlighted ? T.warning : T.text(this.dark))
     }.alignItems(HorizontalAlign.Start).layoutWeight(1)
   }
 

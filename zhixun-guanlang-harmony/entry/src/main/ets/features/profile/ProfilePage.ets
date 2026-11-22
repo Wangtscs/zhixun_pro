@@ -26,10 +26,10 @@ export struct ProfilePage {
   @Builder
   stat(value: string, label: string, note: string) {
     Column({ space: 5 }) {
-      Text(value).fontSize(24).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
-      Text(label).fontSize(9).fontColor(T.text(this.dark))
-      Text(note).fontSize(7).fontColor(T.muted(this.dark)).margin({ top: 7 })
-    }.alignItems(HorizontalAlign.Start).layoutWeight(1).padding(14).height(106)
+      Text(value).fontSize(26).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
+      Text(label).fontSize(12).fontColor(T.text(this.dark))
+      Text(note).fontSize(10).fontColor(T.muted(this.dark)).margin({ top: 7 })
+    }.alignItems(HorizontalAlign.Start).layoutWeight(1).padding(14).height(110)
       .backgroundColor(T.card(this.dark)).borderRadius(16).border({ width: 1, color: T.border(this.dark) })
   }
   build() {
@@ -39,24 +39,24 @@ export struct ProfilePage {
         Row() { AppIcon({ name: 'theme', iconSize: 20, color: T.muted(this.dark) }) }.width(44).height(44).justifyContent(FlexAlign.Center)
           .backgroundColor(T.card(this.dark)).borderRadius(12).border({ width: 1, color: T.border(this.dark) })
           .margin({ right: 12 }).onClick(() => this.dark = !this.dark).accessibilityText('切换深浅主题')
-      }.height(58).width('100%')
+      }.height(60).width('100%')
       Scroll() {
         Column({ space: 10 }) {
           Row({ space: 12 }) {
             Text(this.live ? (this.profile?.displayName || this.profile?.username || '·').slice(0, 1) : '陈')
-              .fontSize(18).fontWeight(600).fontColor(T.tint(this.dark)).width(54).height(54).textAlign(TextAlign.Center)
-              .borderRadius(17).backgroundColor('#1235E0D0').border({ width: 1, color: '#4435E0D0' })
-            Column({ space: 6 }) {
+              .fontSize(20).fontWeight(600).fontColor(T.tint(this.dark)).width(58).height(58).textAlign(TextAlign.Center)
+              .borderRadius(18).backgroundColor('#1235E0D0').border({ width: 1, color: '#4435E0D0' })
+            Column({ space: 5 }) {
               Text(this.live ? this.profile?.displayName || this.profile?.username || '我的资料' : '陈巡检')
-                .fontSize(16).fontWeight(600).fontColor(T.text(this.dark))
-              Text(this.live ? this.profile?.username || '' : '工号 XJ-027 · 今日在线 4h 32m').fontSize(8).fontColor(T.muted(this.dark))
+                .fontSize(19).fontWeight(600).fontColor(T.text(this.dark))
+              Text(this.live ? this.profile?.username || '' : '工号 XJ-027 · 今日在线 4h 32m').fontSize(11).fontColor(T.muted(this.dark))
               if (this.live && this.profile) {
                 Text([this.profile.phone, this.profile.email].filter((value: string) => !!value).join(' · '))
-                  .fontSize(8).fontColor(T.muted(this.dark))
+                  .fontSize(11).fontColor(T.muted(this.dark))
               }
             }.alignItems(HorizontalAlign.Start).layoutWeight(1)
-            Text(this.live ? this.profile?.role || '' : '值班中').fontSize(8).fontColor(T.tint(this.dark)).padding(6).borderRadius(5).backgroundColor('#1235E0D0')
-          }.width('100%').height(104).padding(16).backgroundColor(T.card(this.dark)).borderRadius(16)
+            Text(this.live ? this.profile?.role || '' : '值班中').fontSize(10).fontColor(T.tint(this.dark)).padding(7).borderRadius(6).backgroundColor('#1235E0D0')
+          }.width('100%').height(112).padding(16).backgroundColor(T.card(this.dark)).borderRadius(16)
             .border({ width: 1, color: T.border(this.dark) })
           if (this.live) {
             if (this.loading) { LoadingProgress().width(24).height(24) }
@@ -75,16 +75,17 @@ export struct ProfilePage {
           }
           Column() {
             ForEach(this.labels, (label: string, index: number) => {
-              Row({ space: 9 }) {
-                AppIcon({ name: this.icons[index], iconSize: 20, color: T.muted(this.dark) })
-                Text(label).fontSize(10).fontColor(T.text(this.dark)).layoutWeight(1)
+              Row({ space: 12 }) {
+                Row() { AppIcon({ name: this.icons[index], iconSize: 19, color: T.muted(this.dark) }) }
+                  .width(32).height(32).justifyContent(FlexAlign.Center).borderRadius(9).backgroundColor(T.inset(this.dark))
+                Text(label).fontSize(14).fontColor(T.text(this.dark)).layoutWeight(1)
                 if (!this.live && index === 0 && this.unread > 0) {
-                  Text(this.unread.toString()).fontSize(7).fontColor('#FFFFFF').width(17).height(17)
+                  Text(this.unread.toString()).fontSize(10).fontColor('#FFFFFF').width(18).height(18)
                     .textAlign(TextAlign.Center).backgroundColor(T.danger).borderRadius(9)
                 }
-                if (index === 3) { Text('v2.6.0').fontSize(8).fontColor(T.muted(this.dark)) }
+                if (index === 3) { Text('v2.6.0').fontSize(11).fontColor(T.muted(this.dark)) }
                 AppIcon({ name: 'chevron', iconSize: 18 })
-              }.width('100%').height(54).padding({ left: 12, right: 12 })
+              }.width('100%').height(58).padding({ left: 12, right: 12 })
                 .border({ width: { bottom: index < 3 ? 1 : 0 }, color: T.border(this.dark) })
                 .onClick(() => this.onOpen(this.pages[index]))
             })
@@ -94,14 +95,14 @@ export struct ProfilePage {
           Row({ space: 10 }) {
             AppIcon({ name: 'wifi', iconSize: 20, color: T.tint(this.dark) })
             Column({ space: 4 }) {
-              Text('传感器网关连接正常').fontSize(9).fontColor(T.text(this.dark))
-              Text('区域网关 GW-B01 · 延迟 28ms').fontSize(7).fontColor(T.muted(this.dark))
+              Text('传感器网关连接正常').fontSize(13).fontColor(T.text(this.dark))
+              Text('区域网关 GW-B01 · 延迟 28ms').fontSize(11).fontColor(T.muted(this.dark))
             }.alignItems(HorizontalAlign.Start).layoutWeight(1)
             Circle().width(7).height(7).fill(T.accent)
-          }.width('100%').height(54).padding(12).backgroundColor(T.card(this.dark)).borderRadius(16)
+          }.width('100%').height(58).padding(14).backgroundColor(T.card(this.dark)).borderRadius(16)
             .border({ width: 1, color: T.border(this.dark) })
           }
-        }.width('100%').padding({ top: 14, left: 12, right: 12, bottom: 16 })
+        }.width('100%').padding({ top: 14, left: 14, right: 14, bottom: 18 })
       }.width('100%').layoutWeight(1).scrollBar(BarState.Off).align(Alignment.Top)
     }.width('100%').height('100%').backgroundColor(T.bg(this.dark))
   }

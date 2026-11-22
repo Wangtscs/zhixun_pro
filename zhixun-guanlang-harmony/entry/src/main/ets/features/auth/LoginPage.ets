@@ -55,12 +55,12 @@ export struct LoginPage {
         Rect().width(6).height(16).radius(2).fill(T.accent)
         Rect().width(6).height(28).radius(2).fill(T.accent)
         Rect().width(6).height(22).radius(2).fill(T.accent)
-      }.width(64).height(64).padding(15).alignItems(VerticalAlign.Bottom).justifyContent(FlexAlign.Center)
-        .backgroundColor('#142323').borderRadius(18).border({ width: 1, color: '#7035E0D0' })
-      Text(this.text('智巡·管廊', 'Smart Tunnel')).fontSize(20).fontWeight(600).fontColor('#EEF4F8').lineHeight(30).margin({ top: 16 })
+      }.width(66).height(66).padding(15).alignItems(VerticalAlign.Bottom).justifyContent(FlexAlign.Center)
+        .backgroundColor('#132323').borderRadius(19).border({ width: 1, color: '#7035E0D0' })
+      Text(this.text('智巡·管廊', 'Smart Tunnel')).fontSize(22).fontWeight(FontWeight.Bold).fontColor('#EEF4F8').lineHeight(32).margin({ top: 16 })
       Text(this.text('城市地下综合管廊智能巡检', 'Intelligent underground utility inspection'))
-        .fontSize(12).fontColor('#8A94A6').lineHeight(18).margin({ top: 4 })
-    }.width('100%').margin({ bottom: this.viewportHeight < 700 ? 24 : 40 })
+        .fontSize(13).fontColor('#8A94A6').lineHeight(20).margin({ top: 4 })
+    }.width('100%').margin({ bottom: this.viewportHeight < 700 ? 24 : 38 })
   }
   @Builder
   sheet() {
@@ -69,7 +69,7 @@ export struct LoginPage {
       Column({ space: 14 }) {
         Row() {
           Text(this.panel === 'language' ? '语言切换' : this.panel === 'forgot' ? '找回密码' : this.panel === 'admin' ? '联系管理员' : this.panel === 'scan' ? '扫码登录' : this.panel === 'wechat' ? '企业微信' : this.panel === 'terms' ? '用户协议' : '隐私政策')
-            .fontSize(17).fontWeight(600).fontColor('#EEF4F8').layoutWeight(1)
+            .fontSize(18).fontWeight(FontWeight.Bold).fontColor('#EEF4F8').layoutWeight(1)
           Text('×').fontSize(24).fontColor('#8A94A6').width(44).height(44).textAlign(TextAlign.Center).onClick(() => this.panel = '')
         }.width('100%')
         if (this.panel === 'language') {
@@ -95,8 +95,8 @@ export struct LoginPage {
             else { this.panel = ''; }
           } })
         }
-      }.width('100%').padding({ left: 20, right: 20, top: 12, bottom: 24 }).backgroundColor('#161B22')
-        .borderRadius({ topLeft: 20, topRight: 20 })
+      }.width('100%').padding({ left: 20, right: 20, top: 14, bottom: 26 }).backgroundColor('#171D24')
+        .borderRadius({ topLeft: 22, topRight: 22 })
     }.width('100%').height('100%')
   }
   build() {
@@ -108,56 +108,56 @@ export struct LoginPage {
           Column() {
             this.brand()
             Column() {
-              Text(this.text('工号', 'Inspector ID')).fontSize(12).fontColor('#AEB9C7').width('100%').margin({ bottom: 8 })
+              Text(this.text('工号', 'Inspector ID')).fontSize(13).fontColor('#AEB9C7').width('100%').margin({ bottom: 8 })
               Row({ space: 10 }) {
                 AppIcon({ name: 'badge', iconSize: 18 })
                 TextInput({ placeholder: this.text('请输入工号', 'Enter inspector ID'), text: this.job }).type(InputType.Normal)
-                  .height(50).layoutWeight(1).fontSize(14).fontColor('#DCE5EE').placeholderColor('#4F6072').backgroundColor(Color.Transparent)
+                  .height(52).layoutWeight(1).fontSize(15).fontColor('#DCE5EE').placeholderColor('#5E7183').backgroundColor(Color.Transparent)
                   .padding({ left: 0, right: 8 }).maxLength(64).onChange((value: string) => { this.job = value; this.error = false; })
                   .onFocus(() => this.focused = 'job').onBlur(() => this.focused = '')
-              }.height(52).width('100%').padding({ left: 12 }).backgroundColor('#0E1116').borderRadius(12)
-                .border({ width: 1, color: this.error && !this.job ? T.danger : this.focused === 'job' ? T.accent : '#232B36' })
-              Text(this.text('密码', 'Password')).fontSize(12).fontColor('#AEB9C7').width('100%').margin({ top: 16, bottom: 8 })
+              }.height(54).width('100%').padding({ left: 12 }).backgroundColor('#0C1116').borderRadius(13)
+                .border({ width: 1, color: this.error && !this.job ? T.danger : this.focused === 'job' ? T.accent : '#242D37' })
+              Text(this.text('密码', 'Password')).fontSize(13).fontColor('#AEB9C7').width('100%').margin({ top: 16, bottom: 8 })
               Row({ space: 10 }) {
                 AppIcon({ name: 'lock', iconSize: 18 })
                 TextInput({ placeholder: this.text('请输入密码', 'Enter password'), text: this.password }).type(InputType.Password)
-                  .height(50).layoutWeight(1).fontSize(14).fontColor('#DCE5EE').placeholderColor('#4F6072').backgroundColor(Color.Transparent).showPasswordIcon(true)
+                  .height(52).layoutWeight(1).fontSize(15).fontColor('#DCE5EE').placeholderColor('#5E7183').backgroundColor(Color.Transparent).showPasswordIcon(true)
                   .padding({ left: 0, right: 8 }).onChange((value: string) => { this.password = value; this.error = false; })
                   .onFocus(() => this.focused = 'password').onBlur(() => this.focused = '')
-              }.height(52).width('100%').padding({ left: 12 }).backgroundColor('#0E1116').borderRadius(12)
-                .border({ width: 1, color: this.error ? T.danger : this.focused === 'password' ? T.accent : '#232B36' })
+              }.height(54).width('100%').padding({ left: 12 }).backgroundColor('#0C1116').borderRadius(13)
+                .border({ width: 1, color: this.error ? T.danger : this.focused === 'password' ? T.accent : '#242D37' })
               Row({ space: 7 }) {
                 Checkbox().select(this.remember).shape(CheckBoxShape.ROUNDED_SQUARE).selectedColor(T.accent).width(16).height(16).margin(0).onChange((value: boolean) => this.remember = value)
-                Text(this.text('记住工号', 'Remember ID')).fontSize(12).fontColor('#8A94A6').onClick(() => this.remember = !this.remember)
+                Text(this.text('记住工号', 'Remember ID')).fontSize(13).fontColor('#8A94A6').onClick(() => this.remember = !this.remember)
                 Blank()
-                Text(this.text('忘记密码', 'Forgot password')).fontSize(12).fontColor('#8A94A6').height(44).onClick(() => this.panel = 'forgot')
+                Text(this.text('忘记密码', 'Forgot password')).fontSize(13).fontColor('#8A94A6').height(44).onClick(() => this.panel = 'forgot')
               }.width('100%').height(44).margin({ top: 6 })
-            }.width('100%').padding({ top: 16, left: 16, right: 16, bottom: 6 }).backgroundColor('#161B22').borderRadius(16)
-              .border({ width: 1, color: '#232B36' })
+            }.width('100%').padding({ top: 18, left: 16, right: 16, bottom: 6 }).backgroundColor('#171D24').borderRadius(18)
+              .border({ width: 1, color: '#242D37' })
             Text(this.error ? this.text('请输入工号和密码', 'Enter your ID and password') : this.failure)
-              .fontSize(11).fontColor('#FF6264').constraintSize({ minHeight: 28 }).width('100%')
+              .fontSize(12).fontColor('#FF6264').constraintSize({ minHeight: 30 }).width('100%')
             if (this.loading) {
               Row({ space: 8 }) {
                 LoadingProgress().width(18).height(18).color('#092421')
-                Text(this.text('登录中…', 'Signing in…')).fontSize(12).fontWeight(FontWeight.Bold).fontColor('#092421')
-              }.width('100%').height(52).justifyContent(FlexAlign.Center).backgroundColor(T.accent).borderRadius(13).opacity(0.75)
+                Text(this.text('登录中…', 'Signing in…')).fontSize(13).fontWeight(FontWeight.Bold).fontColor('#092421')
+              }.width('100%').height(54).justifyContent(FlexAlign.Center).backgroundColor(T.accent).borderRadius(14).opacity(0.75)
             } else {
               ActionButton({ label: this.text('登 录', 'Sign in'), onAction: () => this.submit() })
             }
-            Text(this.text('使用演示账号进入  →', 'Enter with demo account  →')).fontSize(13).fontColor(T.accent).height(44)
+            Text(this.text('使用演示账号进入  →', 'Enter with demo account  →')).fontSize(14).fontColor(T.accent).height(46)
               .margin({ top: 6 }).onClick(() => { if (!this.loading) { MobileSession.logout(); this.enter(); } })
             Row({ space: 12 }) {
-              Divider().color('#232B36').layoutWeight(1)
-              Text(this.text('其他方式', 'Other methods')).fontSize(11).fontColor('#596B7E')
-              Divider().color('#232B36').layoutWeight(1)
-            }.width('100%').margin({ top: 12, bottom: 16 })
+              Divider().color('#242D37').layoutWeight(1)
+              Text(this.text('其他方式', 'Other methods')).fontSize(12).fontColor('#67778B')
+              Divider().color('#242D37').layoutWeight(1)
+            }.width('100%').margin({ top: 14, bottom: 16 })
             Row({ space: 12 }) {
               ForEach([this.text('扫码登录', 'Scan QR'), this.text('企业微信', 'WeCom')], (label: string, index: number) => {
                 Row({ space: 8 }) {
                   AppIcon({ name: index === 0 ? 'scan' : 'wecom', iconSize: 20 })
-                  Text(label).fontSize(13).fontColor('#9AA9BB')
-                }.height(48).layoutWeight(1).justifyContent(FlexAlign.Center)
-                  .borderRadius(13).border({ width: 1, color: '#2A3643' }).onClick(() => this.panel = index === 0 ? 'scan' : 'wechat')
+                  Text(label).fontSize(14).fontColor('#9AA9BB')
+                }.height(50).layoutWeight(1).justifyContent(FlexAlign.Center)
+                  .borderRadius(14).border({ width: 1, color: '#2A3643' }).onClick(() => this.panel = index === 0 ? 'scan' : 'wechat')
               })
             }.width('100%')
             Row({ space: 4 }) {
@@ -166,17 +166,17 @@ export struct LoginPage {
               Text(this.text('和', 'and')).fontSize(12).fontColor('#67778B')
               Text(this.text('隐私政策', 'Privacy')).fontSize(12).fontColor('#8A94A6').height(44).onClick(() => this.panel = 'privacy')
             }.justifyContent(FlexAlign.Center).width('100%').margin({ top: 22 })
-            Text('v2.6.0').fontSize(10).fontColor('#48596B')
+            Text('v2.6.0').fontSize(11).fontColor('#596B7E')
           }.width('100%').constraintSize({ minHeight: this.viewportHeight })
             .padding({ top: this.viewportHeight < 700 ? 48 : 96, left: 24, right: 24, bottom: 16 })
         }.width('100%').height('100%').scrollBar(BarState.Off)
         Row({ space: 5 }) {
           AppIcon({ name: 'globe', iconSize: 21 })
-          Text(this.english ? 'EN' : '中').fontSize(10).fontColor('#8A94A6')
+          Text(this.english ? 'EN' : '中').fontSize(11).fontColor('#8A94A6')
         }.height(44).width(60).justifyContent(FlexAlign.Center).margin({ top: 12, right: 16 }).onClick(() => this.panel = 'language')
       }
       if (this.panel) { this.sheet() }
-    }.width('100%').height('100%').backgroundColor('#0E1116')
+    }.width('100%').height('100%').backgroundColor('#0D1116')
       .onAreaChange((_old: Area, area: Area) => this.viewportHeight = Number(area.height))
   }
 }

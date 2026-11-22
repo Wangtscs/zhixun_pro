@@ -50,31 +50,31 @@ export struct OrdersPage {
   @Builder
   stat(value: string, label: string) {
     Column({ space: 6 }) {
-      Text(value).fontSize(25).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
-      Text(label).fontSize(9).fontColor(T.muted(this.dark))
-    }.alignItems(HorizontalAlign.Start).padding(14).layoutWeight(1).height(76).backgroundColor(T.card(this.dark))
+      Text(value).fontSize(26).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
+      Text(label).fontSize(11).fontColor(T.muted(this.dark))
+    }.alignItems(HorizontalAlign.Start).padding(14).layoutWeight(1).height(80).backgroundColor(T.card(this.dark))
       .borderRadius(14).border({ width: 1, color: T.border(this.dark) })
   }
   @Builder
   order(nodeId: string, title: string, subtitle: string, risk: string, deadline: string, progress: number, primary: boolean) {
     Column({ space: 12 }) {
       Row() {
-        Text(risk).fontSize(8).fontColor(primary ? T.danger : T.warning)
-          .padding({ left: 6, right: 6, top: 4, bottom: 4 }).borderRadius(5)
+        Text(risk).fontSize(10).fontColor(primary ? T.danger : T.warning)
+          .padding({ left: 7, right: 7, top: 4, bottom: 4 }).borderRadius(5)
           .backgroundColor(primary ? '#15FF4D4F' : '#15FFB020')
         Blank()
-        Text(deadline).fontSize(8).fontColor(T.muted(this.dark))
+        Text(deadline).fontSize(10).fontColor(T.muted(this.dark))
       }.width('100%')
-      Text(title).fontSize(14).fontWeight(600).fontColor(T.text(this.dark)).width('100%')
-      Text(subtitle).fontSize(8).fontColor(T.muted(this.dark)).width('100%')
+      Text(title).fontSize(15).fontWeight(600).fontColor(T.text(this.dark)).width('100%')
+      Text(subtitle).fontSize(10).fontColor(T.muted(this.dark)).width('100%')
       if (progress >= 0) {
-        Column({ space: 3 }) {
-          Text(progress + '/5').fontSize(8).fontColor(T.muted(this.dark)).alignSelf(ItemAlign.End)
+        Column({ space: 4 }) {
+          Text(progress + '/5').fontSize(10).fontColor(T.muted(this.dark)).alignSelf(ItemAlign.End)
           Progress({ value: progress, total: 5, type: ProgressType.Linear }).color(T.accent)
             .backgroundColor(T.border(this.dark)).style({ strokeWidth: 4 }).width('100%')
         }.width('100%').margin({ top: 3 })
       }
-    }.width('100%').padding(14).backgroundColor(T.card(this.dark)).borderRadius(16)
+    }.width('100%').padding(16).backgroundColor(T.card(this.dark)).borderRadius(16)
       .border({ width: 1, color: T.border(this.dark) })
       .onClick(() => { if (this.live) { this.onOpenOrder(Number(nodeId)); } else { this.onOpenTask(nodeId); } })
   }
@@ -91,9 +91,9 @@ export struct OrdersPage {
               this.stat(this.countByStatus(['COMPLETED']), '已完成')
             }.width('100%')
             if (this.loading) { LoadingProgress().width(24).height(24) }
-            if (this.error) { Text(this.error).fontColor(T.danger).width('100%') }
+            if (this.error) { Text(this.error).fontSize(13).fontColor(T.danger).width('100%') }
             if (!this.loading && !this.error && this.rows.length === 0) {
-              Text('暂无工单').fontColor(T.muted(this.dark)).width('100%').padding(14)
+              Text('暂无工单').fontSize(13).fontColor(T.muted(this.dark)).width('100%').padding(16)
             }
             ForEach(this.rows, (row: OrderSummary) => {
               this.order(row.id.toString(), row.title, row.node_code || '', this.formatStatus(row.status), '', -1, false)
@@ -105,8 +105,8 @@ export struct OrdersPage {
             this.stat('12', '本月完成')
           }.width('100%')
           Column({ space: 4 }) {
-            Text('进行中').fontSize(13).fontWeight(600).fontColor(T.text(this.dark))
-            Text('按截止时间排序').fontSize(8).fontColor(T.muted(this.dark))
+            Text('进行中').fontSize(15).fontWeight(600).fontColor(T.text(this.dark))
+            Text('按截止时间排序').fontSize(11).fontColor(T.muted(this.dark))
           }.width('100%').alignItems(HorizontalAlign.Start).margin({ top: 5, bottom: 2 })
           this.order('B-03', '燃气舱 B-03 异常处置', 'WO-2025-0812-017 · B区 K0+420', '高风险', '截止 15:00', this.b03Progress, true)
           this.order('C-06', 'C区排水泵例行检查', 'WO-2025-0812-012 · C区 K1+120', '一般', '截止 17:30', this.c06Progress, false)

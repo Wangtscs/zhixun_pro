@@ -78,11 +78,11 @@ export struct NodeDetailPage {
   @Builder
   readout(label: string, value: string, unit: string, note: string, danger: boolean) {
     Column({ space: 4 }) {
-      Text(label).fontSize(9).fontColor(T.muted(this.dark))
+      Text(label).fontSize(11).fontColor(T.muted(this.dark))
       Text(value).fontSize(28).fontWeight(FontWeight.Bold).fontColor(danger ? T.danger : T.text(this.dark))
-      Text(unit).fontSize(8).fontColor(T.muted(this.dark))
-      Text(note).fontSize(7).fontColor(danger ? T.danger : T.muted(this.dark)).margin({ top: 4 })
-    }.alignItems(HorizontalAlign.Start).layoutWeight(1).height(113).padding(12)
+      Text(unit).fontSize(10).fontColor(T.muted(this.dark))
+      Text(note).fontSize(10).fontColor(danger ? T.danger : T.muted(this.dark)).margin({ top: 4 })
+    }.alignItems(HorizontalAlign.Start).layoutWeight(1).height(120).padding(14)
       .backgroundColor(T.card(this.dark)).borderRadius(13).border({ width: 1, color: T.border(this.dark) })
   }
   @Builder
@@ -91,12 +91,12 @@ export struct NodeDetailPage {
       Row() {
         Column({ space: 4 }) {
           Text(this.node.live ? '甲烷浓度趋势' : '甲烷趋势预览')
-            .fontSize(12).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
+            .fontSize(13).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
           Text(this.methaneSamples.length > 0 ? '上报前 24 秒' : '最近 24 秒')
-            .fontSize(8).fontColor(T.muted(this.dark))
+            .fontSize(10).fontColor(T.muted(this.dark))
         }.alignItems(HorizontalAlign.Start)
         Blank()
-        if (!this.node.live) { Text('报警阈值 25 %LEL').fontSize(8).fontColor(T.danger) }
+        if (!this.node.live) { Text('报警阈值 25 %LEL').fontSize(10).fontColor(T.danger) }
       }.width('100%')
       if (this.node.live) {
         Stack() {
@@ -110,7 +110,7 @@ export struct NodeDetailPage {
       }
       Row() {
         ForEach(['24 秒前', '18 秒前', '12 秒前', '6 秒前', this.methaneSamples.length > 0 ? '最新上报' : '现在'], (time: string) => {
-          Text(time).fontSize(7).fontColor(T.muted(this.dark))
+          Text(time).fontSize(10).fontColor(T.muted(this.dark))
         })
       }.width('100%').justifyContent(FlexAlign.SpaceBetween)
     }.padding(14).width('100%').backgroundColor(T.card(this.dark)).borderRadius(16)
@@ -121,11 +121,11 @@ export struct NodeDetailPage {
     Row({ space: 9 }) {
       Circle().width(6).height(6).fill(done ? T.warning : T.danger)
       Column({ space: 5 }) {
-        Text(title).fontSize(10).fontColor(T.text(this.dark))
-        Text(subtitle).fontSize(8).fontColor(T.muted(this.dark))
+        Text(title).fontSize(12).fontColor(T.text(this.dark))
+        Text(subtitle).fontSize(10).fontColor(T.muted(this.dark))
       }.alignItems(HorizontalAlign.Start).layoutWeight(1)
-      Text(done ? '已确认' : '未处理').fontSize(8).fontColor(done ? T.muted(this.dark) : T.danger)
-    }.height(58).width('100%').border({ width: { bottom: 1 }, color: T.border(this.dark) })
+      Text(done ? '已确认' : '未处理').fontSize(10).fontColor(done ? T.muted(this.dark) : T.danger)
+    }.height(60).width('100%').border({ width: { bottom: 1 }, color: T.border(this.dark) })
   }
   build() {
     Column() {
@@ -137,7 +137,7 @@ export struct NodeDetailPage {
           Column({ space: 7 }) {
             Text('●  ' + riskLabel(this.node)).fontSize(12).fontWeight(FontWeight.Bold).fontColor(T.state(this.node.state))
             Text(this.node.live ? '状态来自业务后端' : this.node.state === 'alarm' ? '甲烷浓度持续上升，请尽快处置' : this.node.state === 'watch' ? '指标偏离历史基线，建议现场复核' : '各项指标处于正常范围，保持例行巡检')
-              .fontSize(9).fontColor(T.muted(this.dark))
+              .fontSize(11).fontColor(T.muted(this.dark))
           }.alignItems(HorizontalAlign.Start).width('100%').padding(14).borderRadius(12)
             .backgroundColor(this.node.state === 'alarm' ? '#0BFF4D4F' : this.node.state === 'watch' ? '#0BFFB020' : '#0B35E0D0')
             .border({ width: 1, color: T.state(this.node.state) })
@@ -162,9 +162,9 @@ export struct NodeDetailPage {
             }
             Column({ space: 8 }) {
               Row() {
-                Text('报警记录').fontSize(12).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
+                Text('报警记录').fontSize(14).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
                 Blank()
-                Button(this.showAll ? '收起' : '查看全部', { type: ButtonType.Normal }).backgroundColor(T.selected(this.dark)).fontColor(T.tint(this.dark)).borderRadius(9).enabled(this.alarms.length > 2)
+                Button(this.showAll ? '收起' : '查看全部', { type: ButtonType.Normal }).fontSize(12).height(32).backgroundColor(T.selected(this.dark)).fontColor(T.tint(this.dark)).borderRadius(9).enabled(this.alarms.length > 2)
                   .onClick(() => this.showAll = !this.showAll)
               }.width('100%')
               if (this.loadingAlarms) { LoadingProgress().width(24).height(24) }
@@ -172,7 +172,7 @@ export struct NodeDetailPage {
                 Text(this.alarmError).fontColor(T.danger)
                 Button('重试', { type: ButtonType.Normal }).backgroundColor(T.selected(this.dark)).fontColor(T.tint(this.dark)).borderRadius(9).onClick(() => this.loadAlarms())
               } else if (this.alarms.length === 0) {
-                Text('暂无报警记录').fontSize(10).fontColor(T.muted(this.dark))
+                Text('暂无报警记录').fontSize(11).fontColor(T.muted(this.dark))
               } else {
                 ForEach(this.showAll ? this.alarms : this.alarms.slice(0, 2), (alarm: AlarmRecord) => {
                   this.history(alarm.reason, alarm.triggered_at, !!alarm.recovered_at || alarm.status === 'ACKNOWLEDGED')
@@ -182,9 +182,9 @@ export struct NodeDetailPage {
           } else {
           Column() {
             Row() {
-              Text('报警记录').fontSize(12).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
+              Text('报警记录').fontSize(14).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
               Blank()
-              Text(this.showAll ? '收起' : '查看全部').fontSize(9).fontColor(T.muted(this.dark)).height(32)
+              Text(this.showAll ? '收起' : '查看全部').fontSize(11).fontColor(T.muted(this.dark)).height(32)
                 .onClick(() => this.showAll = !this.showAll)
             }.width('100%')
             if (this.node.state === 'normal') {
@@ -197,7 +197,7 @@ export struct NodeDetailPage {
           }.padding(14).width('100%').backgroundColor(T.card(this.dark)).borderRadius(16)
             .border({ width: 1, color: T.border(this.dark) })
           }
-        }.padding(12).width('100%')
+        }.padding({ top: 14, left: 14, right: 14, bottom: 18 }).width('100%')
       }.width('100%').layoutWeight(1).scrollBar(BarState.Off).align(Alignment.Top)
       Row({ space: 10 }) {
         Row() { ActionButton({ label: '报修', outlined: true, onAction: this.onRepair }) }.layoutWeight(1)

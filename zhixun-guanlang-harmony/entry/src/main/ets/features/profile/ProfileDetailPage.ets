@@ -42,17 +42,17 @@ export struct ProfileDetailPage {
     return this.panel === 'quiet' ? '免打扰时段' : this.panel === 'reconnect' ? '重连间隔' : this.panel === 'cache' ? '清理缓存' : this.panel === 'account' ? '账号信息' : this.panel === 'feedback' ? '提交反馈' : this.panel === 'chat' ? '在线客服' : '电话支持';
   }
   @Builder
-  paragraph(text: string) { Text(text).fontSize(12).lineHeight(23).fontColor(T.muted(this.dark)).width('100%') }
+  paragraph(text: string) { Text(text).fontSize(13).lineHeight(23).fontColor(T.muted(this.dark)).width('100%') }
   @Builder
   header() {
     Stack() {
-      Text(this.title()).fontSize(17).fontWeight(600).fontColor(T.text(this.dark))
+      Text(this.title()).fontSize(18).fontWeight(600).fontColor(T.text(this.dark))
       Row() {
         Row() { AppIcon({ name: 'back', color: T.text(this.dark), iconSize: 22 }) }.width(44).height(52).justifyContent(FlexAlign.Center)
           .onClick(() => { if (this.panel) { this.close(); } else { this.onBack(); } }).accessibilityText('返回我的')
         Blank()
         if (this.page === 'notifications') {
-          Text('全部已读').fontSize(11).fontColor(T.tint(this.dark)).height(52).padding({ left: 8, right: 14 })
+          Text('全部已读').fontSize(12).fontColor(T.tint(this.dark)).height(52).padding({ left: 8, right: 14 })
             .onClick(() => { this.read = [0, 1]; this.unread = 0; })
         } else { Blank().width(44) }
       }.width('100%')
@@ -62,27 +62,27 @@ export struct ProfileDetailPage {
   help() {
     Column({ space: 14 }) {
       Row() {
-        TextInput({ placeholder: '搜索问题关键词', text: this.search }).height(44).fontSize(12).fontColor(T.text(this.dark))
+        TextInput({ placeholder: '搜索问题关键词', text: this.search }).height(44).fontSize(14).fontColor(T.text(this.dark))
           .backgroundColor(Color.Transparent).placeholderColor(T.muted(this.dark)).onChange((value: string) => this.search = value).layoutWeight(1)
         if (this.search) { Text('×').fontSize(21).fontColor(T.muted(this.dark)).height(44).width(44).textAlign(TextAlign.Center).onClick(() => this.search = '').accessibilityText('清空搜索') }
       }.width('100%').backgroundColor(T.card(this.dark)).borderRadius(12).border({ width: 1, color: T.border(this.dark) })
       Row() {
-        Text('常见问题').fontSize(10).fontColor(T.muted(this.dark)).layoutWeight(1)
-        Text(this.resultCount() + ' 个问题').fontSize(9).fontColor(T.muted(this.dark))
+        Text('常见问题').fontSize(12).fontColor(T.muted(this.dark)).layoutWeight(1)
+        Text(this.resultCount() + ' 个问题').fontSize(11).fontColor(T.muted(this.dark))
       }.width('100%')
       Column() {
         ForEach(QUESTIONS, (question: string, index: number) => {
           if (this.matches(index)) {
             Column() {
               Row() {
-                Text(question).fontSize(12).fontColor(this.expanded === index ? T.tint(this.dark) : T.text(this.dark)).layoutWeight(1)
+                Text(question).fontSize(14).fontColor(this.expanded === index ? T.tint(this.dark) : T.text(this.dark)).layoutWeight(1)
                 Text(this.expanded === index ? '⌄' : '›').fontSize(18).fontColor(T.muted(this.dark))
               }.width('100%').height(50).onClick(() => this.expanded = this.expanded === index ? -1 : index)
-              if (this.expanded === index) { Text(ANSWERS[index]).fontSize(11).lineHeight(21).fontColor(T.muted(this.dark)).width('100%').margin({ bottom: 14 }) }
+              if (this.expanded === index) { Text(ANSWERS[index]).fontSize(12).lineHeight(22).fontColor(T.muted(this.dark)).width('100%').margin({ bottom: 14 }) }
             }.width('100%').padding({ left: 14, right: 14 }).border({ width: { bottom: 1 }, color: T.border(this.dark) })
           }
         })
-        if (this.resultCount() === 0) { Text('未找到相关问题，试试其他关键词或提交反馈。').fontSize(11).fontColor(T.muted(this.dark)).padding(18) }
+        if (this.resultCount() === 0) { Text('未找到相关问题，试试其他关键词或提交反馈。').fontSize(12).fontColor(T.muted(this.dark)).padding(18) }
       }.width('100%').backgroundColor(T.card(this.dark)).borderRadius(12).clip(true)
       ActionButton({ label: '提交反馈', onAction: () => this.open('feedback') })
       Column() {
@@ -95,8 +95,8 @@ export struct ProfileDetailPage {
   supportRow(label: string, note: string, panel: string) {
     Row({ space: 8 }) {
       AppIcon({ name: 'help', iconSize: 18 })
-      Text(label).fontSize(12).fontColor(T.text(this.dark)).layoutWeight(1)
-      Text(note).fontSize(9).fontColor(T.muted(this.dark))
+      Text(label).fontSize(14).fontColor(T.text(this.dark)).layoutWeight(1)
+      Text(note).fontSize(11).fontColor(T.muted(this.dark))
       Text('›').fontSize(18).fontColor(T.muted(this.dark))
     }.width('100%').height(54).padding(12).onClick(() => this.open(panel))
   }
@@ -120,17 +120,17 @@ export struct ProfileDetailPage {
       Column() {
         ForEach(DOCUMENT_TITLES, (title: string, index: number) => {
           Row() {
-            Text(title).fontSize(12).fontColor(T.text(this.dark)).layoutWeight(1)
-            if (index === 0) { Text('当前已是最新版本').fontSize(9).fontColor(T.muted(this.dark)).margin({ right: 8 }) }
+            Text(title).fontSize(14).fontColor(T.text(this.dark)).layoutWeight(1)
+            if (index === 0) { Text('当前已是最新版本').fontSize(11).fontColor(T.muted(this.dark)).margin({ right: 8 }) }
             Text('›').fontSize(19).fontColor(T.muted(this.dark))
           }.height(54).width('100%').padding(12).border({ width: { bottom: index < 3 ? 1 : 0 }, color: T.border(this.dark) })
             .onClick(() => { this.documentIndex = index; this.open('document'); })
         })
       }.width('100%').backgroundColor(T.card(this.dark)).borderRadius(12)
       Column({ space: 10 }) {
-        Text('—  INDUSTRIAL INTELLIGENCE  —').fontSize(9).fontColor(T.muted(this.dark))
-        Text('© 2025 智巡巡检 · 版权所有').fontSize(10).fontColor(T.muted(this.dark))
-        Text('备案号：待正式上线后登记').fontSize(9).fontColor(T.muted(this.dark))
+        Text('—  INDUSTRIAL INTELLIGENCE  —').fontSize(10).fontColor(T.muted(this.dark))
+        Text('© 2025 智巡巡检 · 版权所有').fontSize(11).fontColor(T.muted(this.dark))
+        Text('备案号：待正式上线后登记').fontSize(10).fontColor(T.muted(this.dark))
       }.width('100%').padding({ top: 90, bottom: 25 })
     }.width('100%').padding(12)
   }
@@ -145,8 +145,8 @@ export struct ProfileDetailPage {
   @Builder
   timeField(label: string, value: string, start: boolean) {
     Column({ space: 8 }) {
-      Text(label).fontSize(10).fontColor(T.muted(this.dark)).width('100%')
-      Text(value + '   ◷').fontSize(12).fontColor(T.text(this.dark)).height(42).width('100%').padding(10)
+      Text(label).fontSize(11).fontColor(T.muted(this.dark)).width('100%')
+      Text(value + '   ◷').fontSize(14).fontColor(T.text(this.dark)).height(42).width('100%').padding(10)
         .backgroundColor(T.inset(this.dark)).borderRadius(8).border({ width: 1, color: T.border(this.dark) }).onClick(() => this.pickTime(start))
     }.layoutWeight(1)
   }
@@ -173,12 +173,12 @@ export struct ProfileDetailPage {
       this.paragraph('当前为巡检员演示账号 XJ-027。本原型未连接真实登录服务，不会退出你的实际账号。')
       ActionButton({ label: '返回设置', onAction: () => this.close() })
     } else if (this.panel === 'notice') {
-      Text(NOTICES[this.noticeIndex].type + '通知 · ' + NOTICES[this.noticeIndex].time).fontSize(10).fontColor(T.muted(this.dark)).width('100%')
+      Text(NOTICES[this.noticeIndex].type + '通知 · ' + NOTICES[this.noticeIndex].time).fontSize(11).fontColor(T.muted(this.dark)).width('100%')
       this.paragraph(NOTICES[this.noticeIndex].body + '。')
       this.paragraph('请结合现场实际情况处理；涉及安全风险时优先遵守现场应急规程。')
       ActionButton({ label: '我知道了', onAction: () => this.close() })
     } else if (this.panel === 'document') {
-      Text(DOCUMENT_SUBTITLES[this.documentIndex]).fontSize(10).fontColor(T.muted(this.dark)).width('100%')
+      Text(DOCUMENT_SUBTITLES[this.documentIndex]).fontSize(11).fontColor(T.muted(this.dark)).width('100%')
       this.paragraph(DOCUMENT_BODIES[this.documentIndex])
       ActionButton({ label: '关闭', onAction: () => this.close() })
     } else if (this.panel === 'feedback') {
@@ -188,9 +188,9 @@ export struct ProfileDetailPage {
         ActionButton({ label: '完成', onAction: () => { this.description = ''; this.close(); } })
       } else {
         this.paragraph('请描述出现的问题及操作步骤，不要填写密码或敏感信息。')
-        TextArea({ placeholder: '例如：B区节点连接后，数据一直未更新…', text: this.description }).height(150).fontSize(12)
+        TextArea({ placeholder: '例如：B区节点连接后，数据一直未更新…', text: this.description }).height(150).fontSize(13)
           .fontColor(T.text(this.dark)).backgroundColor(T.inset(this.dark)).placeholderColor(T.muted(this.dark)).maxLength(500).onChange((value: string) => this.description = value)
-        Text(this.description.length + ' / 500').fontSize(9).fontColor(T.muted(this.dark)).alignSelf(ItemAlign.End)
+        Text(this.description.length + ' / 500').fontSize(10).fontColor(T.muted(this.dark)).alignSelf(ItemAlign.End)
         ActionButton({ label: '生成反馈预览', isEnabled: ProfileLogic.canPreview(this.description), onAction: () => this.submitted = true })
       }
     } else {
@@ -206,7 +206,7 @@ export struct ProfileDetailPage {
       Column({ space: 14 }) {
         Rect().width(42).height(4).radius(2).fill(T.muted(this.dark)).alignSelf(ItemAlign.Center)
         Row() {
-          Text(this.sheetTitle()).fontSize(16).fontWeight(600).fontColor(T.text(this.dark)).layoutWeight(1)
+          Text(this.sheetTitle()).fontSize(17).fontWeight(600).fontColor(T.text(this.dark)).layoutWeight(1)
           Text('×').fontSize(24).fontColor(T.muted(this.dark)).height(44).width(44).textAlign(TextAlign.Center).onClick(() => this.close()).accessibilityText('关闭')
         }.width('100%')
         this.sheetContent()

@@ -63,7 +63,7 @@ export struct TaskPage {
           Column({ space: 12 }) {
             Row() {
               Text('现场照片').fontSize(12).fontWeight(600).fontColor(T.text(this.dark)).layoutWeight(1)
-              Text((this.photos.length + 1) + ' / 6 张').fontSize(8).fontColor(T.muted(this.dark))
+              Text((this.photos.length + 1) + ' / 6 张').fontSize(10).fontColor(T.muted(this.dark))
             }.width('100%')
             Scroll() {
               Row({ space: 8 }) {
@@ -75,13 +75,13 @@ export struct TaskPage {
                 if (this.photos.length < 5) {
                   Column({ space: 5 }) {
                     AppIcon({ name: 'camera', iconSize: 22, color: T.tint(this.dark) })
-                    Text('添加照片').fontSize(7).fontColor(T.tint(this.dark))
+                    Text('添加照片').fontSize(10).fontColor(T.tint(this.dark))
                   }.width(68).height(64).justifyContent(FlexAlign.Center).borderRadius(10)
                     .border({ width: 1, color: T.border(this.dark) }).onClick(() => this.choosePhoto())
                 }
               }
             }.width('100%').scrollable(ScrollDirection.Horizontal).scrollBar(BarState.Off).align(Alignment.Start)
-            TextArea({ placeholder: '补充现场情况、读数或处置结果…', text: this.note }).height(62).fontSize(10)
+            TextArea({ placeholder: '补充现场情况、读数或处置结果…', text: this.note }).height(62).fontSize(12)
               .fontColor(T.text(this.dark)).placeholderColor(T.muted(this.dark)).backgroundColor(T.inset(this.dark)).borderRadius(10)
               .border({ width: 1, color: T.border(this.dark) }).onChange((value: string) => {
                 this.note = value;

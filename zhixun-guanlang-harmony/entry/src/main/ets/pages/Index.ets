@@ -119,31 +119,31 @@ struct Index {
   @Builder
   statusBar() {
     Row({ space: 6 }) {
-      Text('14:32').fontSize(11).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
+      Text('14:32').fontSize(12).fontWeight(FontWeight.Bold).fontColor(T.text(this.dark))
       Blank()
-      Text('5G').fontSize(9).fontColor(T.muted(this.dark))
-      AppIcon({ name: 'wifi', iconSize: 12, color: T.muted(this.dark) })
-      Text('86').fontSize(7).fontColor(T.text(this.dark)).width(21).height(12).textAlign(TextAlign.Center)
+      Text('5G').fontSize(10).fontColor(T.muted(this.dark))
+      AppIcon({ name: 'wifi', iconSize: 13, color: T.muted(this.dark) })
+      Text('86').fontSize(9).fontColor(T.text(this.dark)).width(24).height(14).textAlign(TextAlign.Center)
         .border({ width: 1, color: T.muted(this.dark) }).borderRadius(3)
-    }.height(26).width('100%').padding({ left: 17, right: 17 }).backgroundColor(T.chrome(this.dark))
+    }.height(28).width('100%').padding({ left: 17, right: 17 }).backgroundColor(T.chrome(this.dark))
   }
   @Builder
   navigationBar() {
     Row() {
       ForEach(this.labels, (label: string, index: number) => {
-        Column({ space: 4 }) {
+        Column({ space: 5 }) {
           Stack({ alignContent: Alignment.TopEnd }) {
-            AppIcon({ name: this.icons[index], iconSize: 20, color: this.tab === index ? T.tint(this.dark) : T.muted(this.dark) })
+            AppIcon({ name: this.icons[index], iconSize: 22, color: this.tab === index ? T.tint(this.dark) : T.muted(this.dark) })
             if (index === 1 && !this.live) {
-              Text('1').fontSize(7).fontColor('#FFFFFF').width(11).height(11).textAlign(TextAlign.Center)
-                .backgroundColor(T.danger).borderRadius(6).position({ x: 15, y: -5 })
+              Text('1').fontSize(9).fontColor('#FFFFFF').width(13).height(13).textAlign(TextAlign.Center)
+                .backgroundColor(T.danger).borderRadius(7).position({ x: 16, y: -6 })
             }
-          }.width(20).height(20)
-          Text(label).fontSize(9).fontColor(this.tab === index ? T.tint(this.dark) : T.muted(this.dark))
-        }.layoutWeight(1).height(72).justifyContent(FlexAlign.Center)
+          }.width(22).height(22)
+          Text(label).fontSize(10).fontColor(this.tab === index ? T.tint(this.dark) : T.muted(this.dark))
+        }.layoutWeight(1).height(74).justifyContent(FlexAlign.Center)
           .onClick(() => this.switchTab(index))
       })
-    }.height(72).width('100%').padding({ bottom: 5 }).backgroundColor(T.inset(this.dark))
+    }.height(74).width('100%').padding({ bottom: 6 }).backgroundColor(T.chrome(this.dark))
       .border({ width: { top: 1 }, color: T.border(this.dark) })
   }
   build() {

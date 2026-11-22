@@ -31,18 +31,18 @@ export struct NotificationsPage {
       Row({ space: 6 }) {
         ForEach(['全部', '警告', '工单', '系统'], (label: string) => {
           Row({ space: 4 }) {
-            Text(label).fontSize(11).fontColor(this.filter === label ? T.tint(this.dark) : T.muted(this.dark))
+            Text(label).fontSize(12).fontColor(this.filter === label ? T.tint(this.dark) : T.muted(this.dark))
             if (label === '警告' && this.unread > 0) {
-              Text(this.unread.toString()).fontSize(8).fontColor('#FFFFFF').padding(3).backgroundColor(T.danger).borderRadius(8)
+              Text(this.unread.toString()).fontSize(10).fontColor('#FFFFFF').padding(3).backgroundColor(T.danger).borderRadius(8)
             }
-          }.height(38).layoutWeight(1).justifyContent(FlexAlign.Center)
+          }.height(40).layoutWeight(1).justifyContent(FlexAlign.Center)
             .backgroundColor(this.filter === label ? T.selected(this.dark) : T.card(this.dark)).borderRadius(9)
             .onClick(() => this.filter = label)
         })
       }.width('100%')
       Row() {
-        Text(this.filter === '全部' ? '最近消息' : this.filter + '消息').fontSize(10).fontColor(T.muted(this.dark)).layoutWeight(1)
-        Text(this.unread ? this.unread + ' 条未读' : '全部消息已读').fontSize(9).fontColor(T.muted(this.dark))
+        Text(this.filter === '全部' ? '最近消息' : this.filter + '消息').fontSize(12).fontColor(T.muted(this.dark)).layoutWeight(1)
+        Text(this.unread ? this.unread + ' 条未读' : '全部消息已读').fontSize(11).fontColor(T.muted(this.dark))
       }.width('100%')
       Column() {
         ForEach(NOTICES, (notice: Notice, index: number) => {
@@ -51,20 +51,20 @@ export struct NotificationsPage {
               AppIcon({ name: notice.type === '警告' ? 'bell' : notice.type === '工单' ? 'clipboard' : 'settings', iconSize: 20,
                 color: notice.type === '警告' ? T.danger : T.tint(this.dark) })
               Column({ space: 4 }) {
-                Text(notice.title).fontSize(11).fontWeight(600).fontColor(T.text(this.dark))
-                Text(notice.body).fontSize(9).fontColor(T.muted(this.dark)).maxLines(1).textOverflow({ overflow: TextOverflow.Ellipsis })
+                Text(notice.title).fontSize(13).fontWeight(600).fontColor(T.text(this.dark))
+                Text(notice.body).fontSize(11).fontColor(T.muted(this.dark)).maxLines(1).textOverflow({ overflow: TextOverflow.Ellipsis })
               }.alignItems(HorizontalAlign.Start).layoutWeight(1)
               Column({ space: 8 }) {
-                Text(notice.time).fontSize(8).fontColor(T.muted(this.dark))
+                Text(notice.time).fontSize(10).fontColor(T.muted(this.dark))
                 if (index < 2 && !this.read.includes(index)) { Circle().width(5).height(5).fill(T.accent) }
               }.alignItems(HorizontalAlign.End)
-            }.width('100%').height(66).padding(12).onClick(() => { this.markRead(index); this.onOpen(index); })
+            }.width('100%').height(70).padding(14).onClick(() => { this.markRead(index); this.onOpen(index); })
               .gesture(PanGesture({ direction: PanDirection.Left, distance: 50 }).onActionEnd(() => this.markRead(index)))
           }
         })
-      }.width('100%').backgroundColor(T.card(this.dark)).borderRadius(12).clip(true)
-      Text('← 左滑可标记已读').fontSize(9).fontColor(T.muted(this.dark)).padding(8)
-      Text('✓ 仅展示与你负责区域相关的通知').fontSize(9).fontColor(T.muted(this.dark)).margin({ top: 18 })
-    }.width('100%').padding(12)
+      }.width('100%').backgroundColor(T.card(this.dark)).borderRadius(14).clip(true)
+      Text('← 左滑可标记已读').fontSize(11).fontColor(T.muted(this.dark)).padding(8)
+      Text('✓ 仅展示与你负责区域相关的通知').fontSize(11).fontColor(T.muted(this.dark)).margin({ top: 18 })
+    }.width('100%').padding(14)
   }
 }

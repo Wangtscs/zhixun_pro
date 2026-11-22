@@ -258,17 +258,17 @@ export struct AssistantPage {
             }.width('100%').padding(13).backgroundColor(T.card(this.dark)).borderRadius(14)
               .border({ width: 1, color: T.border(this.dark) })
           }
-          Text('试试这样问').fontSize(8).fontColor(T.muted(this.dark)).width('100%')
+          Text('试试这样问').fontSize(11).fontColor(T.muted(this.dark)).width('100%')
           Row({ space: 8 }) {
             ForEach(['燃气泄漏处置', '阀门压力异常'], (label: string, index: number) => {
-              Text(label).fontSize(9).fontColor(T.text(this.dark)).padding(10).borderRadius(10)
+              Text(label).fontSize(12).fontColor(T.text(this.dark)).padding(10).borderRadius(10)
                 .backgroundColor(T.card(this.dark)).border({ width: 1, color: T.border(this.dark) }).onClick(() => this.send(this.examples[index]))
             })
           }.width('100%')
         }.width('100%').padding(12)
       }.width('100%').layoutWeight(1).scrollBar(BarState.Off).align(Alignment.Top)
       if (this.voiceStatus) {
-        Text(this.voiceStatus).fontSize(10).fontColor(T.muted(this.dark)).width('100%').padding({ left: 12, right: 12 })
+        Text(this.voiceStatus).fontSize(11).fontColor(T.muted(this.dark)).width('100%').padding({ left: 12, right: 12 })
       }
       Row({ space: 8 }) {
         TextInput({ placeholder: '输入巡检问题…', text: this.input }).layoutWeight(1).height(48).fontSize(12)
