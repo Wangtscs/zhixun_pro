@@ -1,0 +1,8 @@
+{
+  "modelVersion": "6.0.2",
+  "name": "zhixun-worker",
+  "version": "2.6.0",
+  "description": "智巡管廊工人端",
+  "dependencies": {},
+  "devDependencies": {}
+}

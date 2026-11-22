@@ -1,0 +1,846 @@
+{
+  "viewport": "390×844",
+  "source": "当前应用实际渲染，未重新设计；滚动补充图保留同一视口尺寸。",
+  "screens": [
+    {
+      "filename": "001-登录-默认.png",
+      "name": "登录-默认",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "002-登录-工号聚焦.png",
+      "name": "登录-工号聚焦",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "003-登录-加载中.png",
+      "name": "登录-加载中",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "004-登录-错误.png",
+      "name": "登录-错误",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "005-找回密码-入口抽屉.png",
+      "name": "找回密码-入口抽屉",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "006-找回密码-联系管理员.png",
+      "name": "找回密码-联系管理员",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "007-找回密码-1验证身份.png",
+      "name": "找回密码-1验证身份",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "008-找回密码-工号错误.png",
+      "name": "找回密码-工号错误",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "009-找回密码-2输入验证码.png",
+      "name": "找回密码-2输入验证码",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "010-找回密码-验证码错误.png",
+      "name": "找回密码-验证码错误",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "011-找回密码-允许重发.png",
+      "name": "找回密码-允许重发",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "012-找回密码-3设置新密码.png",
+      "name": "找回密码-3设置新密码",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "013-找回密码-密码不一致.png",
+      "name": "找回密码-密码不一致",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "014-找回密码-密码规则通过.png",
+      "name": "找回密码-密码规则通过",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "015-找回密码-重置成功.png",
+      "name": "找回密码-重置成功",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "016-登录-语言选择.png",
+      "name": "登录-语言选择",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "017-登录-扫码登录.png",
+      "name": "登录-扫码登录",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "018-登录-企业微信.png",
+      "name": "登录-企业微信",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "019-登录-用户协议.png",
+      "name": "登录-用户协议",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "020-登录-隐私政策.png",
+      "name": "登录-隐私政策",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "021-黑色-巡检-A区-列表.png",
+      "name": "黑色-巡检-A区-列表",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "022-黑色-A区-节点详情-1.png",
+      "name": "黑色-A区-节点详情-1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "023-黑色-A区-节点详情-2.png",
+      "name": "黑色-A区-节点详情-2",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "024-黑色-A区-节点详情-3.png",
+      "name": "黑色-A区-节点详情-3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "025-黑色-巡检-A区-透视.png",
+      "name": "黑色-巡检-A区-透视",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "026-黑色-A区-透视节点抽屉-1.png",
+      "name": "黑色-A区-透视节点抽屉-1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "027-黑色-A区-透视节点抽屉-2.png",
+      "name": "黑色-A区-透视节点抽屉-2",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "028-黑色-A区-透视节点抽屉-3.png",
+      "name": "黑色-A区-透视节点抽屉-3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "029-黑色-巡检-B区-列表.png",
+      "name": "黑色-巡检-B区-列表",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "030-黑色-B区-节点详情-1.png",
+      "name": "黑色-B区-节点详情-1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "031-黑色-节点报修-快速抽屉.png",
+      "name": "黑色-节点报修-快速抽屉",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "032-黑色-AI风险研判-展开依据.png",
+      "name": "黑色-AI风险研判-展开依据",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "033-黑色-AI风险研判-收起依据.png",
+      "name": "黑色-AI风险研判-收起依据",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "034-黑色-B区-节点详情-2.png",
+      "name": "黑色-B区-节点详情-2",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "035-黑色-B区-节点详情-3.png",
+      "name": "黑色-B区-节点详情-3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "036-黑色-巡检-B区-透视.png",
+      "name": "黑色-巡检-B区-透视",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "037-黑色-B区-透视节点抽屉-1.png",
+      "name": "黑色-B区-透视节点抽屉-1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "038-黑色-B区-透视节点抽屉-2.png",
+      "name": "黑色-B区-透视节点抽屉-2",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "039-黑色-B区-透视节点抽屉-3.png",
+      "name": "黑色-B区-透视节点抽屉-3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "040-黑色-巡检-C区-列表.png",
+      "name": "黑色-巡检-C区-列表",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "041-黑色-C区-节点详情-1.png",
+      "name": "黑色-C区-节点详情-1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "042-黑色-C区-节点详情-2.png",
+      "name": "黑色-C区-节点详情-2",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "043-黑色-C区-节点详情-3.png",
+      "name": "黑色-C区-节点详情-3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "044-黑色-巡检-C区-透视.png",
+      "name": "黑色-巡检-C区-透视",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "045-黑色-C区-透视节点抽屉-1.png",
+      "name": "黑色-C区-透视节点抽屉-1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "046-黑色-C区-透视节点抽屉-2.png",
+      "name": "黑色-C区-透视节点抽屉-2",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "047-黑色-C区-透视节点抽屉-3.png",
+      "name": "黑色-C区-透视节点抽屉-3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "048-黑色-工单列表.png",
+      "name": "黑色-工单列表",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "049-黑色-工单详情.png",
+      "name": "黑色-工单详情",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "050-黑色-工单详情-滚动补充.png",
+      "name": "黑色-工单详情-滚动补充",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "051-黑色-工单详情-已上报.png",
+      "name": "黑色-工单详情-已上报",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "052-黑色-工单详情-已上报-滚动补充.png",
+      "name": "黑色-工单详情-已上报-滚动补充",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "053-黑色-AI助手-燃气泄漏.png",
+      "name": "黑色-AI助手-燃气泄漏",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "054-黑色-AI助手-阀门压力.png",
+      "name": "黑色-AI助手-阀门压力",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "055-黑色-我的.png",
+      "name": "黑色-我的",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "056-黑色-消息通知.png",
+      "name": "黑色-消息通知",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "057-黑色-通知详情.png",
+      "name": "黑色-通知详情",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "058-黑色-消息通知-全部已读.png",
+      "name": "黑色-消息通知-全部已读",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "059-黑色-系统设置.png",
+      "name": "黑色-系统设置",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "060-黑色-系统设置-关闭开关.png",
+      "name": "黑色-系统设置-关闭开关",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "061-黑色-系统设置-免打扰时段.png",
+      "name": "黑色-系统设置-免打扰时段",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "062-黑色-系统设置-重连间隔.png",
+      "name": "黑色-系统设置-重连间隔",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "063-黑色-系统设置-缓存清理.png",
+      "name": "黑色-系统设置-缓存清理",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "064-黑色-系统设置-账号信息.png",
+      "name": "黑色-系统设置-账号信息",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "065-黑色-帮助与反馈.png",
+      "name": "黑色-帮助与反馈",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "066-黑色-帮助-如何手动派单.png",
+      "name": "黑色-帮助-如何手动派单",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "067-黑色-帮助-怎么校准传感器.png",
+      "name": "黑色-帮助-怎么校准传感器",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "068-黑色-帮助-警告声音关不掉.png",
+      "name": "黑色-帮助-警告声音关不掉",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "069-黑色-帮助-数据不上传.png",
+      "name": "黑色-帮助-数据不上传",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "070-黑色-帮助-更换手机后如何登录.png",
+      "name": "黑色-帮助-更换手机后如何登录",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "071-黑色-帮助-搜索空状态.png",
+      "name": "黑色-帮助-搜索空状态",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "072-黑色-帮助-反馈表单.png",
+      "name": "黑色-帮助-反馈表单",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "073-黑色-帮助-反馈预览完成.png",
+      "name": "黑色-帮助-反馈预览完成",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "074-黑色-帮助-在线客服.png",
+      "name": "黑色-帮助-在线客服",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "075-黑色-帮助-电话支持.png",
+      "name": "黑色-帮助-电话支持",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "076-黑色-关于.png",
+      "name": "黑色-关于",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "077-黑色-关于-更新日志.png",
+      "name": "黑色-关于-更新日志",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "078-黑色-关于-用户协议.png",
+      "name": "黑色-关于-用户协议",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "079-黑色-关于-隐私政策.png",
+      "name": "黑色-关于-隐私政策",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "080-黑色-关于-开源许可.png",
+      "name": "黑色-关于-开源许可",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "081-白色-巡检-A区-列表.png",
+      "name": "白色-巡检-A区-列表",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "082-白色-A区-节点详情-1.png",
+      "name": "白色-A区-节点详情-1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "083-白色-A区-节点详情-2.png",
+      "name": "白色-A区-节点详情-2",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "084-白色-A区-节点详情-3.png",
+      "name": "白色-A区-节点详情-3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "085-白色-巡检-A区-透视.png",
+      "name": "白色-巡检-A区-透视",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "086-白色-A区-透视节点抽屉-1.png",
+      "name": "白色-A区-透视节点抽屉-1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "087-白色-A区-透视节点抽屉-2.png",
+      "name": "白色-A区-透视节点抽屉-2",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "088-白色-A区-透视节点抽屉-3.png",
+      "name": "白色-A区-透视节点抽屉-3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "089-白色-巡检-B区-列表.png",
+      "name": "白色-巡检-B区-列表",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "090-白色-B区-节点详情-1.png",
+      "name": "白色-B区-节点详情-1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "091-白色-节点报修-快速抽屉.png",
+      "name": "白色-节点报修-快速抽屉",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "092-白色-AI风险研判-展开依据.png",
+      "name": "白色-AI风险研判-展开依据",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "093-白色-AI风险研判-收起依据.png",
+      "name": "白色-AI风险研判-收起依据",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "094-白色-B区-节点详情-2.png",
+      "name": "白色-B区-节点详情-2",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "095-白色-B区-节点详情-3.png",
+      "name": "白色-B区-节点详情-3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "096-白色-巡检-B区-透视.png",
+      "name": "白色-巡检-B区-透视",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "097-白色-B区-透视节点抽屉-1.png",
+      "name": "白色-B区-透视节点抽屉-1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "098-白色-B区-透视节点抽屉-2.png",
+      "name": "白色-B区-透视节点抽屉-2",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "099-白色-B区-透视节点抽屉-3.png",
+      "name": "白色-B区-透视节点抽屉-3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "100-白色-巡检-C区-列表.png",
+      "name": "白色-巡检-C区-列表",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "101-白色-C区-节点详情-1.png",
+      "name": "白色-C区-节点详情-1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "102-白色-C区-节点详情-2.png",
+      "name": "白色-C区-节点详情-2",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "103-白色-C区-节点详情-3.png",
+      "name": "白色-C区-节点详情-3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "104-白色-巡检-C区-透视.png",
+      "name": "白色-巡检-C区-透视",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "105-白色-C区-透视节点抽屉-1.png",
+      "name": "白色-C区-透视节点抽屉-1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "106-白色-C区-透视节点抽屉-2.png",
+      "name": "白色-C区-透视节点抽屉-2",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "107-白色-C区-透视节点抽屉-3.png",
+      "name": "白色-C区-透视节点抽屉-3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "108-白色-工单列表.png",
+      "name": "白色-工单列表",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "109-白色-工单详情.png",
+      "name": "白色-工单详情",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "110-白色-工单详情-滚动补充.png",
+      "name": "白色-工单详情-滚动补充",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "111-白色-工单详情-已上报.png",
+      "name": "白色-工单详情-已上报",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "112-白色-工单详情-已上报-滚动补充.png",
+      "name": "白色-工单详情-已上报-滚动补充",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "113-白色-AI助手-燃气泄漏.png",
+      "name": "白色-AI助手-燃气泄漏",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "114-白色-AI助手-阀门压力.png",
+      "name": "白色-AI助手-阀门压力",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "115-白色-我的.png",
+      "name": "白色-我的",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "116-白色-消息通知.png",
+      "name": "白色-消息通知",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "117-白色-通知详情.png",
+      "name": "白色-通知详情",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "118-白色-消息通知-全部已读.png",
+      "name": "白色-消息通知-全部已读",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "119-白色-系统设置.png",
+      "name": "白色-系统设置",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "120-白色-系统设置-关闭开关.png",
+      "name": "白色-系统设置-关闭开关",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "121-白色-系统设置-免打扰时段.png",
+      "name": "白色-系统设置-免打扰时段",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "122-白色-系统设置-重连间隔.png",
+      "name": "白色-系统设置-重连间隔",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "123-白色-系统设置-缓存清理.png",
+      "name": "白色-系统设置-缓存清理",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "124-白色-系统设置-账号信息.png",
+      "name": "白色-系统设置-账号信息",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "125-白色-帮助与反馈.png",
+      "name": "白色-帮助与反馈",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "126-白色-帮助-如何手动派单.png",
+      "name": "白色-帮助-如何手动派单",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "127-白色-帮助-怎么校准传感器.png",
+      "name": "白色-帮助-怎么校准传感器",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "128-白色-帮助-警告声音关不掉.png",
+      "name": "白色-帮助-警告声音关不掉",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "129-白色-帮助-数据不上传.png",
+      "name": "白色-帮助-数据不上传",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "130-白色-帮助-更换手机后如何登录.png",
+      "name": "白色-帮助-更换手机后如何登录",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "131-白色-帮助-搜索空状态.png",
+      "name": "白色-帮助-搜索空状态",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "132-白色-帮助-反馈表单.png",
+      "name": "白色-帮助-反馈表单",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "133-白色-帮助-反馈预览完成.png",
+      "name": "白色-帮助-反馈预览完成",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "134-白色-帮助-在线客服.png",
+      "name": "白色-帮助-在线客服",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "135-白色-帮助-电话支持.png",
+      "name": "白色-帮助-电话支持",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "136-白色-关于.png",
+      "name": "白色-关于",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "137-白色-关于-更新日志.png",
+      "name": "白色-关于-更新日志",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "138-白色-关于-用户协议.png",
+      "name": "白色-关于-用户协议",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "139-白色-关于-隐私政策.png",
+      "name": "白色-关于-隐私政策",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "filename": "140-白色-关于-开源许可.png",
+      "name": "白色-关于-开源许可",
+      "width": 390,
+      "height": 844
+    }
+  ]
+}
