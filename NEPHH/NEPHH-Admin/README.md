@@ -6,6 +6,12 @@ Vue 3、TypeScript、Vite。依据 Figma 文件 OoFTKpYDkOjLVy9dZ8qPPi 的41个�
 
 先启动 ../NEPHH-backend，然后运行 npm install、npm run dev。默认访问 http://localhost:5173；前端将 /api 转发至 http://localhost:8080。可通过环境变量 BACKEND_URL 指定其他后端地址。
 
+### 独立启动脚本
+
+- Windows：执行 `start-frontend.cmd`；Git Bash 或类 Unix：执行 `./start-frontend.sh`。
+- 默认监听 `127.0.0.1:5173`，访问 `http://127.0.0.1:5173/login`；可用 `--host`、`--port`、`--backend-url` 覆盖。
+- 缺少 `node_modules` 时先自动执行 `npm ci`。Node.js 低于 package.json 建议版本时给出警告，但仍可启动 Vite。
+
 账号登录使用真实后端、MySQL和BCrypt密码校验。首次管理员由后端配置创建，已有账号不会被启动过程覆盖。数据库密码不是网页登录密码。
 
 登录页的“一键进入演示环境”使用独立内存数据，演示操作不写入真实数据库，刷新后重置。角色菜单只调整当前视图，不增加服务器权限。

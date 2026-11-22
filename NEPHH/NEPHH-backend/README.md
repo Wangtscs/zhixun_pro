@@ -13,6 +13,13 @@ Java 17+ / Spring Boot / MySQL 8 / Flyway。当前实现网页版管理端与巡
 3. 运行 `com.nephh.NephhApplication`，默认端口8080。也可执行 `./start-local-mysql.ps1`。
 4. 启动前端：进入 `../NEPHH-Admin`，运行 `npm run dev`，默认地址 `http://localhost:5173`。
 
+### 独立启动脚本
+
+- Windows：执行 `start-backend.cmd`；Git Bash 或类 Unix：执行 `./start-backend.sh`。
+- 默认监听 `127.0.0.1:8080`，仅启动后端。可用 `--port 8081` 改端口，其余参数原样传给 Spring Boot，例如 `--spring.profiles.active=local`。
+- 默认复用 `target/classes` 和 `../.nephh-runtime/lib` 的现有编译产物；源码改动后加 `--build` 让脚本调用 Maven 重新构建。
+- 数据库配置仍读取 `.local-database.yml`；没有该文件时使用 local H2。脚本不会初始化、清空数据库或创建账号。
+
 没有 `.local-database.yml` 时默认启用 `local`：使用H2内存数据库。新机器复制 `.local-database.example.yml` 为 `.local-database.yml`，填写实际凭据；数据库需事先创建为空库。Flyway自动应用V1至最新迁移，不要手工重复执行 `db/schema.sql`。
 
 首次创建管理员可设置 `ADMIN_USERNAME`、`ADMIN_PASSWORD`（至少12位，最多72字节）。仅用户名不存在时创建，不覆盖已有账号。已有账号通过“用户权限→重置密码”修改。密码保存为BCrypt哈希。
